@@ -1,6 +1,6 @@
-PRO hadgem3kpp_nao_mjo_probabilities
+PRO hadgem3kpp_nao_mjo_probabilities_n96ent
 
-nmodels=5
+nmodels=4
 
 all_names=strarr(nmodels)
 all_colors=strarr(nmodels)
@@ -10,7 +10,6 @@ all_mynyears=intarr(nmodels)
 
 nao_thresh=0.5
 nphases=9
-;lags=[3,6,9,12,15,18,21,24]
 lags=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
 nlags=N_ELEMENTS(lags)
 naop_bymjo=fltarr(nmodels,nphases,nlags)
@@ -22,7 +21,7 @@ twophase_colors=['black','purple','dodgerblue','orange','red']
 FOR m=0,nmodels-1 DO BEGIN
    CASE m OF
       0 : BEGIN         
-         nao_file='/home/users/npklingaman/datasets/ERA-INTERIM/MSL/ERA-Interim.jan-dec_dmeans_ts.1979-2013.nao_index_n216.nc'
+         nao_file='/home/users/npklingaman/datasets/ERA-INTERIM/MSL/ERA-Interim.jan-dec_dmeans_ts.1979-2013.nao_index_n96.nc'
          ntime=35*365
          mjo_file='/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2014.index_values.nc'
          mjo_offset=4
@@ -34,11 +33,11 @@ FOR m=0,nmodels-1 DO BEGIN
          ndays_per_year=365
       END
       1 : BEGIN         
-         nao_file='/group_workspaces/jasmin/futureweather/xjhwb/metum-goml1_fwn216.jan-dec_dmeans_ts.years1-100.nao_index_goml.nc'
-         ntime=LONG(100)*LONG(360)
-         mjo_file='/group_workspaces/jasmin/futureweather/xjhwb/metum-goml1_fwn216.jan-dec_dmeans.years1-100.rmm_indices.nc'
+         nao_file='/group_workspaces/jasmin2/klingaman/metum/xihvp/hadgem3kpp_fwgbl_1.5xentrain_ga30_n96.jan-dec_dmeans_ts.years1-75.nao_index_goml.nc'
+         ntime=LONG(75)*LONG(360)
+         mjo_file='/group_workspaces/jasmin2/klingaman/metum/xihvp/rmm_indices.nc'
          mjo_offset=0
-         all_names(m)='goml1-n216'
+         all_names(m)='goml1-n96-1p5'
          all_colors(m)='purple'
          all_symbols(m)=2
          all_styles(m)=0
@@ -46,11 +45,11 @@ FOR m=0,nmodels-1 DO BEGIN
          ndays_per_year=360
       END
       2 : BEGIN
-         nao_file='/group_workspaces/jasmin/futureweather/xjhwe/metum-ga3_fwn216-31day.jan-dec_dmeans_ts.years1-100.nao_index_ga3-31d.nc'
-         ntime=LONG(100)*LONG(360)
-         mjo_file='/group_workspaces/jasmin/futureweather/xjhwe/rmm_indices.nc'
+         nao_file='/group_workspaces/jasmin2/klingaman/metum/xjnoc/metum-ga3_fwn96-1p5-31day.jan-dec_dmeans_ts.years1-75.nao_index_ga3-31d.nc'
+         ntime=LONG(75)*LONG(360)
+         mjo_file='/group_workspaces/jasmin2/klingaman/metum/xjnoc/rmm_indices.nc'
          mjo_offset=0
-         all_names(m)='ga3-31d-n216'
+         all_names(m)='ga3-31d-n96-1p5'
          all_colors(m)='violetred'
          all_symbols(m)=2
          all_styles(m)=0
@@ -58,23 +57,11 @@ FOR m=0,nmodels-1 DO BEGIN
          ndays_per_year=360
       END
       3 : BEGIN
-         nao_file='/group_workspaces/jasmin/futureweather/xjhwh/metum-ga3_fwn216-clim.jan-dec_dmeans_ts.years1-100.nao_index_ga3-clim.nc'
-         ntime=LONG(100)*LONG(360)
-         mjo_file='/group_workspaces/jasmin/futureweather/xjhwh/rmm_indices.nc'
+         nao_file='/group_workspaces/jasmin2/klingaman/metum/xjnof/metum-ga3_fwn96-1p5-clim.jan-dec_dmeans_ts.years1-75.nao_index_ga3-clim.nc'
+         ntime=LONG(75)*LONG(360)
+         mjo_file='/group_workspaces/jasmin2/klingaman/metum/xjnof/rmm_indices.nc'
          mjo_offset=0
-         all_names(m)='ga3-clim-n216'
-         all_colors(m)='violetred'
-         all_symbols(m)=2
-         all_styles(m)=0
-         days=[300,449]
-         ndays_per_year=360
-      END
-      4 : BEGIN
-         nao_file='/group_workspaces/jasmin2/klingaman/metum/xihvu/metum-goml1_fwn216-1p5.jan-dec_dmeans_ts.years1-28.nao_index_goml1-1p5.nc'
-         ntime=LONG(28)*LONG(360)
-         mjo_filee='/group_workspaces/jasmin/futureweather/xihvu/rmm_indices.nc'
-         mjo_offset=0
-         all_names(m)='goml1-n216-1p5F'
+         all_names(m)='ga3-clim-n96-1p5'
          all_colors(m)='violetred'
          all_symbols(m)=2
          all_styles(m)=0
@@ -157,15 +144,14 @@ FOR m=0,nmodels-1 DO BEGIN
       naop_bymjo(m,p,*)=naop_bymjo(m,p,*)/FLOAT(total_phase(p))/FLOAT(naop_prob)
       naon_bymjo(m,p,*)=naon_bymjo(m,p,*)/FLOAT(total_phase(p))/FLOAT(naon_prob)
    ENDFOR
-   
     
-   psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_mjo_probabilities.'+all_names(m)+'_naop_thresh'+STRMID(STRTRIM(STRING(nao_thresh),1),0,3)+'.ps'
+   psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_mjo_probabilities_n96ent.'+all_names(m)+'_naop_thresh'+STRMID(STRTRIM(STRING(nao_thresh),1),0,3)+'.ps'
    PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1500,XPLOTS=2,YPLOTS=4,YSPACING=1500
    phase=[0,4,3,2,1,8,7,6,5]
    FOR i=1,8 DO BEGIN
       print,phase(i),(i-1)/4+1,((i-1) MOD 4)+1
       POS,XPOS=(i-1)/4+1,YPOS=((i-1) MOD 4)+1
-      GSET,XMIN=0,XMAX=nlags,YMIN=0.4,YMAX=2.50,/YLOG
+      GSET,XMIN=0,XMAX=nlags,YMIN=0.4,YMAX=1.0/0.4,/YLOG
       HIST,X=indgen(nlags)+0.5,Y=REFORM(naop_bymjo(m,phase(i),*))-1,FILLCOL=FSC_COLOR(phase_colors(phase(i))),/NOBORDER,OFFSET=1
       GPLOT,X=0.5,Y=0.75,TEXT='RMM phase '+STRTRIM(STRING(phase(i)),1),ALIGN=0.0
       GPLOT,X=[0,nlags],Y=[1,1],STYLE=1
@@ -178,13 +164,13 @@ FOR m=0,nmodels-1 DO BEGIN
    ENDFOR
    PSCLOSE,/NOVIEW
 
-   psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_mjo_probabilities.'+all_names(m)+'_naon_thresh'+STRMID(STRTRIM(STRING(nao_thresh),1),0,3)+'.ps'
+   psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_mjo_probabilities_n96ent.'+all_names(m)+'_naon_thresh'+STRMID(STRTRIM(STRING(nao_thresh),1),0,3)+'.ps'
    PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1500,XPLOTS=2,YPLOTS=4,YSPACING=1500
    phase=[0,4,3,2,1,8,7,6,5]
    FOR i=1,8 DO BEGIN
       print,phase(i),(i-1)/4+1,((i-1) MOD 4)+1
       POS,XPOS=(i-1)/4+1,YPOS=((i-1) MOD 4)+1
-      GSET,XMIN=0,XMAX=nlags,YMIN=0.4,YMAX=2.50,/YLOG
+      GSET,XMIN=0,XMAX=nlags,YMIN=0.4,YMAX=1.0/0.4,/YLOG
       HIST,X=indgen(nlags)+0.5,Y=REFORM(naon_bymjo(m,phase(i),*))-1,FILLCOL=FSC_COLOR(phase_colors(phase(i))),/NOBORDER,OFFSET=1
       GPLOT,X=0.5,Y=0.75,TEXT='RMM phase '+STRTRIM(STRING(phase(i)),1),ALIGN=0.0
       GPLOT,X=[0,nlags],Y=[1,1],STYLE=1

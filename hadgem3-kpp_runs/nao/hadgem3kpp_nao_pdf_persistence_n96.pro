@@ -1,4 +1,4 @@
-PRO hadgem3kpp_nao_pdf_persistence
+PRO hadgem3kpp_nao_pdf_persistence_n96
 
 nmodels=4
 
@@ -22,7 +22,7 @@ all_mynyears=intarr(nmodels)
 efold_thirds=fltarr(nmodels,4)
 plev_thirds=fltarr(nmodels,4)
 
-decorr_bins=[3,6,9,12,15,18,21,24,27,30]
+decorr_bins=[4,6,8,10,12,14,16,18]
 ;decorr_bins=[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30]
 ndecorr_bins=N_ELEMENTS(decorr_bins)
 decorr_hist=fltarr(nmodels,ndecorr_bins+1)
@@ -32,17 +32,16 @@ nao_bins=[-1.7,-1.5,-1.3,-1.1,-0.9,-0.7,-0.5,-0.3,-0.1,0.1,0.3,0.5,0.7,0.9,1.1,1
 nnao_bins=N_ELEMENTS(nao_bins)
 nao_pdf=fltarr(nmodels,nnao_bins+1)
 
+;length_bins=[3,6,9,12,15,18,21,24]
 length_bins=[4,6,8,10,12,14,16,18]
 nlength_bins=N_ELEMENTS(length_bins)
 low_pdf=fltarr(nmodels,nlength_bins+1)
 high_pdf=fltarr(nmodels,nlength_bins+1)
 
-futweat='/group_workspaces/jasmin/futureweather'
-
 FOR m=0,nmodels-1 DO BEGIN
    CASE m OF            
       0 : BEGIN
-         nao_file='/home/users/npklingaman/datasets/ERA-INTERIM/MSL/ERA-Interim.jan-dec_dmeans_ts.1979-2013.nao_index_n216.nc'
+         nao_file='/home/users/npklingaman/datasets/ERA-INTERIM/MSL/ERA-Interim.jan-dec_dmeans_ts.1979-2013.nao_index_n96.nc'
          ntime=35*365
          offset=0
          all_names(m)='ERA-Int'
@@ -52,20 +51,9 @@ FOR m=0,nmodels-1 DO BEGIN
          days=[334,424]
          ndays_per_year=365
       END
-      ;1 : BEGIN         
-      ;   nao_file='/home/users/npklingaman/datasets/20THC_REANALYSIS/every_member/mslp/20thc_reanalysis_member1.jan-dec_dmeans_ts.1871-2008.nao_index_20CR.nc'       
-      ;   ntime=LONG(50404)
-      ;   offset=0
-      ;   all_names(m)='20CR'
-      ;   all_colors(m)='darkgrey'
-      ;   all_symbols(m)=5
-      ;   all_styles(m)=0
-      ;   days=[334,424]
-      ;   ndays_per_year=365
-      ;END
       1 : BEGIN
-         nao_file=futweat+'/xjhwb/metum-goml1_fwn216.jan-dec_dmeans_ts.years1-100.nao_index_goml.nc'
-         ntime=LONG(100)*LONG(360)
+         nao_file='/group_workspaces/jasmin/futureweather/xihvi/hadgem3kpp_fwgbl_1.0xentrain_ga30_n96.jan-dec_dmeans_ts.years1-75.nao_index_goml.nc'
+         ntime=LONG(75)*LONG(360)
          offset=0
          all_names(m)='GOML1'
          all_colors(m)='purple'         
@@ -76,24 +64,40 @@ FOR m=0,nmodels-1 DO BEGIN
          a=REPLICATE(1,nlags)
       END
       2 : BEGIN
-         nao_file=futweat+'/xjhwe/metum-ga3_fwn216-31day.jan-dec_dmeans_ts.years1-100.nao_index_ga3-31d.nc'
-         ntime=LONG(100)*LONG(360)
+         nao_file='/group_workspaces/jasmin/futureweather/xihvi/hadgem3a_kppfwgbl31day_1.0xentrain_ga30_n96.jan-dec_dmeans_ts.years1-75.nao_index_ga3-31d.nc'
+         ntime=LONG(75)*LONG(360)
          offset=0
          all_names(m)='GA3-31d'
-         all_colors(m)='red'
-         all_symbols(m)=3
-         all_styles(m)=0
-         days=[330,420]  
-      END
-      3 : BEGIN
-         nao_file=futweat+'/xjhwh/metum-ga3_fwn216-clim.jan-dec_dmeans_ts.years1-100.nao_index_ga3-clim.nc'
-         ntime=LONG(100)*LONG(360)
-         offset=0
-         all_names(m)='GA3-clim'
-         all_colors(m)='blue'
-         all_symbols(m)=6
+         all_colors(m)='red'         
+         all_symbols(m)=4
          all_styles(m)=0
          days=[330,420]
+         ndays_per_year=360   
+         a=REPLICATE(1,nlags)
+      END
+      3 : BEGIN
+         nao_file='/group_workspaces/jasmin/futureweather/xihvi/hadgem3a_kppfwgblclim_1.0xentrain_ga30_n96.jan-dec_dmeans_ts.years1-75.nao_index_ga3-clim.nc'
+         ntime=LONG(75)*LONG(360)
+         offset=0
+         all_names(m)='GA3-clim'
+         all_colors(m)='blue'         
+         all_symbols(m)=4
+         all_styles(m)=0
+         days=[330,420]
+         ndays_per_year=360   
+         a=REPLICATE(1,nlags)
+      END
+      4 : BEGIN
+         nao_file='/group_workspaces/jasmin2/klingaman/metum/xihvp/hadgem3kpp_fwgbl_1.5xentrain_ga30_n96.jan-dec_dmeans_ts.years1-72.nao_index.nc'
+         ntime=LONG(72)*LONG(360)
+         offset=0
+         all_names(m)='GOML1-1.5F'
+         all_colors(m)='violetred'         
+         all_symbols(m)=4
+         all_styles(m)=0
+         days=[330,420]
+         ndays_per_year=360   
+         a=REPLICATE(1,nlags)
       END
    ENDCASE
 
@@ -163,7 +167,7 @@ FOR m=0,nmodels-1 DO BEGIN
 
 ENDFOR
 
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence.nao_pdf_djf.ps'
+psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence_n96.nao_pdf_djf.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1500,SPACE2=100,SPACE3=200,TFONT=6,TCHARSIZE=110
 GSET,XMIN=0,XMAX=nnao_bins+1,YMIN=0.,YMAX=0.10,TITLE='PDF of DJF daily NAO index'
 labels=strarr(nnao_bins+2)
@@ -173,7 +177,7 @@ FOR i=0,nnao_bins-1 DO BEGIN
    ENDIF ELSE $
       labels(i+1)=STRMID(STRTRIM(STRING(nao_bins(i)),1),0,3)
 ENDFOR
-labels(0)='<'+STRMID(STRTRIM(STRING(nao_bins(0)),1),0,4)
+labels(0)='<'+STRMID(STRTRIM(STRING(nao_bins(0)),1),0,3)
 labels(nnao_bins+1)='>'+STRMID(STRTRIM(STRING(nao_bins(nnao_bins-1)),1),0,3)
 FOR m=0,nmodels-1 DO $
    GPLOT,X=indgen(nnao_bins+2)+0.5,Y=REFORM(nao_pdf(m,*)),COL=FSC_COLOR(all_colors(m)),SYM=all_symbols(m)
@@ -183,7 +187,7 @@ AXES,XVALS=indgen(nnao_bins+2),XLABELS=labels,$
      YSTEP=0.01,YMINOR=0.005,XTITLE='NAO index (standardized)',YTITLE='Probability',NDECS=2
 PSCLOSE,/NOVIEW
 
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence.nao_persistence_0p5_low_npy.ps'
+psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence_n96.nao_persistence_0p5_low_npy.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1700,SPACE2=100,SPACE3=200,TFONT=6,TCHARSIZE=110
 GSET,XMIN=0,XMAX=nlength_bins+1,YMIN=0.,YMAX=2.61,TITLE='Length of spells of NAO < -0.5*stddev'
 labels=strarr(nlength_bins+2)
@@ -202,7 +206,7 @@ AXES,XVALS=indgen(nlength_bins+2),XLABELS=labels,$
      YSTEP=0.2,YMINOR=0.1,XTITLE='Length of spell',YTITLE='Number of events per DJF',NDECS=1
 PSCLOSE,/NOVIEW
 
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence.nao_persistence_0p5_high_npy.ps'
+psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence_n96.nao_persistence_0p5_high_npy.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1700,SPACE2=100,SPACE3=200,TFONT=6,TCHARSIZE=110
 GSET,XMIN=0,XMAX=nlength_bins+1,YMIN=0.,YMAX=2.61,TITLE='Length of spells of NAO > 0.5*stddev'
 labels=strarr(nlength_bins+2)

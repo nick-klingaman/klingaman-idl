@@ -1,6 +1,6 @@
-PRO hadgem3kpp_nao_autocorr_daily
+PRO hadgem3kpp_nao_autocorr_daily_getoml
 
-nmodels=12
+nmodels=15
 all_names=strarr(nmodels)
 all_colors=strarr(nmodels)
 all_symbols=intarr(nmodels)
@@ -27,6 +27,7 @@ ndecorr_bins=N_ELEMENTS(decorr_bins)
 decorr_hist=fltarr(nmodels,ndecorr_bins+1)
 
 futweat='/group_workspaces/jasmin/futureweather'
+npk='/group_workspaces/jasmin2/klingaman/metum'
 
 FOR m=0,nmodels-1 DO BEGIN
    CASE m OF
@@ -50,8 +51,8 @@ FOR m=0,nmodels-1 DO BEGIN
          all_colors(m)='purple'  
          all_symbols(m)=4
          all_styles(m)=2
-         days=[330,420]        
-         a=1+findgen(nlags)*0.01
+         days=[330,420] 
+         a=REPLICATE(1,nlags)+findgen(nlags)*0.01
       END
       2 : BEGIN
          nao_file=futweat+'/xjhwb/metum-goml1_fwn216.jan-dec_dmeans_ts.years1-100.nao_index_goml.nc'
@@ -64,70 +65,104 @@ FOR m=0,nmodels-1 DO BEGIN
          days=[150,240]      
       END  
       3 : BEGIN
-         nao_file=futweat+'/xjhwe/metum-ga3_fwn216-31day.jan-dec_dmeans_ts.years1-100.nao_index_ga3-31d.nc'
-         ntime=LONG(100)*LONG(360)
+         nao_file=npk+'/xlhvf/metum-etoml1_fwn216.jan-dec_dmeans_ts.years1-32.nao_index_etoml1.nc'
+         ntime=LONG(32)*LONG(360)
          offset=0
-         all_names(m)='GA3-31d, Jan-Dec'
-         all_colors(m)='red'
+         all_names(m)='ETOML1, Jan-Dec'
+         all_colors(m)='blue'
          all_symbols(m)=3
          all_styles(m)=0
          days=[0,360]         
       END
       4 : BEGIN
-         nao_file=futweat+'/xjhwe/metum-ga3_fwn216-31day.jan-dec_dmeans_ts.years1-100.nao_index_ga3-31d.nc'
-         ntime=LONG(100)*LONG(360)
+         nao_file=npk+'/xlhvf/metum-etoml1_fwn216.jan-dec_dmeans_ts.years1-32.nao_index_etoml1.nc'
+         ntime=LONG(32)*LONG(360)
          offset=0
-         all_names(m)='GA3-31d, Dec-Feb'
-         all_colors(m)='red'
+         all_names(m)='ETOML1, Dec-Feb'
+         all_colors(m)='blue'
          all_symbols(m)=4
          all_styles(m)=2
          days=[330,420]  
-         a=1+findgen(nlags)*0.02
+         a=REPLICATE(1,nlags)-findgen(nlags)*0.03
       END
       5 : BEGIN
-         nao_file=futweat+'/xjhwe/metum-ga3_fwn216-31day.jan-dec_dmeans_ts.years1-100.nao_index_ga3-31d.nc'
-         ntime=LONG(100)*LONG(360)
+         nao_file=npk+'/xlhvf/metum-etoml1_fwn216.jan-dec_dmeans_ts.years1-32.nao_index_etoml1.nc'
+         ntime=LONG(32)*LONG(360)
          offset=0
-         all_names(m)='GA3-31d, Jun-Aug'
-         all_colors(m)='red'
+         all_names(m)='ETOML1, Jun-Aug'
+         all_colors(m)='blue'
          all_symbols(m)=6
          all_styles(m)=1
          days=[150,240]
-         a=1-findgen(nlags)*0.025
+         a=REPLICATE(1,nlags) ;-findgen(nlags)*0.025
       END
       6 : BEGIN
-         nao_file=futweat+'/xjhwh/metum-ga3_fwn216-clim.jan-dec_dmeans_ts.years1-100.nao_index_ga3-clim.nc'
-         ntime=LONG(100)*LONG(360)
+         nao_file=npk+'/xlhvc/metum-toml1_fwn216.jan-dec_dmeans_ts.years1-32.nao_index_toml1.nc'
+         ntime=LONG(32)*LONG(360)
          offset=0
-         all_names(m)='GA3-clim, Jan-Dec'
-         all_colors(m)='blue'
+         all_names(m)='TOML1, Jan-Dec'
+         all_colors(m)='cyan'
+         all_symbols(m)=3
+         all_styles(m)=0
+         days=[0,360]         
+      END
+      7 : BEGIN
+         nao_file=npk+'/xlhvc/metum-toml1_fwn216.jan-dec_dmeans_ts.years1-32.nao_index_toml1.nc'
+         ntime=LONG(32)*LONG(360)
+         offset=0
+         all_names(m)='TOML1, Dec-Feb'
+         all_colors(m)='cyan'
+         all_symbols(m)=4
+         all_styles(m)=2
+         days=[330,420]  
+         a=REPLICATE(1,nlags) ;+findgen(nlags)*0.01
+      END
+      8 : BEGIN
+         nao_file=npk+'/xlhvc/metum-toml1_fwn216.jan-dec_dmeans_ts.years1-32.nao_index_toml1.nc'
+         ntime=LONG(32)*LONG(360)
+         offset=0
+         all_names(m)='TOML1, Jun-Aug'
+         all_colors(m)='cyan'
+         all_symbols(m)=6
+         all_styles(m)=1
+         days=[150,240]
+         a=REPLICATE(1,nlags) ;-findgen(nlags)*0.025
+      END
+      9 : BEGIN
+         nao_file=npk+'/xihvu/metum-goml1_fwn216-1p5.jan-dec_dmeans_ts.years1-28.nao_index_goml1-1p5.nc'
+         ntime=LONG(28)*LONG(360)
+         offset=0
+         all_names(m)='GOML1-1.5F, Jan-Dec'
+         all_colors(m)='violetred'
          all_symbols(m)=3
          all_styles(m)=0
          days=[0,360]   
          a=REPLICATE(1,nlags)
       END
-      7 : BEGIN
-         nao_file=futweat+'/xjhwh/metum-ga3_fwn216-clim.jan-dec_dmeans_ts.years1-100.nao_index_ga3-clim.nc'
-         ntime=LONG(100)*LONG(360)
+      10 : BEGIN
+         nao_file=npk+'/xihvu/metum-goml1_fwn216-1p5.jan-dec_dmeans_ts.years1-28.nao_index_goml1-1p5.nc'
+         ntime=LONG(28)*LONG(360)
          offset=0
-         all_names(m)='GA3-clim, Dec-Feb'
-         all_colors(m)='blue'
+         all_names(m)='GOML1-1p5, Dec-Feb'
+         all_colors(m)='violetred'
          all_symbols(m)=4
          all_styles(m)=2
          days=[330,420]
+         a=1+findgen(nlags)*0.015
       END
-      8 : BEGIN
-         nao_file=futweat+'/xjhwh/metum-ga3_fwn216-clim.jan-dec_dmeans_ts.years1-100.nao_index_ga3-clim.nc'
-         ntime=LONG(100)*LONG(360)
+      11 : BEGIN
+         nao_file=npk+'/xihvu/metum-goml1_fwn216-1p5.jan-dec_dmeans_ts.years1-28.nao_index_goml1-1p5.nc'
+         ntime=LONG(28)*LONG(360)
          offset=0
-         all_names(m)='GA3-clim, Jun-Aug'
-         all_colors(m)='blue'
+         all_names(m)='GOML1-1p5, Jun-Aug'
+         all_colors(m)='violetred'
          all_symbols(m)=6
          all_styles(m)=1
          days=[150,240]
-         ndays_per_year=360         
+         ndays_per_year=360
+         a=REPLICATE(1,nlags)
       END
-      9 : BEGIN
+      12 : BEGIN
          nao_file='/home/users/npklingaman/datasets/ERA-INTERIM/MSL/ERA-Interim.jan-dec_dmeans_ts.1979-2013.nao_index_n216.nc'
          ntime=35*365
          offset=0
@@ -138,7 +173,7 @@ FOR m=0,nmodels-1 DO BEGIN
          days=[0,365]
          ndays_per_year=365
       END
-      10 : BEGIN
+      13 : BEGIN
          nao_file='/home/users/npklingaman/datasets/ERA-INTERIM/MSL/ERA-Interim.jan-dec_dmeans_ts.1979-2013.nao_index_n216.nc'
          ntime=35*365
          offset=0
@@ -149,7 +184,7 @@ FOR m=0,nmodels-1 DO BEGIN
          days=[334,424]
          ndays_per_year=365
       END
-      11 : BEGIN
+      14 : BEGIN
          nao_file='/home/users/npklingaman/datasets/ERA-INTERIM/MSL/ERA-Interim.jan-dec_dmeans_ts.1979-2013.nao_index_n216.nc'
          ntime=35*365
          offset=0
@@ -271,7 +306,7 @@ FOR m=0,nmodels-1 DO BEGIN
 ENDFOR
 
 ; All seasons together
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily.metum_goml1_n216_owneof.ps'
+psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily_getoml.metum_goml1_n216_owneof.ps'
 PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=140,MARGIN=2000,XSIZE=16000,YSIZE=16000,XOFFSET=1500,YOFFSET=500,SPACE2=100,SPACE3=200
 GSET,XMIN=0,XMAX=MAX(lags),YMIN=-0.1,YMAX=1;,TITLE='Auto-correlation of daily NAO indices'
 FOR m=0,nmodels-1 DO $
@@ -287,7 +322,7 @@ AXES,XSTEP=5,XMINOR=1,YSTEP=0.1,YMINOR=0.05,YTITLE='Correlation',XTITLE='Lag (da
 PSCLOSE,/NOVIEW
 
 ; Just Jan-Dec
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily.metum_goml1_n216_owneof_all.ps'
+psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily_getoml.metum_goml1_n216_owneof_all.ps'
 PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=140,MARGIN=2000,XSIZE=16000,YSIZE=16000,XOFFSET=1500,YOFFSET=500,SPACE2=100,SPACE3=200
 GSET,XMIN=0,XMAX=MAX(lags),YMIN=-0.1,YMAX=1;,TITLE='Auto-correlation of all-season daily NAO indices'
 FOR m=0,nmodels-1,3 DO BEGIN
@@ -331,7 +366,7 @@ AXES,YSTEP=5,YMINOR=1,YTITLE='Lag (days)',XTITLE='E-folding timescale',/ONLYRIGH
 PSCLOSE,/NOVIEW
 
 ; Just DJF
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily.metum_goml1_n216_owneof_djf.ps'
+psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily_getoml.metum_goml1_n216_owneof_djf.ps'
 PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=140,MARGIN=2000,XSIZE=16000,YSIZE=16000,XOFFSET=1500,YOFFSET=500,SPACE2=100,SPACE3=200
 GSET,XMIN=0,XMAX=MAX(lags),YMIN=-0.1,YMAX=1;,TITLE='Auto-correlation of DJF daily NAO indices'
 FOR m=1,nmodels-1,3 DO BEGIN
@@ -375,7 +410,7 @@ AXES,YSTEP=5,YMINOR=1,YTITLE='Lag (days)',XTITLE='E-folding timescale',/ONLYRIGH
 PSCLOSE,/NOVIEW
 
 ; Just JJA
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily.metum_goml1_n216_owneof_jja.ps'
+psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily_getoml.metum_goml1_n216_owneof_jja.ps'
 PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=140,MARGIN=2000,XSIZE=16000,YSIZE=16000,XOFFSET=1500,YOFFSET=500,SPACE2=100,SPACE3=200
 GSET,XMIN=0,XMAX=MAX(lags),YMIN=-0.1,YMAX=1;,TITLE='Auto-correlation of JJA daily NAO indices'
 FOR m=2,nmodels-1,3 DO BEGIN
@@ -415,7 +450,7 @@ AXES,YSTEP=5,YMINOR=1,YTITLE='Lag (days)',XTITLE='E-folding timescale',/ONLYRIGH
 PSCLOSE,/NOVIEW
 
 ; Decorrelation length for DJF
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily.metum_goml1_n216_owneof_djf_decorr.ps'
+psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily_getoml.metum_goml1_n216_owneof_djf_decorr.ps'
 PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=140,MARGIN=2000,XSIZE=16000,YSIZE=16000,XOFFSET=1500,YOFFSET=500,SPACE2=100,SPACE3=200
 GSET,XMIN=0,XMAX=ndecorr_bins+1,YMIN=0,YMAX=0.85 ;,TITLE='Auto-correlation of DJF daily NAO indices'
 FOR m=1,nmodels-1,3 DO $
@@ -427,7 +462,7 @@ AXES,XVALS=indgen(ndecorr_bins+2),XLABELS=['<'+STRTRIM(STRING(decorr_bins(0)),1)
 PSCLOSE,/NOVIEW
 
 ; Decorrelation length for JJA
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily.metum_goml1_n216_owneof_jja_decorr.ps'
+psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily_getoml.metum_goml1_n216_owneof_jja_decorr.ps'
 PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=140,MARGIN=2000,XSIZE=16000,YSIZE=16000,XOFFSET=1500,YOFFSET=500,SPACE2=100,SPACE3=200
 GSET,XMIN=0,XMAX=ndecorr_bins+1,YMIN=0,YMAX=0.85 ;,TITLE='Auto-correlation of DJF daily NAO indices'
 FOR m=2,nmodels-1,3 DO $
@@ -611,7 +646,7 @@ FOR m=0,nmodels-1 DO BEGIN
    allyears_decorr(m,my_nyears:max_nyears-1,*)=!Values.F_NaN
 ENDFOR
 
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily.metum_goml1_n216_eraeof.ps'
+psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily_getoml.metum_goml1_n216_eraeof.ps'
 PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=140,MARGIN=2000,XSIZE=16000,YSIZE=17000,XOFFSET=1500,YOFFSET=500
 GSET,XMIN=0,XMAX=MAX(lags),YMIN=-0.2,YMAX=1
 FOR m=0,nmodels-1 DO $
@@ -790,7 +825,7 @@ FOR m=0,nmodels-1 DO BEGIN
    allyears_decorr(m,my_nyears:max_nyears-1,*)=!Values.F_NaN   
 ENDFOR
 
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily.metum_goml1_n216_gomleof.ps'
+psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_autocorr_daily_getoml.metum_goml1_n216_gomleof.ps'
 PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=140,MARGIN=2000,XSIZE=16000,YSIZE=17000,XOFFSET=1500,YOFFSET=500
 GSET,XMIN=0,XMAX=MAX(lags),YMIN=-0.2,YMAX=1
 FOR m=0,nmodels-1 DO $

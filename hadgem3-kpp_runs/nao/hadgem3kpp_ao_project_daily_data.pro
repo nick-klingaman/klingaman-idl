@@ -1,7 +1,11 @@
 PRO hadgem3kpp_ao_project_daily_data
 
 box=[20,0,88,360]
-nmodels=1
+nmodels=2
+xjhwb='/group_workspaces/jasmin/futureweather/xjhwb'
+xihvp='/group_workspaces/jasmin/futureweather/xihvp'
+xihvx='/group_workspaces/jasmin/futureweather/xihvx'
+xihvy='/group_workspaces/jasmin/futureweather/xihvy'
 
 FOR m=0,nmodels-1 DO BEGIN
    print,m
@@ -27,64 +31,51 @@ FOR m=0,nmodels-1 DO BEGIN
       ;END
      
 
-     ; 0 : BEGIN
-     ;    ao_file='/home/ss901165/um_output6/xihvi/hadgem3a_kppfwgblclim_1.0xentrain_ga30_n96.jan-dec_mmeans_ts.years1-75.ao_eofs.nc'
-     ;    Z_dmean_file='/home/ss901165/um_output6/xihvi/hadgem3a_kppfwgblclim_1.0xentrain_ga30_n96.jan-dec_dmeans_ts.years1-75.Z.nc'
-     ;    outfile='/home/ss901165/um_output6/xihvi/hadgem3a_kppfwgblclim_1.0xentrain_ga30_n96.jan-dec_mmeans_ts.years1-75.ao_index_ga3clim.nc'
-     ;    ntime=75*360
-     ; END
-     ; 1 : BEGIN
-     ;    ao_file='/home/ss901165/um_output6/xihvi/hadgem3kpp_fwgbl_1.0xentrain_ga30_n96.jan-dec_mmeans_ts.years1-75.ao_eofs.nc'
-     ;    Z_dmean_file='/home/ss901165/um_output6/xihvi/hadgem3a_kppfwgblclim_1.0xentrain_ga30_n96.jan-dec_dmeans_ts.years1-75.Z.nc'
-     ;    outfile='/home/ss901165/um_output6/xihvi/hadgem3a_kppfwgblclim_1.0xentrain_ga30_n96.jan-dec_mmeans_ts.years1-75.ao_index_goml.nc'
-     ;    ntime=75*360
-     ; END
+      ;0 : BEGIN
+      ;   ao_file=xjhwb+'/hadgem3kpp_nrglobal_n216.jan-dec_mmean_clim.years1-66.ao_eofs.nc'
+      ;   Z_dmean_file=xjhwb+'/hadgem3kpp_nrglobal_n216.jan-dec_dmeans_ts.years1-66.Z.nc'
+      ;   outfile=xjhwb+'/hadgem3kpp_nrglobal_n216.jan-dec_dmeans_ts.years1-66.ao_index.nc'
+      ;   ntime=66*360
+      ;END
+      ;1 : BEGIN
+      ;   ao_file=xjhwb+'/hadgem3a_kppnrglobalsmooth31_n216.jan-dec_mmean_clim.years1-66.ao_eofs.nc'
+      ;   Z_dmean_file=xjhwb+'/hadgem3a_kppnrglobalsmooth31_n216.jan-dec_dmeans_ts.years1-66.Z.nc'
+      ;   outfile=xjhwb+'/hadgem3a_kppnrglobalsmooth31_n216.jan-dec_dmeans_ts.years1-66.ao_index.nc'
+      ;   ntime=66*360
+      ;END
+      ;2 : BEGIN
+      ;   ao_file=xjhwb+'/hadgem3a_kppnrglobalclim_n216.jan-dec_mmean_clim.years1-66.ao_eofs.nc'
+      ;   Z_dmean_file=xjhwb+'/hadgem3a_kppnrglobalclim_n216.jan-dec_dmeans_ts.years1-66.Z.nc'
+      ;   outfile=xjhwb+'/hadgem3a_kppnrglobalclim_n216.jan-dec_dmeans_ts.years1-66.ao_index.nc'
+      ;   ntime=66*360
+      ;END
 
-     ; 0 : BEGIN
-     ;    ao_file='/home/ss901165/datasets/ERA-INTERIM/Z/ERA_interim.jan-dec_mmeans.1979-2013.ao_eofs.n96.nc'
-     ;    Z_dmean_file='/home/ss901165/datasets/ERA-INTERIM/Z/ERA_interim.jan-dec_dmeans_ts.1979-2013.Z.nh_domain.n96.nc'
-     ;    outfile='/home/ss901165/datasets/ERA-INTERIM/Z/ERA_interim.jan-dec_dmeans_ts.1979-2013.ao_index_eraint_n96.nc'
-     ;    ntime=35*365
-     ;    ndpy=365
-     ; END
-     ; 1 : BEGIN
-     ;    ao_file='/home/ss901165/um_output6/xihvi/hadgem3kpp_fwgbl_1.0xentrain_ga30_n96.jan-dec_mmeans_ts.years1-75.ao_eofs.nc'
-     ;    Z_dmean_file='/home/ss901165/datasets/ERA-INTERIM/Z/ERA_interim.jan-dec_dmeans_ts.1979-2013.Z.nh_domain.n96.nc'
-     ;    outfile='/home/ss901165/datasets/ERA-INTERIM/Z/ERA_interim.jan-dec_dmeans_ts.1979-2013.ao_index_goml_n96.nc'
-     ;    ntime=35*365
-     ;    ndpy=365
-     ; END
-
-     ; 0 : BEGIN
-     ;    ao_file='/home/ss901165/um_output6/xihvd/hadgem3kpp_1.5xentrain_ga30_50N50S.jan-dec_mmeans_clim.years1-29.ao_eofs.nc'
-     ;    Z_dmean_file='/home/ss901165/um_output6/xihvd/hadgem3kpp_1.5xentrain_ga30_50N50S.jan-dec_dmeans_ts.years1-29.Z.nc'
-     ;    outfile='/home/ss901165/um_output6/xihvd/hadgem3kpp_1.5xentrain_ga30_50N50S.jan-dec_dmeans_ts.years1-29.ao_index_goml_1p5-50NS.nc'
-     ;    ntime=29*360
-     ;    ndpy=360
-     ; END
-     ; 1 : BEGIN
-     ;    ao_file='/home/ss901165/um_output6/xihvi/hadgem3kpp_fwgbl_1.0xentrain_ga30_n96.jan-dec_mmeans_ts.years1-75.ao_eofs.nc'
-     ;    Z_dmean_file='/home/ss901165/um_output6/xihvd/hadgem3kpp_1.5xentrain_ga30_50N50S.jan-dec_dmeans_ts.years1-29.Z.nc'
-     ;    outfile='/home/ss901165/um_output6/xihvd/hadgem3kpp_1.5xentrain_ga30_50N50S.jan-dec_dmeans_ts.years1-29.ao_index_goml.nc'
-     ;    ntime=29*360
-     ;    ndpy=360
-     ; END
-     ; 2 : BEGIN
-     ;    ao_file='/home/ss901165/datasets/ERA-INTERIM/Z/ERA_interim.jan-dec_mmeans.1979-2013.ao_eofs.n96.nc'
-     ;    Z_dmean_file='/home/ss901165/um_output6/xihvd/hadgem3kpp_1.5xentrain_ga30_50N50S.jan-dec_dmeans_ts.years1-29.Z.nc'
-     ;    outfile='/home/ss901165/um_output6/xihvd/hadgem3kpp_1.5xentrain_ga30_50N50S.jan-dec_dmeans_ts.years1-29.ao_index_eraint.nc'
-     ;    ntime=29*360
-     ;    ndpy=360
-     ; END
-      
+;      0 : BEGIN
+;         ao_file=xihvp+'/hadgem3kpp_fwgbl_1.5xentrain_ga30_n96.jan-dec_mmean_clim.years1-72.ao_eofs.nc'
+;         Z_dmean_file=xihvp+'/hadgem3kpp_fwgbl_1.5xentrain_ga30_n96.jan-dec_dmeans_ts.years1-72.Z.nc'
+;         outfile=xihvp+'/hadgem3kpp_fwgbl_1.5xentrain_ga30_n96.jan-dec_dmeans_ts.years1-72.ao_index_goml_1p5.nc'
+;         ntime=72*360
+;      END
+;      1 : BEGIN
+;         ao_file='/home/ss901165/um_output6/xihvi/hadgem3kpp_fwgbl_1.0xentrain_ga30_n96.jan-dec_mmeans_ts.years1-75.ao_eofs.nc'
+;         Z_dmean_file=xihvp+'/hadgem3kpp_fwgbl_1.5xentrain_ga30_n96.jan-dec_dmeans_ts.years1-72.Z.nc'
+;         outfile=xihvp+'/hadgem3kpp_fwgbl_1.5xentrain_ga30_n96.jan-dec_dmeans_ts.years1-72.ao_index_goml.nc'
+;         ntime=72*360
+;      END
 
       0 : BEGIN
-         ao_file='/home/ss901165/datasets/ERA-INTERIM/Z/ERA_interim.jan-dec_mmeans.1979-2013.ao_eofs.n216.nc'
-         Z_dmean_file='/home/ss901165/datasets/ERA-INTERIM/Z/ERA_interim.jan-dec_dmeans_ts.1979-2013.Z.nh_domain.n216.nc'
-         outfile='/home/ss901165/datasets/ERA-INTERIM/Z/ERA_interim.jan-dec_dmeans_ts.1979-2013.ao_index_eraint_n216.nc'
-         ntime=35*365
-         ndpy=365
+         ao_file='/home/users/npklingaman/futureweather/xihvx/hadgem3a_kpp50N50Ssmooth31_1.5xentrain_ga30.jan-dec_mmean_clim.years1-29.ao_eofs.nc'
+         Z_dmean_file='/home/users/npklingaman/futureweather/xihvx/hadgem3a_kpp50N50Ssmooth31_1.5xentrain_ga30.jan-dec_dmeans_ts.years1-29.Z.nc'
+         outfile='/home/users/npklingaman/futureweather/xihvx/hadgem3a_kpp50N50Ssmooth31_1.5xentrain_ga30.jan-dec_dmeans_ts.years1-29.ao_index_ga3-50NS-31d.nc'
+         ntime=29*360
       END
+      1 : BEGIN
+         ao_file='/home/users/npklingaman/futureweather/xihvy/hadgem3a_kpp50N50Ssmooth15_1.5xentrain_ga30.jan-dec_mmean_clim.years1-29.ao_eofs.nc'
+         Z_dmean_file='/home/users/npklingaman/futureweather/xihvy/hadgem3a_kpp50N50Ssmooth15_1.5xentrain_ga30.jan-dec_dmeans_ts.years1-29.Z.nc'
+         outfile='/home/users/npklingaman/futureweather/xihvy/hadgem3a_kpp50N50Ssmooth15_1.5xentrain_ga30.jan-dec_dmeans_ts.years1-29.ao_index_ga3-50NS-15d.nc'
+         ntime=29*360
+      END
+
 
       ; 1 : BEGIN
       ;    nao_file='/home/ss901165/um_output6/cvdp_output/fwgbl_n96/MetUM-GA3_N96_GOML1_31-day_SST.cvdp_data.1992-2066.nc'
@@ -283,7 +274,10 @@ FOR m=0,nmodels-1 DO BEGIN
    nlon=N_ELEMENTS(lon)
    nlev=N_ELEMENTS(lev)
    
-   ao_pattern=OPEN_AND_EXTRACT(ao_file,'ao_eofs',offset=[box_tx(1),box_tx(0),0],$
+   offset=[box_tx(1),box_tx(0),0]
+
+   ao_pattern=OPEN_AND_EXTRACT(ao_file,'ao_eofs',$
+                               offset=[box_tx(1),box_tx(0),0],$
                                count=[nlon,nlat,nlev])
    ao_daily=fltarr(nlev,ntime)
 
@@ -291,13 +285,18 @@ FOR m=0,nmodels-1 DO BEGIN
       print,'---> ',p
       oned_pattern=REFORM(ao_pattern(*,*,p),[nlon*nlat])
                                 ; Read daily Z from model
-      Z_dmean=REFORM(OPEN_AND_EXTRACT(Z_dmean_file,'Z',$
+      ;Z_dmean=REFORM(OPEN_AND_EXTRACT(Z_dmean_file,'geopotential_height',$
+      ;                                offset=[box_tx(1),box_tx(0),p,0],$
+      ;                                count=[nlon,nlat,1,ntime]))
+      
+      Z_dmean=REFORM(OPEN_AND_EXTRACT(Z_dmean_file,'ht',$
                                       offset=[box_tx(1),box_tx(0),p,0],$
                                       count=[nlon,nlat,1,ntime]))
+      
       FOR i=0,nlon-1 DO $
          FOR j=0,nlat-1 DO $
-            FOR k=0,ndpy-1 DO $
-               Z_dmean(i,j,k:ntime-1:ndpy)=Z_dmean(i,j,k:ntime-1:ndpy)-MEAN(Z_dmean(i,j,k:ntime-1:ndpy))
+            FOR k=0,359 DO $
+               Z_dmean(i,j,k:ntime-1:360)=Z_dmean(i,j,k:ntime-1:360)-MEAN(Z_dmean(i,j,k:ntime-1:360))
                                 ; Compute projection onto pattern
       FOR k=0,ntime-1 DO BEGIN
          oned_today=REFORM(Z_dmean(*,*,k),[nlon*nlat])
@@ -312,8 +311,7 @@ FOR m=0,nmodels-1 DO BEGIN
    tvarid=NCDF_VARDEF(id,'time',[tdimid])
    avarid=NCDF_VARDEF(id,'ao_index',[pdimid,tdimid])   
    NCDF_CONTROL,id,/ENDEF
-;   plevs=[1000,975,950,925,900,850,800,750,700,650,600,550,500,450,400,350,300,250,200,150,100,50,30,10,5,1]
-   plevs=[1000,975,950,925,900,875,850,825,800,750,700,650,600,550,500,450,400,350,300,250,200,150,100,50]
+   plevs=[1000,975,950,925,900,850,800,750,700,650,600,550,500,450,400,350,300,250,200,150,100,50,30,10,5,1]
    NCDF_VARPUT,id,pvarid,plevs
    NCDF_VARPUT,id,tvarid,findgen(ntime)+0.5
    NCDF_VARPUT,id,avarid,ao_daily
