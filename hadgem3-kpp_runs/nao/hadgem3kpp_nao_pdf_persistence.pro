@@ -1,0 +1,224 @@
+PRO hadgem3kpp_nao_pdf_persistence
+
+nmodels=5
+
+all_names=strarr(nmodels)
+all_colors=strarr(nmodels)
+all_symbols=intarr(nmodels)
+all_styles=intarr(nmodels)
+lags=indgen(31)
+nlags=N_ELEMENTS(lags)
+autocorr=fltarr(nmodels,nlags)
+autocorr_thirds=fltarr(nmodels,nlags,3)
+test_autocorr=fltarr(nmodels,nlags)
+
+max_nyears=150
+allyears_autocorr=fltarr(nmodels,max_nyears,nlags)
+allyears_meannao=fltarr(nmodels,max_nyears)
+allyears_decorr=fltarr(nmodels,max_nyears)
+allyears_autocorr_season=fltarr(nmodels,max_nyears,nlags)
+
+all_mynyears=intarr(nmodels)
+efold_thirds=fltarr(nmodels,4)
+plev_thirds=fltarr(nmodels,4)
+
+decorr_bins=[3,6,9,12,15,18,21,24,27,30]
+;decorr_bins=[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30]
+ndecorr_bins=N_ELEMENTS(decorr_bins)
+decorr_hist=fltarr(nmodels,ndecorr_bins+1)
+
+;nao_bins=[-2.6,-2.2,-1.8,-1.4,-1.0,-0.6,-0.2,0.2,0.6,1.0,1.4,1.8,2.2,2.6]
+nao_bins=[-1.7,-1.5,-1.3,-1.1,-0.9,-0.7,-0.5,-0.3,-0.1,0.1,0.3,0.5,0.7,0.9,1.1,1.3,1.5,1.7]
+nnao_bins=N_ELEMENTS(nao_bins)
+nao_pdf=fltarr(nmodels,nnao_bins+1)
+
+length_bins=[3,6,9,12,15,18,21,24]
+nlength_bins=N_ELEMENTS(length_bins)
+low_pdf=fltarr(nmodels,nlength_bins+1)
+high_pdf=fltarr(nmodels,nlength_bins+1)
+
+FOR m=0,nmodels-1 DO BEGIN
+   CASE m OF            
+      0 : BEGIN
+         nao_file='/home/ss901165/datasets/ERA-INTERIM/MSL/ERA-Interim.jan-dec_dmeans_ts.1979-2013.nao_index_n216.nc'
+         ntime=35*365
+         offset=0
+         all_names(m)='ERA-Int'
+         all_colors(m)='black'
+         all_symbols(m)=2
+         all_styles(m)=0
+         days=[334,424]
+         ndays_per_year=365
+      END
+      1 : BEGIN         
+         nao_file='/home/ss901165/datasets/20THC_REANALYSIS/every_member/mslp/20thc_reanalysis_member1.jan-dec_dmeans_ts.1871-2008.nao_index_20CR.nc'       
+         ntime=LONG(50404)
+         offset=0
+         all_names(m)='20CR'
+         all_colors(m)='darkgrey'
+         all_symbols(m)=5
+         all_styles(m)=0
+         days=[334,424]
+         ndays_per_year=365
+      END
+      2 : BEGIN
+         nao_file='/home/ss901165/um_output6/xjhwb/hadgem3kpp_nrglobal_n216.jan-dec_dmeans_ts.years1-106.nao_index_goml.nc'
+         ntime=LONG(106)*LONG(360)
+         offset=0
+         all_names(m)='GOML1'
+         all_colors(m)='purple'         
+         all_symbols(m)=4
+         all_styles(m)=0
+         days=[330,420]
+         ndays_per_year=360   
+         a=REPLICATE(1,nlags)
+      END
+      3 : BEGIN
+         nao_file='/home/ss901165/um_output6/xjhwe/hadgem3a_kppnrglobalsmooth31_n216.jan-dec_dmeans_ts.years1-66.nao_index_ga3-31day.nc'
+         ntime=66*360
+         offset=0
+         all_names(m)='GA3-31d'
+         all_colors(m)='red'
+         all_symbols(m)=3
+         all_styles(m)=0
+         days=[330,420]  
+      END
+      4 : BEGIN
+         nao_file='/home/ss901165/um_output6/xjhwh/hadgem3a_nrglobal_n216.jan-dec_dmeans_ts.years1-66.nao_index_ga3-clim.nc'
+         ntime=66*360
+         offset=0
+         all_names(m)='GA3-clim'
+         all_colors(m)='blue'
+         all_symbols(m)=6
+         all_styles(m)=0
+         days=[330,420]
+      END
+   ENDCASE
+
+   nao_index=OPEN_AND_EXTRACT(nao_file,'nao_index',offset=[offset],count=[ntime])
+   nyears=ntime/ndays_per_year
+   ndpy=days(1)-days(0)
+
+   IF days(1) le 360 THEN BEGIN
+      my_nyears=nyears
+   ENDIF ELSE $
+      my_nyears=nyears-1
+   all_mynyears(m)=my_nyears
+   
+   nao_index_subset=fltarr(ndpy)
+   nao_index_allyears=fltarr(ndpy*my_nyears)
+   FOR i=0,my_nyears-1 DO BEGIN
+      nao_index_subset(*)=nao_index(LONG(i)*LONG(ndays_per_year)+LONG(days(0)):LONG(i)*LONG(ndays_per_year)+LONG(days(1))-LONG(1))
+      nao_index_allyears(LONG(i)*LONG(ndpy):LONG((i+1))*LONG(ndpy)-LONG(1))=nao_index_subset
+      allyears_autocorr(m,i,*)=A_CORRELATE(nao_index_subset,lags)
+      allyears_meannao(m,i)=MEAN(nao_index_subset)     
+   ENDFOR
+   nao_index_allyears=nao_index_allyears-MEAN(nao_index_allyears)
+   nao_index_allyears=nao_index_allyears/STDDEV(nao_index_allyears)
+
+   FOR i=0,nnao_bins-2 DO $
+      nao_pdf(m,i+1)=N_ELEMENTS(where(nao_index_allyears gt nao_bins(i) and nao_index_allyears le nao_bins(i+1)))
+   nao_pdf(m,0)=N_ELEMENTS(where(nao_index_allyears le nao_bins(0)))
+   nao_pdf(m,nnao_bins)=N_ELEMENTS(where(nao_index_allyears gt nao_bins(nnao_bins-1)))
+   nao_pdf(m,*)=nao_pdf(m,*)/TOTAL(nao_pdf(m,*))
+ 
+   low_spell_length=[0]
+   high_spell_length=[0]
+   low=0
+   high=0
+   FOR i=0,ndpy*my_nyears-1 DO BEGIN
+      IF nao_index_allyears(i) le -0.5 THEN BEGIN
+         low=low+1
+      ENDIF ELSE IF nao_index_allyears(i) ge 0.5 THEN BEGIN
+         high=high+1
+      ENDIF ELSE BEGIN
+         IF low gt 0 THEN $
+            low_spell_length=[low_spell_length,low]
+         IF high gt 0 THEN $
+            high_spell_length=[high_spell_length,high]
+         low=0
+         high=0
+      ENDELSE
+   ENDFOR
+
+   FOR i=0,nlength_bins-2 DO BEGIN
+      IF TOTAL(where(low_spell_length gt length_bins(i) and low_spell_length le length_bins(i+1))) ge 0 THEN $
+         low_pdf(m,i+1)=N_ELEMENTS(where(low_spell_length gt length_bins(i) and low_spell_length le length_bins(i+1)))
+      IF TOTAL(where(high_spell_length gt length_bins(i) and high_spell_length le length_bins(i+1))) ge 0 THEN $
+         high_pdf(m,i+1)=N_ELEMENTS(where(high_spell_length gt length_bins(i) and high_spell_length le length_bins(i+1)))
+   ENDFOR
+   IF TOTAL(where(low_spell_length lt length_bins(0))) ge 0 THEN $
+      low_pdf(m,0)=N_ELEMENTS(where(low_spell_length lt length_bins(0)))
+   IF TOTAL(where(low_spell_length ge length_bins(nlength_bins-1))) ge 0 THEN $
+      low_pdf(m,nlength_bins)=N_ELEMENTS(where(low_spell_length ge length_bins(nlength_bins-1)))
+   IF TOTAL(where(high_spell_length lt length_bins(0))) ge 0 THEN $
+      high_pdf(m,0)=N_ELEMENTS(where(high_spell_length lt length_bins(0)))
+   IF TOTAL(where(high_spell_length ge length_bins(nlength_bins-1))) ge 0 THEN $
+      high_pdf(m,nlength_bins)=N_ELEMENTS(where(high_spell_length ge length_bins(nlength_bins-1)))     
+   
+   high_pdf(m,*)=high_pdf(m,*)/FLOAT(my_nyears)
+   low_pdf(m,*)=low_pdf(m,*)/FLOAT(my_nyears)
+
+ENDFOR
+
+psfile='/home/ss901165/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence.nao_pdf_djf.ps'
+PSOPEN,file=psfile,FONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1500,SPACE2=100,SPACE3=200,TFONT=6,TCHARSIZE=110
+GSET,XMIN=0,XMAX=nnao_bins+1,YMIN=0.,YMAX=0.10,TITLE='PDF of DJF daily NAO index'
+labels=strarr(nnao_bins+2)
+FOR i=0,nnao_bins-1 DO BEGIN
+   IF nao_bins(i) lt 0 THEN BEGIN
+      labels(i+1)=STRMID(STRTRIM(STRING(nao_bins(i)),1),0,4)
+   ENDIF ELSE $
+      labels(i+1)=STRMID(STRTRIM(STRING(nao_bins(i)),1),0,3)
+ENDFOR
+labels(0)='<'+STRMID(STRTRIM(STRING(nao_bins(0)),1),0,4)
+labels(nnao_bins+1)='>'+STRMID(STRTRIM(STRING(nao_bins(nnao_bins-1)),1),0,3)
+FOR m=0,nmodels-1 DO $
+   GPLOT,X=indgen(nnao_bins+2)+0.5,Y=REFORM(nao_pdf(m,*)),COL=FSC_COLOR(all_colors(m)),SYM=all_symbols(m)
+GPLOT,X=[nnao_bins/2.+0.5,nnao_bins/2.+0.5],Y=[0,0.10],STYLE=1
+GLEGEND,labels=REVERSE(all_names),COL=REVERSE(FSC_COLOR(all_colors)),SYM=REVERSE(all_symbols),LEGPOS=9
+AXES,XVALS=indgen(nnao_bins+2),XLABELS=labels,$
+     YSTEP=0.01,YMINOR=0.005,XTITLE='NAO index (standardized)',YTITLE='Probability',NDECS=2
+PSCLOSE,/NOVIEW
+
+psfile='/home/ss901165/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence.nao_persistence_0p5_low_npy.ps'
+PSOPEN,file=psfile,FONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1700,SPACE2=100,SPACE3=200,TFONT=6,TCHARSIZE=110
+GSET,XMIN=0,XMAX=nlength_bins+1,YMIN=0.,YMAX=2.61,TITLE='Length of spells of NAO < -0.5*stddev'
+labels=strarr(nlength_bins+2)
+FOR i=0,nlength_bins-1 DO BEGIN
+   IF length_bins(i) lt 0 THEN BEGIN
+      labels(i+1)=STRMID(STRTRIM(STRING(length_bins(i)),1),0,4)
+   ENDIF ELSE $
+      labels(i+1)=STRMID(STRTRIM(STRING(length_bins(i)),1),0,3)
+ENDFOR
+labels(0)='<'+STRMID(STRTRIM(STRING(length_bins(0)),1),0,4)
+labels(nlength_bins+1)='>'+STRMID(STRTRIM(STRING(length_bins(nlength_bins-1)),1),0,3)
+FOR m=0,nmodels-1 DO $
+   HIST,X=indgen(nlength_bins+1)+0.25+m*0.12,Y=REFORM(low_pdf(m,*)),FILLCOL=FSC_COLOR(all_colors(m)),WIDTH=70
+GLEGEND,labels=REVERSE(all_names),COL=REVERSE(FSC_COLOR(all_colors)),LEGPOS=9
+AXES,XVALS=indgen(nlength_bins+2),XLABELS=labels,$
+     YSTEP=0.2,YMINOR=0.1,XTITLE='Length of spell',YTITLE='Number of events per DJF',NDECS=1
+PSCLOSE
+
+psfile='/home/ss901165/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence.nao_persistence_0p5_high_npy.ps'
+PSOPEN,file=psfile,FONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1700,SPACE2=100,SPACE3=200,TFONT=6,TCHARSIZE=110
+GSET,XMIN=0,XMAX=nlength_bins+1,YMIN=0.,YMAX=2.61,TITLE='Length of spells of NAO > 0.5*stddev'
+labels=strarr(nlength_bins+2)
+FOR i=0,nlength_bins-1 DO BEGIN
+   IF length_bins(i) lt 0 THEN BEGIN
+      labels(i+1)=STRMID(STRTRIM(STRING(length_bins(i)),1),0,4)
+   ENDIF ELSE $
+      labels(i+1)=STRMID(STRTRIM(STRING(length_bins(i)),1),0,3)
+ENDFOR
+labels(0)='<'+STRMID(STRTRIM(STRING(length_bins(0)),1),0,4)
+labels(nlength_bins+1)='>'+STRMID(STRTRIM(STRING(length_bins(nlength_bins-1)),1),0,3)
+FOR m=0,nmodels-1 DO $
+   HIST,X=indgen(nlength_bins+1)+0.25+m*0.12,Y=REFORM(high_pdf(m,*)),FILLCOL=FSC_COLOR(all_colors(m)),WIDTH=70
+GLEGEND,labels=REVERSE(all_names),COL=REVERSE(FSC_COLOR(all_colors)),LEGPOS=9
+AXES,XVALS=indgen(nlength_bins+2),XLABELS=labels,$
+     YSTEP=0.2,YMINOR=0.1,XTITLE='Length of spell',YTITLE='Number of events per DJF',NDECS=1
+PSCLOSE
+
+
+STOP
+END

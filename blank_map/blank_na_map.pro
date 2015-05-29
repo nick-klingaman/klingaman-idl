@@ -1,0 +1,12 @@
+PRO blank_na_map
+
+; Make a blank map of the North Atlantic
+
+PSOPEN,file='blank_atlantic_map.ps',FONT=2,MARGIN=1200,XOFFSET=200,YOFFSET=500
+MAP,LONMIN=-110,LONMAX=40,LATMIN=20,LATMAX=80,/DRAW,/HIRES
+AXES,XSTEP=20,XMINOR=10,YSTEP=10,YMINOR=5
+PSCLOSE
+
+STOP
+
+END
