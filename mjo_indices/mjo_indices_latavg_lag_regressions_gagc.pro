@@ -1,6 +1,6 @@
 PRO mjo_indices_latavg_lag_regressions_gagc
 
-n_models=1
+n_models=2
 um6='/home/ss901165/um_output6'
 um3='/home/ss901165/um_output3/hadgem3_monwg'
 
@@ -15,6 +15,8 @@ mylevs=['-0.75','-0.65','-0.55','-0.45','-0.35','-0.25','-0.15','-0.05',$
 FOR i=0,n_models-1 DO BEGIN
    print,i
    CASE i OF
+      0 : BEGIN
+         
       2: BEGIN
          infile=um3+'/aliur/hadgem3a_amip_n96_ga40_aliur.jan-dec_dmeans_anom-3harm_filter2080.1982-2008.precip.2.5x2.5.nc'
          varname='precip'

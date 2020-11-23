@@ -1,0 +1,11 @@
+PRO ex25
+d=NCREAD('gdata.nc')
+PSOPEN
+CS, SCALE=1, NCOLS=14
+LEVS, MIN=-300, MAX=300, STEP=50
+MAP
+CON, FIELD=d.ht(*,*,0), X=d.lon, Y=d.lat, /NOCOLBAR
+f=FEATURES(FIELD=d.ht(*,*,0), MIN=-100, MAX=200, X=d.lon, Y=d.lat, $
+           THRESHOLD=10, LABEL=0, CHARSIZE=300, COL=1) 	   
+PSCLOSE
+END

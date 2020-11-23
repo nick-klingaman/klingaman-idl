@@ -1,15 +1,15 @@
 PRO hadgem3_monwg_jjas_precip_dailyair
 
-nick_1xentrain_daily_file='/home/ss901165/um_output3/hadgem3a_amip2_control_vn74/hadgem3a_amip2_ctl_vn74.jan-dec_dmeans.years1-77.precip.nc'
-nick_1xentrain_clim_file='/home/ss901165/um_output3/hadgem3a_amip2_control_vn74/hadgem3a_amip2_ctl_vn74.jan-dec_dmean_clim.years1-77.precip.nc'
+;nick_1xentrain_daily_file='/home/ss901165/um_output3/hadgem3a_amip2_control_vn74/hadgem3a_amip2_ctl_vn74.jan-dec_dmeans.years1-77.precip.nc'
+;nick_1xentrain_clim_file='/home/ss901165/um_output3/hadgem3a_amip2_control_vn74/hadgem3a_amip2_ctl_vn74.jan-dec_dmean_clim.years1-77.precip.nc'
+;
+;nick_15xentrain_daily_file='/home/ss901165/um_output3/hadgem3a_amip2_1.5xentrain_vn74/hadgem3a_amip2_1.5xentrain_vn74.jan-dec_dmeans.years1-77.precip.nc'
+;nick_15xentrain_clim_file='/home/ss901165/um_output3/hadgem3a_amip2_1.5xentrain_vn74/hadgem3a_amip2_1.5xentrain_vn74.jan-dec_dmean_clim.years1-77.precip.nc'
 
-nick_15xentrain_daily_file='/home/ss901165/um_output3/hadgem3a_amip2_1.5xentrain_vn74/hadgem3a_amip2_1.5xentrain_vn74.jan-dec_dmeans.years1-77.precip.nc'
-nick_15xentrain_clim_file='/home/ss901165/um_output3/hadgem3a_amip2_1.5xentrain_vn74/hadgem3a_amip2_1.5xentrain_vn74.jan-dec_dmean_clim.years1-77.precip.nc'
+imd_daily_file='/home/users/npklingaman/datasets/IMD_GRIDDED/imd_1x1v2_1951-2004.mjjas.nc'
+imd_clim_file='/home/users/npklingaman/datasets/IMD_GRIDDED/imd_1x1v2_1951-2004_mjjas_daily_clim.nc'
 
-imd_daily_file='/home/ss901165/datasets/IMD_GRIDDED/imd_1x1v2_1951-2004.mjjas.nc'
-imd_clim_file='/home/ss901165/datasets/IMD_GRIDDED/imd_1x1v2_1951-2004_mjjas_daily_clim.nc'
 
-n96_mask_file='/home/ss901165/um_output/mask_n96.nc'
 
 ; Box to area average
 box=[10,70,30,88]
@@ -20,26 +20,29 @@ n_sets=3
 FOR k=0,n_sets-1 DO BEGIN
    CASE k OF
       0 : BEGIN
-         hadgem3_daily_file=nick_1xentrain_daily_file
-         hadgem3_clim_file=nick_1xentrain_clim_file
+         hadgem3_daily_file='/home/users/npklingaman/klingaman/metum/gc2/anqjm/hadgem3_gc2_n96_orca025.jan-dec_dmeans.years1-41.precip.nc'
+         hadgem3_clim_file='/home/users/npklingaman/klingaman/metum/gc2/anqjm/hadgem3_gc2_n96_orca025.jan-dec_dmean_clim.years1-41.precip.nc'
          varname='precip'
          multiplier=86400.
          offset_jun1=150
          offset_sep30=269
-         hadgem3_nyears=77
-         runid='hadgem3a_amip2_1.0xentrain_vn74'
-         description='Nick 1.0x entrain, clim SSTs (77 years)'
+         hadgem3_nyears=41
+         runid='gc2_n96'
+         description='MetUM GC2 N96'
          color='blue'
+         n96_mask_file='/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/landfrac_n96e_hadgem3-8.5.nc'
       END
       1 : BEGIN
-         hadgem3_daily_file=nick_15xentrain_daily_file
-         hadgem3_clim_file=nick_15xentrain_clim_file
+         hadgem3_daily_file='/home/users/npklingaman/klingaman/metum/gc3/u-ab673/mjo/ab673a.jan-dec_dmeans.2013-2112.precip.nc'
+         hadgem3_clim_file='/home/users/npklingaman/klingaman/metum/gc3/u-ab673/mjo/ab673a.jan-dec_dmean_clim.2013-2112.precip.nc'         
+         varname='precipitation_flux'
          offset_jun1=150
          offset_sep30=269
-         hadgem3_nyears=77
-         runid='hadgem3a_amip2_1.5xentrain_vn74'
-         description='Nick 1.5x entrain, clim SSTs (77 years)'
+         hadgem3_nyears=100
+         runid='gc3_n96'
+         description='MetUM GC3 N96'
          color='purple'
+         n96_mask_file='/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/landfrac_n96e_hadgem3-8.5.nc'
       END
       2 : BEGIN
          hadgem3_daily_file=imd_daily_file
@@ -51,7 +54,7 @@ FOR k=0,n_sets-1 DO BEGIN
          hadgem3_nyears=54
          runid='imd_gridded'
          description='IMD 1x1 gridded dataset (1951-2004)'
-         color='black'
+         color='black'         
       END
    ENDCASE
    
@@ -71,8 +74,8 @@ FOR k=0,n_sets-1 DO BEGIN
    
    IF k ne 2 THEN BEGIN
                                 ; Get mask
-      n96_mask=REFORM(OPEN_AND_EXTRACT(n96_mask_file,'lsm',offset=[mask_box_tx(1),mask_box_tx(0),0,0],$
-                                       count=[mask_nlon,mask_nlat,1,1]))
+      n96_mask=REFORM(OPEN_AND_EXTRACT(n96_mask_file,'lsm',offset=[mask_box_tx(1),mask_box_tx(0)],$
+                                       count=[mask_nlon,mask_nlat]))
       n96_mask_rev=fltarr(mask_nlon,mask_nlat)
       FOR i=0,hadgem3_nlon-1 DO $
          FOR j=0,hadgem3_nlat-1 DO $
@@ -171,45 +174,46 @@ FOR k=0,n_sets-1 DO BEGIN
 
    mylevs_prob=['0.01','0.05','0.09','0.13','0.17','0.21','0.25','0.29','0.33','0.37','0.41','0.45','0.49','0.53',$
                 '0.57','0.61','0.65','0.69','0.73']
-   psfile='/home/ss901165/idl/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_dailyair.'+runid+'.day1_trans_prob.ps'
-   PSOPEN,file=psfile,FONT=2,CHARSIZE=100,MARGIN=2000,SPACE2=2000,XOFFSET=800,YOFFSET=2000,TFONT=2,TCHARSIZE=100,SPACE3=300,$
+   psfile='/home/users/npklingaman/plots/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_dailyair.'+runid+'.day1_trans_prob.ps'
+   PSOPEN,file=psfile,FONT=2,CHARSIZE=150,MARGIN=2000,SPACE2=2000,XOFFSET=800,YOFFSET=2000,TFONT=2,TCHARSIZE=100,SPACE3=300,$
           XSIZE=15000,YSIZE=15000,CB_WIDTH=125
    GSET,XMIN=MIN(bins),XMAX=MAX(bins),YMIN=MIN(bins),YMAX=MAX(bins),$
         TITLE='Day +1 transition prob of all-India rain (JJAS) for '+description
    LEVS,MANUAL=mylevs_prob
    CS,SCALE=26,NCOLS=N_ELEMENTS(mylevs_prob)+1,white=[2]
-   CON,X=bins_mid,Y=bins_mid,FIELD=REFORM(trans_prob(k,*,*)),/BLOCK,CB_TITLE='Probability (unitless)',/NOLINES
+   CON,X=bins_mid,Y=bins_mid,FIELD=REFORM(trans_prob(k,*,*)),/BLOCK,CB_TITLE='Probability (unitless)',/NOLINES,CB_NTH=2
    GPLOT,X=[0,MAX(bins)],Y=[0,MAX(bins)],STYLE=1
-   AXES,XVALS=bins,XLABELS=STRMID(STRTRIM(STRING(bins),1),0,4),YVALS=bins,YLABELS=STRMID(STRTRIM(STRING(bins),1),0,4),$
+   AXES,XVALS=bins(0:n_bins-1:2),XLABELS=STRMID(STRTRIM(STRING(bins(0:n_bins-1:2)),1),0,4),$
+        YVALS=bins(0:n_bins-1:2),YLABELS=STRMID(STRTRIM(STRING(bins(0:n_bins-1:2)),1),0,4),$
         YTITLE='All-India rainfall on day n+1 (mm day!U-1!N)',$
         XTITLE='All-India rainfall on day n (mm day!U-1!N)',ORIENTATION=30,/NORIGHT
-   GSET,XMIN=MIN(bins),XMAX=MAX(bins),YMIN=0,YMAX=1800
-   GPLOT,X=bins_mid,Y=REFORM(bin_npts(k,*)),STYLE=2
-   AXES,XVALS=bins,YSTEP=150,YTITLE='Number of points in bin for day n rainfall',/ONLYRIGHT
+   GSET,XMIN=MIN(bins),XMAX=MAX(bins),YMIN=0,YMAX=0.5
+   GPLOT,X=bins_mid,Y=REFORM(bin_npts(k,*))/TOTAL(bin_npts(k,*)),STYLE=2,SYM=3
+   AXES,XVALS=bins(0:n_bins-1:2),YSTEP=0.05,YTITLE='Fraction of points in bin for day n rainfall',/ONLYRIGHT,NDECS=2
    PSCLOSE,/NOVIEW
 
-   psfile='/home/ss901165/idl/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_dailyair.'+runid+'.anom_day1_trans_prob.ps'
-   PSOPEN,file=psfile,FONT=2,CHARSIZE=100,MARGIN=2000,SPACE2=2000,XOFFSET=800,YOFFSET=2000,TFONT=2,TCHARSIZE=100,SPACE3=300,$
+   psfile='/home/users/npklingaman/plots/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_dailyair.'+runid+'.anom_day1_trans_prob.ps'
+   PSOPEN,file=psfile,FONT=2,CHARSIZE=150,MARGIN=2000,SPACE2=2000,XOFFSET=800,YOFFSET=2000,TFONT=2,TCHARSIZE=100,SPACE3=300,$
           XSIZE=15000,YSIZE=15000,CB_WIDTH=125
    GSET,XMIN=MIN(anom_bins),XMAX=MAX(anom_bins),YMIN=MIN(anom_bins),YMAX=MAX(anom_bins),$
         TITLE='Day +1 prob of AIR anom from daily clim for '+description
    LEVS,MANUAL=mylevs_prob
    CS,SCALE=26,NCOLS=N_ELEMENTS(mylevs_prob)+1,white=[2]
-   CON,X=anom_bins_mid,Y=anom_bins_mid,FIELD=REFORM(anom_trans_prob(k,*,*)),/BLOCK,CB_TITLE='Probability (unitless)',/NOLINES
+   CON,X=anom_bins_mid,Y=anom_bins_mid,FIELD=REFORM(anom_trans_prob(k,*,*)),/BLOCK,CB_TITLE='Probability (unitless)',/NOLINES,CB_NTH=2
    GPLOT,X=[MIN(anom_bins),MAX(anom_bins)],Y=[MIN(anom_bins),MAX(anom_bins)],STYLE=1
    GPLOT,X=[0,0],Y=[MIN(anom_bins),MAX(anom_bins)],STYLE=1
    GPLOT,X=[MIN(anom_bins),MAX(anom_bins)],Y=[0,0],STYLE=1
-   AXES,XVALS=anom_bins,XLABELS=STRMID(STRTRIM(STRING(anom_bins),1),0,4),$
-        YVALS=anom_bins,YLABELS=STRMID(STRTRIM(STRING(anom_bins),1),0,4),$
+   AXES,XVALS=anom_bins(0:n_anom_bins-1:2),XLABELS=STRMID(STRTRIM(STRING(anom_bins(0:n_anom_bins-1:2)),1),0,4),$
+        YVALS=anom_bins(0:n_anom_bins-1:2),YLABELS=STRMID(STRTRIM(STRING(anom_bins(0:n_anom_bins-1:2)),1),0,4),$
         YTITLE='All-India rainfall anomaly on day n+1 (mm day!U-1!N)',$
         XTITLE='All-India rainfall anomaly on day n (mm day!U-1!N)',ORIENTATION=30,/NORIGHT
-   GSET,XMIN=MIN(anom_bins),XMAX=MAX(anom_bins),YMIN=0,YMAX=2500
-   GPLOT,X=anom_bins_mid,Y=REFORM(anom_bin_npts(k,*)),STYLE=2
-   AXES,XVALS=anom_bins,YSTEP=125,YTITLE='Number of points in bin for day n rainfall',/ONLYRIGHT
+   GSET,XMIN=MIN(anom_bins),XMAX=MAX(anom_bins),YMIN=0,YMAX=0.5
+   GPLOT,X=anom_bins_mid,Y=REFORM(anom_bin_npts(k,*))/TOTAL(anom_bin_npts(k,*)),STYLE=2,SYM=3
+   AXES,XVALS=anom_bins(0:n_anom_bins-1:2),YSTEP=0.05,YTITLE='Fraction of points in bin for day n rainfall',/ONLYRIGHT,NDECS=2
    PSCLOSE,/NOVIEW
 
 ENDFOR
-psfile='/home/ss901165/idl/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_dailyair.daily_pdf.ps'
+psfile='/home/users/npklingaman/plots/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_dailyair.daily_pdf.ps'
 PSOPEN,file=psfile,FONT=2,CHARSIZE=110,MARGIN=2000,SPACE2=300,XOFFSET=800,YOFFSET=500,TFONT=2,TCHARSIZE=100,SPACE3=300
 GSET,XMIN=MIN(bins),XMAX=MAX(bins),YMIN=0,YMAX=0.2,TITLE='PDF of daily all-India rainfall during JJAS'
 FOR k=0,n_sets-1 DO $
@@ -219,7 +223,7 @@ AXES,XVALS=bins,XLABELS=STRMID(STRTRIM(STRING(bins),1),0,4),YSTEP=0.01,YTITLE='F
 GLEGEND,LEGPOS=1,labels=all_descriptions,COL=FSC_COLOR(all_colors)
 PSCLOSE,/NOVIEW
 
-psfile='/home/ss901165/idl/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_dailyair.anom_daily_pdf.ps'
+psfile='/home/users/npklingaman/plots/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_dailyair.anom_daily_pdf.ps'
 PSOPEN,file=psfile,FONT=2,CHARSIZE=110,MARGIN=2000,SPACE2=300,XOFFSET=800,YOFFSET=500,TFONT=2,TCHARSIZE=100,SPACE3=300
 GSET,XMIN=MIN(anom_bins),XMAX=MAX(anom_bins),YMIN=0,YMAX=0.3,$
      TITLE='PDF of daily all-India rainfall anomalies (from seascycle) during JJAS'

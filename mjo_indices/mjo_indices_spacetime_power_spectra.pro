@@ -47,7 +47,7 @@ FOR i=0,N_ELEMENTS(yvals)-1 DO BEGIN
       yvals_plot=[yvals_plot,yvals(i)]
 ENDFOR
 
-psfile='/home/ss901165/idl/mjo_indices/plots/mjo_indices_spacetime_power_spectra.'+runid+'_'+varname+'.ps'
+psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_spacetime_power_spectra.'+runid+'_'+varname+'.ps'
 PSOPEN,file=psfile,FONT=2,CHARSIZE=130,MARGIN=2000,SPACE2=800,XOFFSET=1200,YOFFSET=500,TFONT=2,TCHARSIZE=100,SPACE3=50
 GSET,XMIN=box(0),YMIN=min_period,XMAX=box(2),YMAX=max_period,TITLE='Space-time power spectrum for latitude-averaged '+varname+' in '+runid,/YLOG
 LEVS,MANUAL=mylevs

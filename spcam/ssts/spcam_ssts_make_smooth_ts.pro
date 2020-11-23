@@ -3,14 +3,17 @@ PRO spcam_ssts_make_smooth_ts
 ; Make a smoothed timeseries of SST, combining KPP and obs SST 
 ; using the coupling-weight file.
 
-kpp_sst_file='/group_workspaces/jasmin2/klingaman/cam/spcam_iceedge_free_rx360/kpp/sst.nc'
-obs_sst_file='/home/users/npklingaman/datasets/METO_OCEAN_ANALYSIS/t42/spcam-kpp_sst.jan-dec_dmean_clim.1980-2009.64x128.nc'
+;kpp_sst_file='/group_workspaces/jasmin2/klingaman/cam/spcam_iceedge_free_rx360/kpp/sst.nc'
+;obs_sst_file='/home/users/npklingaman/datasets/METO_OCEAN_ANALYSIS/t42/spcam-kpp_sst.jan-dec_dmean_clim.1980-2009.64x128.nc'
+
+kpp_sst_file='/group_workspaces/jasmin2/klingaman/cam/spcam_iceedge_free_spccsm/kpp_ocean/sst.nc'
+obs_sst_file='/home/users/npklingaman/datasets/SPCAM-KPP_ANCIL/spcam-kpp_sst_spccsm.jan-dec_dmean_clim.years4-23.64x128.nc'
 cplwght_file='/home/users/npklingaman/datasets/SPCAM-KPP_ANCIL/spcam-kpp_cplwght.iceedge_64x128.nc'
 mask_file='/home/users/npklingaman/datasets/SPCAM-KPP_ANCIL/spcam-kpp_lsm_ocndepth.64x128.nc'
 obs_ice_file='/home/users/npklingaman/datasets/SPCAM-KPP_ANCIL/spcam-kpp_iceconc.jan-dec_dmeans_clim.64x128.nc'
 
 smooth_length=31
-out_sst_file='/home/users/npklingaman/datasets/SPCAM-KPP_ANCIL/spcam_iceedge_free_rx360.jan-dec_dmeans_smooth31.years1-52.sst.nc'
+out_sst_file='/home/users/npklingaman/datasets/SPCAM-KPP_ANCIL/spcam_iceedge_free_spccsm.jan-dec_dmeans_smooth31.years1-52.sst.nc'
 
 ; Get global grid from cplwght file
 gbl_longitude=OPEN_AND_EXTRACT(cplwght_file,'longitude')
@@ -25,12 +28,12 @@ kpp_nlon=N_ELEMENTS(kpp_longitude)
 kpp_nlat=N_ELEMENTS(kpp_latitude)
 
 start=0   ; For reading netCDF file of KPP SSTs
-count=19140
+count=19200
 start_date=244 ; Start date of KPP SSTs (Julian)
 ; Get SSTs
 kpp_sst=OPEN_AND_EXTRACT(kpp_sst_file,'T',offset=[0,0,start],count=[kpp_nlon,kpp_nlat,count])
 n_time=N_ELEMENTS(kpp_sst(0,0,*))
-obs_sst=OPEN_AND_EXTRACT(obs_sst_file,'sst')
+obs_sst=OPEN_AND_EXTRACT(obs_sst_file,'sst');-273.15
 obs_ice=OPEN_AND_EXTRACT(obs_ice_file,'iceconc')
 
 kpp_latoff=NEAREST(gbl_latitude,kpp_latitude(0))
@@ -38,7 +41,7 @@ kpp_latoff=NEAREST(gbl_latitude,kpp_latitude(0))
 ; Get cplwght
 cplwght=OPEN_AND_EXTRACT(cplwght_file,'alpha')
 ; Get land fraction
-landfrac=REFORM(OPEN_AND_EXTRACT(mask_file,'LANDFRAC'))
+landfrac=REFORM(OPEN_AND_EXTRACT(mask_file,'lsm'))
 
 sst_out=fltarr(n_lon,n_lat,n_time+1)
 
@@ -48,23 +51,27 @@ FOR i=0,n_lon-1 DO BEGIN
       IF landfrac(i,j) ne 1 THEN BEGIN
          FOR k=0,n_time-1 DO BEGIN
             date=((start_date+k) MOD 365)
+            IF date ge 360 THEN BEGIN
+               obs_date = 359
+            ENDIF ELSE $
+               obs_date = date
             IF gbl_latitude(j) lt kpp_latitude(0) or gbl_latitude(j) gt kpp_latitude(kpp_nlat-1) THEN BEGIN
-               sst_out(i,j,k+1)=obs_sst(i,j,date)
+               sst_out(i,j,k+1)=obs_sst(i,j,obs_date)
                                 ;IF n_time MOD 365 ne 0 THEN $
                                 ;   sst_out(i,j,n_time/365*365:n_time-1)=obs_sst(i,j,0:(n_time MOD 365)-1)
-            ENDIF ELSE IF kpp_sst(i,j-kpp_latoff,0) eq 1e20 THEN BEGIN
-               sst_out(i,j,k+1)=obs_sst(i,j,date)
+            ENDIF ELSE IF kpp_sst(i,j-kpp_latoff,k) ge 1e10 THEN BEGIN
+               sst_out(i,j,k+1)=obs_sst(i,j,obs_date)
                                 ;IF n_time MOD 365 ne 0 THEN $
                                 ;   sst_out(i,j,n_time/365*365:n_time-1)=obs_sst(i,j,0:(n_time MOD 365)-1)
             ENDIF ELSE BEGIN
-               sst_out(i,j,k+1)=kpp_sst(i,j-kpp_latoff,k)*cplwght(i,j)+$
-                                obs_sst(i,j,date)*(1.-cplwght(i,j))
+		sst_out(i,j,k+1)=kpp_sst(i,j-kpp_latoff,k)*cplwght(i,j)+$
+                                obs_sst(i,j,obs_date)*(1.-cplwght(i,j))
                                 ;IF n_time MOD 365 ne 0 THEN $
                                 ;sst_out(i,j,n_time/365*365:n_time-1)=kpp_sst(i,j-kpp_latoff,n_time/365*365:n_time-1)$
                                 ;*cplwght(i,j)+obs_sst(i,j,0:(n_time MOD 365)-1)*$
                                 ;(1.-cplwght(i,j))
-            ENDELSE            
-         ENDFOR
+            ENDELSE		            
+         ENDFOR	 
          sst_out(i,j,0)=sst_out(i,j,1)
       ENDIF ELSE $
          sst_out(i,j,*)=2e20
@@ -135,10 +142,10 @@ dimids(2)=NCDF_DIMDEF(id,'time',/UNLIMITED)
 
 varids=intarr(7)
 varids(0)=NCDF_VARDEF(id,'lon',[dimids(0)],/FLOAT)
-NCDF_ATTPUT,id,varids(0),'units','degrees east'
+NCDF_ATTPUT,id,varids(0),'units','degrees_east'
 NCDF_ATTPUT,id,varids(0),'long_name','longitude'
 varids(1)=NCDF_VARDEF(id,'lat',[dimids(1)],/FLOAT)
-NCDF_ATTPUT,id,varids(1),'units','degrees north'
+NCDF_ATTPUT,id,varids(1),'units','degrees_north'
 NCDF_ATTPUT,id,varids(1),'long_name','latitude'
 varids(2)=NCDF_VARDEF(id,'time',[dimids(2)],/FLOAT)
 NCDF_ATTPUT,id,varids(2),'units','days since 0000-08-31 00:00:00'
@@ -150,11 +157,11 @@ NCDF_ATTPUT,id,varids(4),'long_name','current seconds of current date'
 varids(5)=NCDF_VARDEF(id,'SST_cpl',[dimids(0),dimids(1),dimids(2)],/FLOAT)
 NCDF_ATTPUT,id,varids(5),'long_name','sea surface temperature'
 NCDF_ATTPUT,id,varids(5),'units','degrees C'
-NCDF_ATTPUT,id,varids(5),'missing',-999.
+NCDF_ATTPUT,id,varids(5),'missing_value',-999.
 varids(6)=NCDF_VARDEF(id,'ice_cov',[dimids(0),dimids(1),dimids(2)],/FLOAT)
 NCDF_ATTPUT,id,varids(6),'long_name','BCS Pseudo Sea-ice concentration'
 NCDF_ATTPUT,id,varids(6),'units','fraction'
-NCDF_ATTPUT,id,varids(6),'missing',-999.
+NCDF_ATTPUT,id,varids(6),'missing_value',-999.
 
 NCDF_CONTROL,id,/ENDEF
 

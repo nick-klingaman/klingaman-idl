@@ -1,7 +1,7 @@
 PRO mjo_indices_latavg_lag_regressions_spcam
 
 n_models=6
-um6='/home/ss901165/um_output6'
+um6='/group_workspaces/jasmin2/klingaman'
 um3='/home/ss901165/um_output3/hadgem3_monwg'
 
 box=[-10,40,10,180]
@@ -15,69 +15,87 @@ mylevs=['-0.95','-0.85','-0.75','-0.65','-0.55','-0.45','-0.35','-0.25','-0.15',
 FOR i=0,n_models-1 DO BEGIN
    print,i
    CASE i OF
-      4 : BEGIN
-         infile=um6+'/mjodiab_20year/spcam/SPCAM3_AMIP.jan-dec_dmeans_anom-3harm_filter2080.1986-2003.olr.2.5x2.5.nc'
-         varname='olr'
-         model_name='spcam3_amip_mjodiab'
-         n_years=18
-         n_days_per_year=365
-         a=0
-         view=1
-      END
-      5 : BEGIN
-         infile=um6+'/mjodiab_20year/spccsm/SPCCSM.jan-dec_dmeans_anom-3harm_filter2080.4-23.olr.2.5x2.5.nc'
-         varname='olr'
-         model_name='spccsm_mjodiab'
-         n_years=20
-         n_days_per_year=365
-         a=0
-         view=1
-      END
-      3 : BEGIN
-         infile=um6+'/spcam/spcam_iceedge_free/spcam_iceedge_free.jan-dec_dmeans_anom-3harm_filter2080.1-19.olr.2.5x2.5.nc'
-         varname='olr'         
-         model_name='spcam3-kpp'
-         n_years=19
-         n_days_per_year=365
-         a=0
-         view=0
-      END
-      2: BEGIN
-         infile=um6+'/spcam/cam_iceedge_free/cam_iceedge_free.jan-dec_dmeans_anom-3harm_filter2080.1-100.olr.2.5x2.5.nc'
-         varname='olr'
-         model_name='cam3-kpp'
-         n_years=50
-         n_days_per_year=365
-         a=0
-         view=0
-      END
-;      1: BEGIN
-;         infile=um6+'/xgspp/hadgem3kpp_1.0xentrain_ga30.jan-dec_dmeans_anom-3harm_filter2080.i2-k1.olr.2.5x2.5.nc'
-;         varname='precip'
-;         model_name='goml1_30N-30S_1.0xent'
+      ;; 4 : BEGIN
+      ;;    infile=um6+'/mjodiab_20year/spcam/SPCAM3_AMIP.jan-dec_dmeans_anom-3harm_filter2080.1986-2003.olr.2.5x2.5.nc'
+      ;;    varname='olr'
+      ;;    model_name='spcam3_amip_mjodiab'
+      ;;    n_years=18
+      ;;    n_days_per_year=365
+      ;;    a=0
+      ;;    view=0
+      ;; END
+      ;; 5 : BEGIN
+      ;;    infile=um6+'/mjodiab_20year/spccsm/SPCCSM.jan-dec_dmeans_anom-3harm_filter2080.4-23.olr.2.5x2.5.nc'
+      ;;    varname='olr'
+      ;;    model_name='spccsm_mjodiab'
+      ;;    n_years=20
+      ;;    n_days_per_year=365
+      ;;    a=0
+      ;;    view=0
+      ;; END
+      ;; 3 : BEGIN
+      ;;    infile=um6+'/cam/spcam_iceedge_free/spcam_iceedge_free_rx360.jan-dec_dmeans_anom-3harm_filter2080.1-52.olr.2.5x2.5.nc'
+      ;;    varname='olr'   
+      ;;    model_name='spcam3_iceedge_free'
+      ;;    n_years=52
+      ;;    n_days_per_year=365
+      ;;    a=0
+      ;;    view=0
+      ;; END
+      ;; 2 : BEGIN
+      ;;    infile=um6+'/cam/spcam_atm_iceedge_31day/spcam_atm_iceedge_31day.jan-dec_dmeans_anom-3harm_filter2080.1-52.olr.2.5x2.5.nc'
+      ;;    varname='olr'         
+      ;;    model_name='spcam3_atm_iceedge_31day'
+      ;;    n_years=52
+      ;;    n_days_per_year=365
+      ;;    a=0
+      ;;    view=0
+      ;; END
+      ;; 1 : BEGIN
+      ;;    infile='/home/users/npklingaman/datasets/MJO_INDICES/noaa_eraint_trmm_obs.jan-dec_dmeans_anom-3harm_filter2080.1999-2008.olr.2.5x2.5.nc'
+      ;;    varname='olr'
+      ;;    model_name='noaa'
+      ;;    n_years=10
+      ;;    ndays_per_year=365
+      ;;    a=0
+      ;;    view=0
+      ;; END
+;      0: BEGIN
+;         infile=um6+'/xgspm/hadgem3kpp_1.5xentrain_ga30.jan-dec_dmeans_anom-3harm_filter2080.i2-k1.olr.2.5x2.5.nc'
+;         varname='olr'
+;         model_name='goml1_30N-30S_1.5xent'
 ;         n_years=20
 ;         n_days_per_year=360
 ;         a=0
 ;         view=0
-;      END
-      1 : BEGIN
-         infile='/home/ss901165/datasets/MJO_INDICES/noaa_eraint_obs.jan-dec_dmeans_anom-3harm_filter2080.1989-2008.olr.2.5x2.5.nc'
+;      END     
+      2: BEGIN
+         infile=um6+'/cam/spcam_iceedge_free_spccsm_lanina/spcam_iceedge_fr_spccsm_ln.jan-dec_dmeans_anom-3harm_filter2080.1-22.olr.2.5x2.5.nc'
          varname='olr'
-         model_name='noaa'
-         n_years=20
-         ndays_per_year=365
+         model_name='spcam_iceedge_free_spccsm_lanina'
+         n_years=22
+         n_days_per_year=365
+         a=0
+         view=0
+      END
+      1: BEGIN
+         infile=um6+'/cam/spcam_iceedge_free_spccsm_elnino/spcam_iceedge_fr_spccsm_en.jan-dec_dmeans_anom-3harm_filter2080.1-22.olr.2.5x2.5.nc'
+         varname='olr'
+         model_name='spcam_iceedge_free_spccsm_elnino'
+         n_years=22
+         n_days_per_year=365
          a=0
          view=0
       END
       0: BEGIN
-         infile=um6+'/xgspm/hadgem3kpp_1.5xentrain_ga30.jan-dec_dmeans_anom-3harm_filter2080.i2-k1.olr.2.5x2.5.nc'
+         infile=um6+'/cam/spcam_iceedge_free_spccsm/spcam_iceedge_free_spccsm.jan-dec_dmeans_anom-3harm_filter2080.1-52.olr.2.5x2.5.nc'
          varname='olr'
-         model_name='goml1_30N-30S_1.5xent'
-         n_years=20
-         n_days_per_year=360
+         model_name='spcam3_iceedge_free_spccsm'
+         n_years=52
+         n_days_per_year=365
          a=0
          view=0
-      END      
+      END
    ENDCASE
    longitude=OPEN_AND_EXTRACT(infile,'longitude')
    latitude=OPEN_AND_EXTRACT(infile,'latitude')
@@ -115,7 +133,7 @@ FOR i=0,n_models-1 DO BEGIN
             ENDELSE
          ENDFOR
       ENDFOR
-      psfile='/home/ss901165/idl/mjo_indices/plots/mjo_indices_latavg_lag_regressions.'+model_name+'.'+varname+'.base'+$
+      psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_latavg_lag_regressions.'+model_name+'.'+varname+'.base'+$
              STRTRIM(STRING(FLOOR(base_points(j))),1)+'E'+'.ps'
       PSOPEN,file=psfile,TFONT=2,CHARSIZE=200,FONT=6,YOFFSET=1000,SPACE2=1000,XOFFSET=1000
       GSET,XMIN=box(1),XMAX=box(3),YMIN=MIN(lags),YMAX=MAX(lags)+0.1

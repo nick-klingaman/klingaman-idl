@@ -8,7 +8,7 @@ all_symbols=intarr(nmodels)
 all_styles=intarr(nmodels)
 all_mynyears=intarr(nmodels)
 
-nao_thresh=0.5
+nao_thresh=1.0
 nphases=9
 lags=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
 nlags=N_ELEMENTS(lags)
@@ -145,7 +145,7 @@ FOR m=0,nmodels-1 DO BEGIN
       naon_bymjo(m,p,*)=naon_bymjo(m,p,*)/FLOAT(total_phase(p))/FLOAT(naon_prob)
    ENDFOR
     
-   psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_mjo_probabilities_n96ent.'+all_names(m)+'_naop_thresh'+STRMID(STRTRIM(STRING(nao_thresh),1),0,3)+'.ps'
+   psfile='/home/users/npklingaman/plots/hadgem3-kpp_runs/nao/hadgem3kpp_nao_mjo_probabilities_n96ent.'+all_names(m)+'_naop_thresh'+STRMID(STRTRIM(STRING(nao_thresh),1),0,3)+'.ps'
    PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1500,XPLOTS=2,YPLOTS=4,YSPACING=1500
    phase=[0,4,3,2,1,8,7,6,5]
    FOR i=1,8 DO BEGIN
@@ -164,7 +164,7 @@ FOR m=0,nmodels-1 DO BEGIN
    ENDFOR
    PSCLOSE,/NOVIEW
 
-   psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_mjo_probabilities_n96ent.'+all_names(m)+'_naon_thresh'+STRMID(STRTRIM(STRING(nao_thresh),1),0,3)+'.ps'
+   psfile='/home/users/npklingaman/plots/hadgem3-kpp_runs/nao/hadgem3kpp_nao_mjo_probabilities_n96ent.'+all_names(m)+'_naon_thresh'+STRMID(STRTRIM(STRING(nao_thresh),1),0,3)+'.ps'
    PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1500,XPLOTS=2,YPLOTS=4,YSPACING=1500
    phase=[0,4,3,2,1,8,7,6,5]
    FOR i=1,8 DO BEGIN

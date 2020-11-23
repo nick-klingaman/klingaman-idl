@@ -6,16 +6,50 @@ aqua='/home/ss901165/um_output5'
 cascade='/home/ss901165/um_output6/cascade'
 answa='/home/ss901165/um_output6/answa_N1024param'
 answc='/home/ss901165/um_output6/answc_N1024explt'
-trmm='/home/ss901165/datasets/TRMM_3B42V6/'
+trmm='/group_workspaces/jasmin2/klingaman/datasets/TRMM_3B42'
 
-n_sets=26
+mjodiab_2day='/group_workspaces/jasmin2/klingaman/mjodiab_2day'
+
+n_sets=2
 thresholds=[1,5,20,40,100]
 n_thresholds=N_ELEMENTS(thresholds)
-domain_size=9 ; Ideally an odd number
+domain_size=7 ; Ideally an odd number
 
-FOR i=24,n_sets-1 DO BEGIN
+FOR i=0,n_sets-1 DO BEGIN
    print,i
    CASE i OF
+      1 : BEGIN
+         infile=mjodiab_2day+'/MetUM.pr.20091020-20100110.lead_12-48hrs.nc'
+         varname='pr'
+         plot_title=' '
+         start_read=1
+         n_time=7920
+         tsteps_per_day=5*24.0
+         multiplier=86400.
+         psfile_title='metum-ga3-mjodiab_2day'
+         mylevs=['0.01','0.02','0.03','0.05','0.08','0.11','0.15','0.21','0.28','0.36','0.47','0.58','0.70','0.84']
+         row_map=[11,12,13,14]
+         column_map=[0]
+         box=[-10,60,10,160]
+         use_map=1
+         use_time_mean=0
+      END
+      0 : BEGIN
+         infile=trmm+'/native_resolution/TRMM_3B42v6A.oct2009-feb2010_3hrmeans.precip.nc'
+         varname='precip'
+         plot_title=' '
+         start_read=161
+         n_time=44*8
+         tsteps_per_day=8
+         multiplier=24
+         psfile_title='trmm-mjodiab_2day'
+         mylevs=['0.01','0.02','0.03','0.05','0.08','0.11','0.15','0.21','0.28','0.36','0.47','0.58','0.70','0.84']
+         row_map=[11,12,13,14]
+         column_map=[0]
+         box=[-10,60,10,160]
+         use_map=1
+         use_time_mean=0
+      END
       8 : BEGIN
          infile=answa+'/wp_3hrmeans.nc'
          varname='cvrain'
@@ -306,7 +340,7 @@ FOR i=24,n_sets-1 DO BEGIN
          use_time_mean=1
          time_mean=5
       END
-      0 : BEGIN
+      998 : BEGIN
          infile=answc+'/wp.nc'
          varname='cvrain'
          plot_title='answa (GA6 N1024p) 2*ts (8min) cvrain - WPac'
@@ -323,7 +357,7 @@ FOR i=24,n_sets-1 DO BEGIN
          use_time_mean=1
          time_mean=2
       END
-      1 : BEGIN
+      999 : BEGIN
          infile=answc+'/wp.nc'
          varname='tot_precip'
          plot_title='answc (GA6 N1024e) 2*ts (8min) cvrain - WPac'
@@ -530,18 +564,19 @@ FOR i=24,n_sets-1 DO BEGIN
       frac_dry_values(*,*,p)=frac_dry_values(*,*,p)/FLOAT(central_count_dry(p))
    ENDFOR
    corr_coeffs=corr_coeffs/FLOAT(corr_coeffs(domain_size/2,domain_size/2))
-   
-   mylevs_corr=['0.08','0.16','0.24','0.32','0.40','0.48','0.56','0.64','0.72','0.80','0.88','0.96']
+      
+;   mylevs_corr=['0.08','0.16','0.24','0.32','0.40','0.48','0.56','0.64','0.72','0.80','0.88','0.96']
+   mylevs_corr=['0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','0.9','1.0']
    mylevs_frac=['0.05','0.10','0.15','0.20','0.25','0.30','0.35','0.40','0.45','0.50']
    mylevs_ratio=['0.20','0.25','0.33','0.50','0.75','0.90','1.11','1.50','2.00','3.00','4.00','5.00']
 
    FOR p=0,n_lags-1 DO BEGIN
-      psfile='/home/ss901165/idl/hadgem3_monwg/timestep/hadgem3_monwg_timestep_spatialscale.'+psfile_title+'.'+$
+      psfile='/home/users/npklingaman/plots/hadgem3_monwg/timestep/hadgem3_monwg_timestep_spatialscale.'+psfile_title+'.'+$
              STRTRIM(STRING(domain_size),1)+'x'+STRTRIM(STRING(domain_size),1)+'.corr_coeffs_lag'+STRTRIM(STRING(p),1)+'.ps'
       PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=160,MARGIN=2000,XSIZE=17000,YSIZE=17000,/PORTRAIT,XOFFSET=1000,YOFFSET=5000,SPACE2=3000,$
              TCHARSIZE=90,SPACE3=200
-      GSET,XMIN=domain_size/2*(-1.)-0.5,XMAX=domain_size/2+0.5,YMIN=domain_size/2*(-1.)-0.5,YMAX=domain_size/2+0.5,$
-           TITLE='Correlation of tstep precip at (x,y) and lag '+STRTRIM(STRING(p),1)+' with (0,0) - '+plot_title
+      GSET,XMIN=domain_size/2*(-1.)-0.5,XMAX=domain_size/2+0.5,YMIN=domain_size/2*(-1.)-0.5,YMAX=domain_size/2+0.5
+           ;TITLE='Correlation of tstep precip at (x,y) and lag '+STRTRIM(STRING(p),1)+' with (0,0) - '+plot_title
       CS,SCALE=25,NCOLS=N_ELEMENTS(mylevs_corr)+1
       LEVS,MANUAL=mylevs_corr
       CON,X=indgen(domain_size)-domain_size/2,Y=indgen(domain_size)-domain_size/2,FIELD=REFORM(corr_coeffs(*,*,p)),/NOLINES,/BLOCK,$
@@ -554,7 +589,7 @@ FOR i=24,n_sets-1 DO BEGIN
    ENDFOR
    
    mylevs_radvlag=['-0.15','-0.05','0.05','0.15','0.25','0.35','0.45','0.55','0.65','0.75','0.85','0.95']
-   psfile='/home/ss901165/idl/hadgem3_monwg/timestep/hadgem3_monwg_timestep_spatialscale.'+psfile_title+'.'+$
+   psfile='/home/users/npklingaman/plots/hadgem3_monwg/timestep/hadgem3_monwg_timestep_spatialscale.'+psfile_title+'.'+$
           STRTRIM(STRING(domain_size),1)+'x'+STRTRIM(STRING(domain_size),1)+'.corr_coeffs_radvlag.ps'
    PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=160,MARGIN=2000,/PORTRAIT,XOFFSET=1000,YOFFSET=5000,SPACE2=1000,$
           TCHARSIZE=90,SPACE3=200
@@ -583,7 +618,7 @@ FOR i=24,n_sets-1 DO BEGIN
    PSCLOSE,/NOVIEW
 
    FOR p=0,n_thresholds-1 DO BEGIN
-      psfile='/home/ss901165/idl/hadgem3_monwg/timestep/hadgem3_monwg_timestep_spatialscale.'+psfile_title+'.'+$
+      psfile='/home/users/npklingaman/plots/hadgem3_monwg/timestep/hadgem3_monwg_timestep_spatialscale.'+psfile_title+'.'+$
           STRTRIM(STRING(domain_size),1)+'x'+STRTRIM(STRING(domain_size),1)+'.frac_wet_'+STRTRIM(STRING(thresholds(p)),1)+'mm.ps'
       PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=160,MARGIN=2000,XSIZE=17000,YSIZE=17000,/PORTRAIT,XOFFSET=1000,YOFFSET=5000,SPACE2=3000,$
              TCHARSIZE=90,SPACE3=200
@@ -599,7 +634,7 @@ FOR i=24,n_sets-1 DO BEGIN
       AXES,XSTEP=1,YSTEP=1,XTITLE='West <-- gridpoints --> East',YTITLE='South <-- gridpoints --> North'  
       PSCLOSE,/NOVIEW
 
-      psfile='/home/ss901165/idl/hadgem3_monwg/timestep/hadgem3_monwg_timestep_spatialscale.'+psfile_title+'.'+$
+      psfile='/home/users/npklingaman/plots/hadgem3_monwg/timestep/hadgem3_monwg_timestep_spatialscale.'+psfile_title+'.'+$
               STRTRIM(STRING(domain_size),1)+'x'+STRTRIM(STRING(domain_size),1)+'.ratio_wet_'+STRTRIM(STRING(thresholds(p)),1)+'mm.ps'
       PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=160,MARGIN=2000,XSIZE=17000,YSIZE=17000,/PORTRAIT,XOFFSET=1000,YOFFSET=5000,SPACE2=3000,$
              TCHARSIZE=90,SPACE3=200
@@ -615,7 +650,7 @@ FOR i=24,n_sets-1 DO BEGIN
       AXES,XSTEP=1,YSTEP=1,XTITLE='West <-- gridpoints --> East',YTITLE='South <-- gridpoints --> North'  
       PSCLOSE,/NOVIEW
 
-      psfile='/home/ss901165/idl/hadgem3_monwg/timestep/hadgem3_monwg_timestep_spatialscale.'+psfile_title+'.'+$
+      psfile='/home/users/npklingaman/plots/hadgem3_monwg/timestep/hadgem3_monwg_timestep_spatialscale.'+psfile_title+'.'+$
              STRTRIM(STRING(domain_size),1)+'x'+STRTRIM(STRING(domain_size),1)+'.frac_dry_'+STRTRIM(STRING(thresholds(p)),1)+'mm.ps'
       PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=160,MARGIN=2000,XSIZE=17000,YSIZE=17000,/PORTRAIT,XOFFSET=1000,YOFFSET=5000,SPACE2=3000,$
              TCHARSIZE=90,SPACE3=200
@@ -631,7 +666,7 @@ FOR i=24,n_sets-1 DO BEGIN
       AXES,XSTEP=1,YSTEP=1,XTITLE='West <-- gridpoints --> East',YTITLE='South <-- gridpoints --> North'  
       PSCLOSE,/NOVIEW
 
-      psfile='/home/ss901165/idl/hadgem3_monwg/timestep/hadgem3_monwg_timestep_spatialscale.'+psfile_title+'.'+$
+      psfile='/home/users/npklingaman/plots/hadgem3_monwg/timestep/hadgem3_monwg_timestep_spatialscale.'+psfile_title+'.'+$
              STRTRIM(STRING(domain_size),1)+'x'+STRTRIM(STRING(domain_size),1)+'.ratio_dry_'+STRTRIM(STRING(thresholds(p)),1)+'mm.ps'
       PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=160,MARGIN=2000,XSIZE=17000,YSIZE=17000,/PORTRAIT,XOFFSET=1000,YOFFSET=5000,SPACE2=3000,$
              TCHARSIZE=90,SPACE3=200

@@ -1,0 +1,39 @@
+PORTRAIT=0          ;Select landscape as format
+LETTER=0            ;A4 is the default
+XPLOTS=1            ;Number of plots in the x direction
+YPLOTS=1            ;Number of plots in the y direction
+XOFFSET=0           ;X offset of first picture (pixels)
+YOFFSET=0           ;Y offset of first picture (pixels)
+MARGIN=3000         ;Margin around plot (pixels)
+XSPACING=3000       ;X spacing between plots (pixels)
+YSPACING=3000       ;Y spacing between plots (pixels)
+XSIZE=0             ;X size of plot (pixels)
+YSIZE=0             ;Y size of plot (pixels)
+SPACE1=200          ;Space between text (pixels)
+SPACE2=400          ;Space between colour bar and plot (pixels)
+SPACE3=800          ;Space between the title and the plot (pixels)
+TICKLEN=200         ;Tick length (positive is away from plot) (pixels)
+THICK=100           ;Thickness of lines (%)
+CTHICK=100          ;Thickness of continents (%)
+CSTYLE=0            ;Line style of continents
+CCOLOUR=1           ;Colour of the continents
+CB_WIDTH=100        ;Width of colour bar (%)
+CB_HEIGHT=100       ;Height of colour bar (%)
+BORDER_THICK=100    ;Thickness of the line around the plot (%)
+
+FONT=1              ;Font to use for everything except titles (values=1-7)
+CHARSIZE=100        ;Size of text for everyting except titles (%)
+BOLD=0              ;Set to 1 for bold text
+ITALIC=0            ;Set to 1 for italic text
+
+CFONT=1             ;Font to use for contours (values=1-7)
+CCHARSIZE=100       ;Size of text for contours (%)
+CBOLD=0             ;Set to 1 for bold contours
+CITALIC=0           ;Set to 1 for italic contours
+
+TFONT=1             ;Font to use for titles (values=1-7)
+TCHARSIZE=100       ;Size of text for titles (%)
+TBOLD=0             ;Set to 1 for bold titles
+TITALIC=0           ;Set to 1 for italic titles
+
+AXISTYPE=0          ;Type of axis

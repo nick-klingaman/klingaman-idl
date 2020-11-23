@@ -179,12 +179,12 @@ u=fltarr(1,1)
 v=fltarr(1,1)
 
 IF KEYWORD_SET(prev_day) THEN BEGIN
-   psfile='/home/ss901165/idl/mjo_indices/mjo_indices_wh04_probabilities.freq_phase.'+runid+'.prev_day.ps'
+   psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_wh04_probabilities.freq_phase.'+runid+'.prev_day.ps'
 ENDIF ELSE $
-   psfile='/home/ss901165/idl/mjo_indices/mjo_indices_wh04_probabilities.freq_phase.'+runid+'.ps'
+   psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_wh04_probabilities.freq_phase.'+runid+'.ps'
 PSOPEN,file=psfile,FONT=2,CHARSIZE=120,MARGIN=1500,SPACE3=1500,XOFFSET=500,YOFFSET=500,TFONT=2,TCHARSIZE=100,CB_WIDTH=110,$
        XSIZE=17000,YSIZE=17000
-GSET,XMIN=-4,XMAX=4,YMIN=-4,YMAX=4,TITLE='Fractional frequency of occurrence for Wheeler and Hendon phases - '+runid
+GSET,XMIN=-4,XMAX=4,YMIN=-4,YMAX=4 ;,TITLE='Fractional frequency of occurrence for Wheeler and Hendon phases - '+runid
 GPLOT,X=REPLICATE(0,4),Y=[-4,-3,-2,-1],STYLE=0,THICK=80
 GPLOT,X=REPLICATE(0,4),Y=[1,2,3,4],STYLE=0,THICK=80
 GPLOT,X=[1,2,3,4],Y=REPLICATE(0,4),STYLE=0,THICK=80
@@ -257,12 +257,12 @@ GPLOT,X=0,Y=-4.5,TEXT='Indian Ocean',ALIGN=0.5,CHARSIZE=100
 GPLOT,X=4.5,Y=0,TEXT='Maritime Continent',ALIGN=0.5,CHARSIZE=100,ORIENTATION=90
 GPLOT,X=0,Y=4.25,TEXT='Western Pacific',ALIGN=0.5,CHARSIZE=100
 GPLOT,X=-4.5,Y=0,TEXT='Western Hemisphere and Africa',ALIGN=0.5,CHARSIZE=100,ORIENTATION=90
-;COLBAR,COORDS=[22000,3000,22500,18000],LEVS=STRMID(STRTRIM(STRING(mylevs),1),0,5),TITLE='Fractional frequency',/LOWER,/UPPER
+;COLBAR,COORDS=[22000,3000,22500,18000],TITLE='Fractional frequency'
 AXES,XSTEP=1,YSTEP=1,XMINOR=0.5,YMINOR=0.5,XTITLE='RMM1',YTITLE='RMM2'
 
 PSCLOSE,/NOVIEW
 
-psfile='/home/ss901165/idl/mjo_indices/mjo_indices_wh04_probabilities.lag_composite.'+runid+'.ps'
+psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_wh04_probabilities.lag_composite.'+runid+'.ps'
 PSOPEN,file=psfile,FONT=2,CHARSIZE=120,MARGIN=2000,SPACE3=1500,XOFFSET=1000,YOFFSET=500,TFONT=2,TCHARSIZE=100,CB_WIDTH=110,$
        XSIZE=16000,YSIZE=16000
 GSET,XMIN=-2,XMAX=2,YMIN=-2,YMAX=2,TITLE='Lag composite evolution of strong MJO activity in each phase - '+runid
@@ -409,9 +409,9 @@ IF KEYWORD_SET(obs_input_file) THEN BEGIN
    freq_obs_phase_gen=freq_obs_phase_gen/FLOAT(TOTAL(freq_obs_phase_gen))
 
    IF KEYWORD_SET(prev_day) THEN BEGIN
-      psfile='/home/ss901165/idl/mjo_indices/mjo_indices_wh04_probabilities.freq_phase.'+runid+'_lines_compare_obs.prev_day.ps'
+      psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_wh04_probabilities.freq_phase.'+runid+'_lines_compare_obs.prev_day.ps'
    ENDIF ELSE $
-      psfile='/home/ss901165/idl/mjo_indices/mjo_indices_wh04_probabilities.freq_phase.'+runid+'_lines_compare_obs.ps'
+      psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_wh04_probabilities.freq_phase.'+runid+'_lines_compare_obs.ps'
    PSOPEN,file=psfile,FONT=2,CHARSIZE=110,MARGIN=1500,SPACE2=100,XOFFSET=1200,YOFFSET=6000,TFONT=2,TCHARSIZE=100,CB_WIDTH=110,$
           XSIZE=23000,YSIZE=12000,SPACE3=100   
    GSET,XMIN=0.5,XMAX=8.5,YMIN=0,YMAX=0.18,TITLE='Comparison of MJO phase frequency statistics for model run '+runid+' against observations'

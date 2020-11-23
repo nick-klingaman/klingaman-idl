@@ -1,0 +1,19 @@
+PRO ex51
+d=NCREAD('rgsa.nc', /ATT)
+xpole=d.rotated_pole.GRID_NORTH_POLE_LONGITUDE
+ypole=d.rotated_pole.GRID_NORTH_POLE_LATITUDE
+xin=d.grid_lon.data
+yin=d.grid_lat.data
+
+PSOPEN, XPLOTS=2, YSIZE=10000
+GSET, XMIN=0, XMAX=N_ELEMENTS(xin)-1, YMIN=0, YMAX=N_ELEMENTS(yin)-1
+RGAXES, XIN=xin, YIN=yin, XPOLE=xpole, YPOLE=ypole, /COUNTRIES, XLAB=3, YLAB=3
+	
+POS, XPOS=2
+RGUNROT, XIN=xin, YIN=yin, XPOLE=300, YPOLE=55, XOUT=xout, YOUT=yout
+MAP, LATMAX=0.0, LONMIN=-120, LONMAX=0, /DRAW
+GPLOT, X=xout, Y=yout, /NOLINES, SYM=3, SIZE=5
+AXES	
+PSCLOSE
+END
+

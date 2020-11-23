@@ -1,7 +1,7 @@
 PRO mjo_indices_phase_composites_ts,rmm_infile,var_infile,clim_infile,varname,nc_varname,ndays_per_year,model_name,$
                                     model_nyear=model_nyear,rmm_offset=rmm_offset,model_offset=model_offset,$
                                     field_multiplier=field_multiplier,year_first=year_first,latavg_range=latavg_range,$
-                                    lon_range=lon_range,mask_file=mask_file,mask_value=mask_value,single_plot=single_plot
+                                    lon_range=lon_range,mask_file=mask_file,mask_value=mask_value,single_plot=single_plot,a=a
   
 ; Make phase composites of the MJO from a model integration, given a
 ; file with the RMM indices, one with model output from the variable
@@ -10,8 +10,9 @@ PRO mjo_indices_phase_composites_ts,rmm_infile,var_infile,clim_infile,varname,nc
 n_phases=8
 phase_angle_start=findgen(n_phases)*(360./FLOAT(n_phases))
 phase_angle_stop=phase_angle_start+(360./FLOAT(n_phases))
-phases=indgen(n_phases)+n_phases/2+1
-phases[where(phases gt n_phases)]=phases[where(phases gt n_phases)]-n_phases
+;phases=indgen(n_phases)+n_phases/2+1
+;phases[where(phases gt n_phases)]=phases[where(phases gt n_phases)]-n_phases
+phases=indgen(n_phases)+1
 
 IF KEYWORD_SET(latavg_range) THEN BEGIN
    cross_section=1
@@ -24,6 +25,11 @@ IF KEYWORD_SET(lon_range) THEN BEGIN
    our_lon_range=lon_range
 ENDIF ELSE $
    our_lon_range=[0,360]
+
+IF KEYWORD_SET(a) THEN BEGIN
+   a=a
+ENDIF ELSE $
+   a=1
 
 ; This case statement controls the plotting options for each variable, including the contour intervals and
 ; whether to draw vectors on the plot (for winds only).  You can add new variables to this by copying one of the
@@ -148,8 +154,8 @@ IF KEYWORD_SET(mask_file) THEN BEGIN
    mask_nlon=N_ELEMENTS(mask_longitude)
 
    mask=OPEN_AND_EXTRACT(mask_file,'lsm',$
-                         offset=[mask_box_tx(1),mask_box_tx(0),0,0],$
-                         count=[mask_nlon,mask_nlat,1,1])
+                         offset=[mask_box_tx(1),mask_box_tx(0)],$
+                         count=[mask_nlon,mask_nlat])
 ENDIF
 
 IF KEYWORD_SET(year_first) THEN BEGIN
@@ -190,7 +196,7 @@ IF KEYWORD_SET(model_nyear) THEN BEGIN
 ENDIF ELSE BEGIN
    IF (cross_section eq 0 and varstruct.ndims eq 3) or $
       (cross_section eq 1 and varstruct.ndims eq 4) THEN BEGIN
-      our_nyear=time/ndays_per_year
+      our_nyear=n_time/ndays_per_year
    ENDIF ELSE IF (cross_section eq 0 and varstruct.ndims eq 4) or $
       (cross_section eq 1 and varstruct.ndims eq 5) THEN BEGIN
       NCDF_DIMINQ,ncid_in,varstruct.dim(year_dim),year_name,n_year
@@ -251,9 +257,10 @@ IF KEYWORD_SET(latavg_range) THEN $
    var_clim=var_clim_store
 
 IF varstruct.ndims eq 3 THEN BEGIN
+   print,ndays_per_year,our_nyear,our_model_offset
    variable=REFORM(OPEN_AND_EXTRACT(var_infile,nc_varname,$
-                                    offset=[box_tx(1),box_tx(0),ndays_per_year*(i+our_model_offset)],$
-                                    count=[n_lon,n_lat,ndays_per_year]))*our_field_multiplier
+                                    offset=[box_tx(1),box_tx(0),ndays_per_year*our_model_offset],$
+                                    count=[n_lon,n_lat,ndays_per_year*our_nyear]))*our_field_multiplier
 ENDIF ELSE IF (cross_section eq 0 and varstruct.ndims eq 4) THEN BEGIN
    IF year_first eq 1 THEN BEGIN
       variable=REFORM(OPEN_AND_EXTRACT(var_infile,nc_varname,$
@@ -307,30 +314,33 @@ ENDIF
    
 IF TOTAL(where(variable ge 1E10)) gt 0 THEN $
    variable[where(variable ge 1E10)]=!Values.F_NaN
-;   phase_ts=REFORM(OPEN_AND_EXTRACT(rmm_infile,'phase',$
-;                                       offset=[our_rmm_offset+i,0],count=[1,ndays_per_year]))
-rmm1_ts=REFORM(OPEN_AND_EXTRACT(rmm_infile,'rmm1',$
-                                offset=[our_rmm_offset,0],count=[our_nyear,ndays_per_year]))
-rmm2_ts=REFORM(OPEN_AND_EXTRACT(rmm_infile,'rmm2',$
-                                offset=[our_rmm_offset,0],count=[our_nyear,ndays_per_year]))
-phase_angle=ATAN(rmm2_ts/rmm1_ts)
-phase_angle[where(rmm2_ts lt 0 and rmm1_ts lt 0)]=phase_angle[where(rmm2_ts lt 0 and rmm1_ts lt 0)]+!Pi
-phase_angle[where(rmm2_ts lt 0 and rmm1_ts ge 0)]=phase_angle[where(rmm2_ts lt 0 and rmm1_ts ge 0)]+2.*!Pi
-phase_angle[where(rmm2_ts ge 0 and rmm1_ts lt 0)]=phase_angle[where(rmm2_ts ge 0 and rmm1_ts lt 0)]+!Pi
-phase_angle=phase_angle*180./!Pi
+phase=REFORM(OPEN_AND_EXTRACT(rmm_infile,'phase',$
+                                 offset=[our_rmm_offset,0],count=[our_nyear,ndays_per_year]))
+;rmm1_ts=REFORM(OPEN_AND_EXTRACT(rmm_infile,'rmm1',$
+;                                offset=[our_rmm_offset,0],count=[our_nyear,ndays_per_year]))
+;rmm2_ts=REFORM(OPEN_AND_EXTRACT(rmm_infile,'rmm2',$
+;                                offset=[our_rmm_offset,0],count=[our_nyear,ndays_per_year]))
+;phase_angle=ATAN(rmm2_ts/rmm1_ts)
+;phase_angle[where(rmm2_ts lt 0 and rmm1_ts lt 0)]=phase_angle[where(rmm2_ts lt 0 and rmm1_ts lt 0)]+!Pi
+;phase_angle[where(rmm2_ts lt 0 and rmm1_ts ge 0)]=phase_angle[where(rmm2_ts lt 0 and rmm1_ts ge 0)]+2.*!Pi
+;phase_angle[where(rmm2_ts ge 0 and rmm1_ts lt 0)]=phase_angle[where(rmm2_ts ge 0 and rmm1_ts lt 0)]+!Pi
+;phase_angle=phase_angle*180./!Pi
 
 amplitude=REFORM(OPEN_AND_EXTRACT(rmm_infile,'amplitude',$
                                      offset=[our_rmm_offset,0],count=[our_nyear,ndays_per_year]))
-phase_angle_ts=fltarr(our_nyear*ndays_per_year)
+;phase_angle_ts=fltarr(our_nyear*ndays_per_year)
+phase_ts=fltarr(our_nyear*ndays_per_year)
 amplitude_ts=fltarr(our_nyear*ndays_per_year)
 FOR i=0,our_nyear-1 DO BEGIN
-   phase_angle_ts(i*ndays_per_year:(i+1)*ndays_per_year-1)=phase_angle(i,*)
+;   phase_angle_ts(i*ndays_per_year:(i+1)*ndays_per_year-1)=phase_angle(i,*)
+   phase_ts(i*ndays_per_year:(i+1)*ndays_per_year-1)=phase(i,*)
    amplitude_ts(i*ndays_per_year:(i+1)*ndays_per_year-1)=amplitude(i,*)
 ENDFOR
 
 FOR j=0,n_phases-1 DO BEGIN
    print,'------> Phase '+STRTRIM(STRING(j+1),1)
-   strong_days=where(phase_angle_ts ge phase_angle_start(j) and phase_angle_ts lt phase_angle_stop(j) and amplitude_ts ge 1)
+   ;strong_days=where(phase_angle_ts ge phase_angle_start(j) and phase_angle_ts lt phase_angle_stop(j) and amplitude_ts ge 1)
+   strong_days=where(phase_ts eq j+1 and amplitude_ts ge 1)
    IF TOTAL(strong_days) gt 0 THEN BEGIN
       n_strong_days(j)=N_ELEMENTS(strong_days)+n_strong_days(j)
       print,j,N_ELEMENTS(strong_days)
@@ -344,12 +354,17 @@ FOR j=0,n_phases-1 DO BEGIN
             IF KEYWORD_SET(year_first) THEN BEGIN
                FOR i=0,our_nyear-1 DO $
                   var_gridpt_ts(i*ndays_per_year:(i+1)*ndays_per_year-1)=REFORM(variable(k,m,i,*))-REFORM(var_clim(k,m,*))
-            ENDIF ELSE $
-               FOR i=0,our_nyear-1 DO $
-                  var_gridpt_ts(i*ndays_per_year:(i+1)*ndays_per_year-1)=REFORM(variable(k,m,*,i))-REFORM(var_clim(k,m,*))
+            ENDIF ELSE BEGIN
+               FOR i=0,our_nyear-1 DO BEGIN
+                  IF varstruct.ndims eq 3 THEN BEGIN
+                     var_gridpt_ts(i*ndays_per_year:(i+1)*ndays_per_year-1)=REFORM(variable(k,m,i*ndays_per_year:(i+1)*ndays_per_year-1))-REFORM(var_clim(k,m,*))
+                  ENDIF ELSE $
+                     var_gridpt_ts(i*ndays_per_year:(i+1)*ndays_per_year-1)=REFORM(variable(k,m,*,i))-REFORM(var_clim(k,m,*))
+               ENDFOR
+            ENDELSE
             ;FOR i=120,our_nyear*ndays_per_year-1 DO $
             ;   var_gridpt_ts(i)=var_gridpt_ts(i)-MEAN(var_gridpt_ts(i-120:i-1),/NaN)
-            phase_anomalies(k,m,j)=MEAN(var_gridpt_ts[strong_days],/NaN)
+            phase_anomalies(k,m,j)=MEAN(var_gridpt_ts[strong_days],/NaN)*a
          ENDFOR
       ENDFOR      
    ENDIF
@@ -360,7 +375,7 @@ ENDFOR
 
 IF KEYWORD_SET(single_plot) THEN BEGIN
                                 ; Make one PostScript file containing all phases
-   psfile='/home/ss901165/idl/mjo_indices/mjo_indices_phase_composites.'+model_name+'.'+varname+'.ps'
+   psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_phase_composites.'+model_name+'.'+varname+'.ps'
    PSOPEN,file=psfile,FONT=2,CHARSIZE=105,MARGIN=1200,SPACE2=200,XOFFSET=500,YOFFSET=1000,TFONT=2,$
           TCHARSIZE=90,SPACE3=400,YPLOTS=4,XPLOTS=2,YSPACING=1500,XSPACING=2000
    
@@ -368,9 +383,9 @@ IF KEYWORD_SET(single_plot) THEN BEGIN
       POS,XPOS=(j/4)+1,YPOS=4-(j MOD 4)
       
       IF color_rev eq 0 THEN $
-         CS,SCALE=1,NCOLS=N_ELEMENTS(mylevs_anom)+1
+         CS,SCALE=1,NCOLS=N_ELEMENTS(mylevs_anom)+1,white=[white_num]
       IF color_rev eq 1 THEN $
-         CS,SCALE=1,NCOLS=N_ELEMENTS(mylevs_anom)+1,/REV
+         CS,SCALE=1,NCOLS=N_ELEMENTS(mylevs_anom)+1,/REV,white=[white_num]
       LEVS,MANUAL=mylevs_anom
       IF cross_section eq 1 THEN BEGIN
          GSET,XMIN=our_lon_range(0),XMAX=our_lon_range(1),YMIN=MAX(ABS(vertical)),YMAX=MIN(ABS(vertical))
@@ -409,7 +424,7 @@ IF KEYWORD_SET(single_plot) THEN BEGIN
 ENDIF ELSE BEGIN
    FOR j=0,n_phases-1 DO BEGIN
                                 ; Make individual plots for each phase
-      psfile='/home/ss901165/idl/mjo_indices/mjo_indices_phase_composites.'+model_name+'.'+varname+'_phase'+STRTRIM(STRING(phases(j)),1)+'of'+STRTRIM(STRING(n_phases),1)+'.ps'
+      psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_phase_composites.'+model_name+'.'+varname+'_phase'+STRTRIM(STRING(phases(j)),1)+'of'+STRTRIM(STRING(n_phases),1)+'.ps'
       PSOPEN,file=psfile,FONT=6,CHARSIZE=180,MARGIN=2000,SPACE2=2500,XOFFSET=1000,YOFFSET=3500,TFONT=2,$
              TCHARSIZE=90,SPACE3=900,YSIZE=10000
       IF color_rev eq 0 THEN $

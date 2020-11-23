@@ -3,15 +3,15 @@ PRO hadgem3kpp_ssts_make_smoothed_ts_fwn96
 ; Make a smoothed timeseries of SST
 ; Need to combine KPP and obs SST using coupling weight file
 
-kpp_sst_file='/home/ss901165/um_output6/xihvp/sst.nc'
-obs_sst_file='/home/ss901165/datasets/METO_OCEAN_ANALYSIS/n96/meto_ocean_analysis.jan-dec_dmean_clim_for_um_lininterp.1980-2009.sst.n96.nc'
-cplwght_file='/home/ss901165/datasets/HADGEM3-KPP_ANCIL/cplwght_for_kpp.n96.5ptblend.nrglobal.nc'
-mask_file='/home/ss901165/datasets/HADGEM3-KPP_ANCIL/landfrac_n96_hadgem3-7.8.nc'
+kpp_sst_file='/group_workspaces/jasmin2/klingaman/metum/xihvr/kpp_ocean/sst.nc'
+obs_sst_file='/home/users/npklingaman/datasets/METO_OCEAN_ANALYSIS/n96/meto_ocean_analysis.jan-dec_dmean_clim_for_um_lininterp.1980-2009.sst.n96.nc'
+cplwght_file='/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/cplwght_for_kpp.n96.5ptblend.nrglobal.nc'
+mask_file='/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/landfrac_n96_hadgem3-7.8.nc'
 ;obs_ice_file='/home/ss901165/datasets/HADGEM3-KPP_ANCIL/sice_amip2_5108_n216_v7.0.jan-dec_dmeans_clim.nc'
-obs_ice_file='/home/ss901165/um_output6/xihvq/hg3kpp_pdctl_n96.ice.nc'
+obs_ice_file='/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/hg3kpp_pdctl_n96.ice.nc'
 
-smooth_length=31
-out_sst_file='/home/ss901165/um_output6/xihvp/smoothed_sst_xihvp_31day.nc'
+smooth_length=1
+out_sst_file='/group_workspaces/jasmin2/klingaman/metum/xihvr/ga3kpp_1.5xentrain_fwgbl.jan-dec_dmeans_ts.years1-25.SST.nc'
 
 ; Get global grid from cplwght file
 gbl_longitude=OPEN_AND_EXTRACT(cplwght_file,'longitude')

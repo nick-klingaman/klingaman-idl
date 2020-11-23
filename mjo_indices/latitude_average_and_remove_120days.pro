@@ -21,7 +21,7 @@ PRO latitude_average_and_remove_120days,input_file,varname,ndays_per_year,output
      our_analysis_varname=analysis_varname
   ENDIF ELSE $
      our_analysis_varname=varname
-  print,our_analysis_varname
+  ;print,our_analysis_varname
 
   IF KEYWORD_SET(ntimes_per_day) THEN BEGIN
      our_ntpd=ntimes_per_day

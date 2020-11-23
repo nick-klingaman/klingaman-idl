@@ -1,9 +1,9 @@
 PRO hadgem3kpp_nao_project_daily_data
 
 box=[20,270,80,40]
-nmodels=3
+nmodels=2
 
-FOR m=2,nmodels-1 DO BEGIN
+FOR m=0,nmodels-1 DO BEGIN
    print,m
    CASE m OF
       ;1 : BEGIN
@@ -50,25 +50,33 @@ FOR m=2,nmodels-1 DO BEGIN
 ;         varname='air_pressure_at_sea_level'
 ;      END     
 
+;      0 : BEGIN
+;         nao_file='/group_workspaces/jasmin/futureweather/cvdp_output/getoml_n216_all/ETOML1_N216.cvdp_data.1992-2051.nc'
+;         mslp_dmean_file='/group_workspaces/jasmin2/klingaman/metum/xlhvf/metum-etoml1_fwn216.jan-dec_dmeans_ts.years1-60.mslp.nc'
+;         outfile='/group_workspaces/jasmin2/klingaman/metum/xlhvf/metum-etoml1_fwn216.jan-dec_dmeans_ts.years1-60.nao_index_etoml1.nc'
+;         ntime=LONG(60)*LONG(360)
+;         varname='air_pressure_at_sea_level'
+;      END
+;      0 : BEGIN
+;         nao_file='/group_workspaces/jasmin/futureweather/cvdp_output/getoml_n216_all/GOML1_N216_1.5F.cvdp_data.1992-2051.nc'
+;         mslp_dmean_file='/group_workspaces/jasmin/futureweather/fwgbl_n216_1p5F/xihvu/metum-goml1_fwn216-1p5.jan-dec_dmeans_ts.years1-61.mslp.nc'
+;         outfile='/group_workspaces/jasmin/futureweather/fwgbl_n216_1p5F/metum-goml1_fwn216-1p5.jan-dec_dmeans_ts.years1-61.nao_index_goml1-1p5.nc'
+;         ntime=LONG(61)*LONG(360)
+;         varname='p'
+;      END
+;      1 : BEGIN
+;         nao_file='/group_workspaces/jasmin/futureweather/cvdp_output/getoml_n216_all/GA3_N216_1.5F.cvdp_data.1992-2051.nc'
+;         mslp_dmean_file='/group_workspaces/jasmin/futureweather/fwgbl_n216_1p5F/metum-ga3_fwn216-31day-1p5.jan-dec_dmeans_ts.years1-61.mslp.nc'
+;         outfile='/group_workspaces/jasmin/futureweather/fwgbl_n216_1p5F/metum-ga3_fwn216-31day-1p5.jan-dec_dmeans_ts.nao_index_ga3-1p5.nc'
+;         ntime=LONG(61)*LONG(360)
+;         varname='p'
+;      END
+      
       0 : BEGIN
-         nao_file='/group_workspaces/jasmin/futureweather/cvdp_output/getoml_n216_all/ETOML1_N216.cvdp_data.1992-2022.nc'
-         mslp_dmean_file='/group_workspaces/jasmin2/klingaman/metum/xlhvf/metum-etoml1_fwn216.jan-dec_dmeans_ts.years1-32.mslp.nc'
-         outfile='/group_workspaces/jasmin2/klingaman/metum/xlhvf/metum-etoml1_fwn216.jan-dec_dmeans_ts.years1-32.nao_index_etoml1.nc'
-         ntime=LONG(32)*LONG(360)
-         varname='air_pressure_at_sea_level'
-      END
-      1 : BEGIN
-         nao_file='/group_workspaces/jasmin/futureweather/cvdp_output/getoml_n216_all/GOML1_N216_1.5F.cvdp_data.1983-2010.nc'
-         mslp_dmean_file='/group_workspaces/jasmin2/klingaman/metum/xihvu/metum-goml1_fwn216-1p5.jan-dec_dmeans_ts.years1-28.mslp.nc'
-         outfile='/group_workspaces/jasmin2/klingaman/metum/xihvu/metum-goml1_fwn216-1p5.jan-dec_dmeans_ts.years1-28.nao_index_goml1-1p5.nc'
-         ntime=LONG(28)*LONG(360)
-         varname='p'
-      END
-      2 : BEGIN
-         nao_file='/group_workspaces/jasmin/futureweather/cvdp_output/getoml_n216_all/TOML1_N216.cvdp_data.1992-2022.nc'
-         mslp_dmean_file='/group_workspaces/jasmin2/klingaman/metum/xlhvc/metum-toml1_fwn216.jan-dec_dmeans_ts.years1-32.mslp.nc'
-         outfile='/group_workspaces/jasmin2/klingaman/metum/xlhvc/metum-toml1_fwn216.jan-dec_dmeans_ts.years1-32.nao_index_toml1.nc'
-         ntime=LONG(32)*LONG(360)
+         nao_file='/group_workspaces/jasmin/futureweather/cvdp_output/getoml_n216_all/TOML1_N216.cvdp_data.1992-2051.nc'
+         mslp_dmean_file='/group_workspaces/jasmin/futureweather/fwtoml_n216/metum-toml1_fwn216.jan-dec_dmeans_ts.years1-66.mslp.nc'
+         outfile='/group_workspaces/jasmin/futureweather/fwtoml_n216/metum-toml1_fwn216.jan-dec_dmeans_ts.years1-66.nao_index_toml1.nc'
+         ntime=LONG(66)*LONG(360)
          varname='air_pressure_at_sea_level'
       END
 
@@ -95,6 +103,7 @@ FOR m=2,nmodels-1 DO BEGIN
    DEFINE_BOUNDARIES,box,lat,lon,box_tx,/LIMIT
    nlat=N_ELEMENTS(lat)
    nlon=N_ELEMENTS(lon)
+
    
 ;   STOP
    nao_pattern=OPEN_AND_EXTRACT(nao_file,'nao_mon',offset=[box_tx(1),box_tx(0)],$

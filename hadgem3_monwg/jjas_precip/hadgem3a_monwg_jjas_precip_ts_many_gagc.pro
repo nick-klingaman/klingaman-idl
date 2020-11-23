@@ -1,8 +1,9 @@
 PRO hadgem3a_monwg_jjas_precip_ts_many_gagc
 
-hg1='/home/ss901165/um_output2'
-ga='/home/ss901165/um_output3/hadgem3_monwg'
-gc2='/home/ss901165/um_output6/gc2'
+hg1='/group_workspaces/jasmin2/klingaman/metum'
+ga='/group_workspaces/jasmin2/klingaman/metum/hadgem3_monwg'
+gc2='/group_workspaces/jasmin2/klingaman/metum/gc2'
+gc3='/group_workspaces/jasmin2/klingaman/metum/gc3'
 dmean_infiles=[hg1+'/hadgem1_monwg/hadgem1.jan-dec.precip.monsoon_domain.nc',$
                hg1+'/higem_monwg/higem.jan-dec.precip.monsoon_domain.nc',$
                ga+'/ageyb/hadgem2a_final_n96_amip2_ageyb.jan-dec_dmeans.1979-1998.precip.nc',$
@@ -16,9 +17,13 @@ dmean_infiles=[hg1+'/hadgem1_monwg/hadgem1.jan-dec.precip.monsoon_domain.nc',$
                gc2+'/antia/hadgem3_ga6_n96.jan-dec_dmeans.years1-27.precip.nc',$
                gc2+'/antib/hadgem3_ga6_n216.jan-dec_dmeans.years1-27.precip.nc',$
                gc2+'/anqjm/hadgem3_gc2_n96_orca025.jan-dec_dmeans.years1-41.precip.nc',$
-               gc2+'/anqjn/hadgem3_gc2_n216.jan-dec_dmeans.years1-60.precip.nc']
+               gc2+'/anqjn/hadgem3_gc2_n216.jan-dec_dmeans.years1-60.precip.nc',$
+               gc3+'/u-ab642/mjo/ab642a.jan-dec_dmeans.1982-2008.precip.nc',$
+               gc3+'/u-ab680/mjo/ab680a.jan-dec_dmeans.1982-2008.precip.nc',$
+               gc3+'/u-ab673/mjo/ab673a.jan-dec_dmeans.2013-2112.precip.nc',$
+               gc3+'/u-ab674/mjo/ab674a.jan-dec_dmeans.2013-2110.precip.nc']
 
-imd_file='/home/ss901165/datasets/IMD_GRIDDED/imd_1x1v2_1951-2004.mjjas.nc'
+imd_file='/home/users/npklingaman/datasets/IMD_GRIDDED/imd_1x1v2_1951-2004.mjjas.nc'
 descs=['AO-N96',$
        'AO-N144',$
        'A-N96',$
@@ -32,75 +37,86 @@ descs=['AO-N96',$
        'A-N96',$
        'A-N216',$
        'AO-N96',$
-       'AO-N216']       
+       'AO-N216',$
+       'A-N96',$
+       'A-N216',$
+       'AO-N96',$
+       'AO-N216']
 
-all_nyears=[30,50,20,30,27,30,27,29,27,27,27,27,41,60]
-offset_may1=[120,120,120,120,120,120,120,120,120,120,120,120,120,120]
-offset=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+all_nyears=[30,50,20,30,27,30,27,29,27,27,27,27,41,60,27,27,100,98]
+offset_may1=[120,120,120,120,120,120,120,120,120,120,120,120,120,120,120,120,120,120]
+offset=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 n_time=150
-varname='precip'
+varname=['precip','precip','precip','precip','precip','precip','precip',$
+         'precip','precip','precip','precip','precip','precip','precip',$
+         'precipitation_flux','precipitation_flux','precipitation_flux','precipitation_flux']
 multiplier=86400.
-all_colors=['tomato','orange','violetred','magenta','brown','indianred','darkgray','slategray','firebrick','red','blue','purple','dodgerblue','violet']
-n96_mask_file=['/home/ss901165/um_output/mask_n96_hadgem3-7.1.nc',$
-               '/home/ss901165/um_output/mask_n144_higam.nc',$
-               '/home/ss901165/um_output/mask_n96_hadgem3-7.1.nc',$
-               '/home/ss901165/um_output/mask_n96_hadgem3-7.1.nc',$
-               '/home/ss901165/um_output/mask_n96_hadgem3-7.1.nc',$
-               '/home/ss901165/um_output/mask_n96_hadgem3-7.1.nc',$
-               '/home/ss901165/um_output/mask_n96_hadgem3-7.1.nc',$
-               '/home/ss901165/um_output/mask_n96_hadgem3-7.1.nc',$
-               '/home/ss901165/um_output/mask_n96_hadgem3-7.1.nc',$
-               '/home/ss901165/um_output/mask_n96_hadgem3-7.1.nc',$
-               '/home/ss901165/um_output/mask_n96_hadgem3-7.1.nc',$
-               '/home/ss901165/um_output/mask_n216_nugam.nc',$
-               '/home/ss901165/um_output/mask_n96_hadgem3-7.1.nc',$
-               '/home/ss901165/um_output/mask_n216_nugam.nc']
+all_colors=['tomato','orange','violetred','magenta','brown','indianred','darkgray','slategray','firebrick','red','blue','purple','dodgerblue','violet','orangered','darkgreen','goldenrod','limegreen']
+n96_mask_file=['/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n96_hadgem3-7.1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n144_higam.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n96_hadgem3-7.1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n96_hadgem3-7.1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n96_hadgem3-7.1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n96_hadgem3-7.1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n96_hadgem3-7.1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n96_hadgem3-7.1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n96_hadgem3-7.1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n96_hadgem3-7.1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n96_hadgem3-7.1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n216_nugam.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n96_hadgem3-7.1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/mask_n216_nugam.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/qrparm.landfrac_n96e_etop1_v1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/qrparm.landfrac_n216e_etop1_v1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/qrparm.landfrac_n96e_etop1_v1.nc',$
+               '/home/users/npklingaman/datasets/HADGEM3-KPP_ANCIL/qrparm.landfrac_n216e_etop1_v1.nc']
                
 ; Box to area average
-box=[-10,50,10,100]
-box_name='EqIO'
+box=[10,70,30,90]
+box_name='India'
 
-max_years=60
+max_years=100
+;n_sets=2
 n_sets=N_ELEMENTS(dmean_infiles)
 all_clims=fltarr(n_sets)
 all_daily_clims=fltarr(n_sets,n_time+60)
 hadgem3_jjas_ts=fltarr(n_sets,max_years)
 
-;imd_longitude=OPEN_AND_EXTRACT(imd_file,'longitude')
-;imd_latitude=OPEN_AND_EXTRACT(imd_file,'latitude')
-;DEFINE_BOUNDARIES,box,imd_latitude,imd_longitude,box_tx,/LIMIT
-;imd=OPEN_AND_EXTRACT(imd_file,'rf',$
-;                     offset=[box_tx(1),box_tx(0),0,0],$
-;                     count=[N_ELEMENTS(imd_longitude),N_ELEMENTS(imd_latitude),150,54])
-;temp=imd(*,*,30:149,*)
-;imd_aavg_clim=MEAN(temp[where(temp lt 1e10)])
-;imd_daily_clim=fltarr(150)
-;FOR i=0,149 DO BEGIN
-;   temp=imd(*,*,i,*)
-;   temp[where(temp gt 1e10)]=!Values.F_NaN
-;   imd_daily_clim(i)=MEAN(temp,/NaN)
-;ENDFOR
-;imd_smean_clim=fltarr(54)
-;FOR i=0,53 DO BEGIN
-;   temp=imd(*,*,30:149,i)
-;   temp[where(temp gt 1e10)]=!Values.F_NaN
-;   imd_smean_clim(i)=MEAN(temp,/NaN)
-;ENDFOR
-
-trmm_file='/home/ss901165/datasets/TRMM_3B42V6/n96/TRMM_3B42v6A.jan-dec_dmeans.1999-2011.n96.nc'
-trmm_longitude=OPEN_AND_EXTRACT(trmm_file,'longitude')
-trmm_latitude=OPEN_AND_EXTRACT(trmm_file,'latitude')
-DEFINE_BOUNDARIES,box,trmm_latitude,trmm_longitude,trmm_box_tx,/LIMIT
-trmm=OPEN_AND_EXTRACT(trmm_file,'precip',$
-                      offset=[trmm_box_tx(1),trmm_box_tx(0),120,0],$
-                      count=[N_ELEMENTS(trmm_longitude),N_ELEMENTS(trmm_latitude),150,13])
-trmm_smeans=fltarr(13)
-FOR i=0,12 DO BEGIN
-   temp=trmm(*,*,30:149,i)
-   IF TOTAL(where(temp gt 1000)) ge 0 THEN $
-      temp[where(temp gt 1000)]=!Values.F_NaN
-   trmm_smeans(i)=MEAN(temp,/NaN)
+imd_longitude=OPEN_AND_EXTRACT(imd_file,'longitude')
+imd_latitude=OPEN_AND_EXTRACT(imd_file,'latitude')
+DEFINE_BOUNDARIES,box,imd_latitude,imd_longitude,box_tx,/LIMIT
+imd=OPEN_AND_EXTRACT(imd_file,'rf',$
+                     offset=[box_tx(1),box_tx(0),0,0],$
+                     count=[N_ELEMENTS(imd_longitude),N_ELEMENTS(imd_latitude),150,54])
+temp=imd(*,*,30:149,*)
+imd_aavg_clim=MEAN(temp[where(temp lt 1e10)])
+imd_daily_clim=fltarr(150)
+FOR i=0,149 DO BEGIN
+   temp=imd(*,*,i,*)
+   temp[where(temp gt 1e10)]=!Values.F_NaN
+   imd_daily_clim(i)=MEAN(temp,/NaN)
 ENDFOR
+imd_smean_clim=fltarr(54)
+FOR i=0,53 DO BEGIN
+   temp=imd(*,*,30:149,i)
+   temp[where(temp gt 1e10)]=!Values.F_NaN
+   imd_smean_clim(i)=MEAN(temp,/NaN)
+ENDFOR
+
+;trmm_file='/home/users/npklingaman/datasets/TRMM_3B42/n96/TRMM_3B42v6A.jan-dec_dmeans.1999-2011.n96.nc'
+;trmm_longitude=OPEN_AND_EXTRACT(trmm_file,'longitude')
+;trmm_latitude=OPEN_AND_EXTRACT(trmm_file,'latitude')
+;DEFINE_BOUNDARIES,box,trmm_latitude,trmm_longitude,trmm_box_tx,/LIMIT
+;trmm=OPEN_AND_EXTRACT(trmm_file,'precip',$
+;                      offset=[trmm_box_tx(1),trmm_box_tx(0),120,0],$
+;                      count=[N_ELEMENTS(trmm_longitude),N_ELEMENTS(trmm_latitude),150,13])
+;trmm_smeans=fltarr(13)
+;FOR i=0,12 DO BEGIN
+;   temp=trmm(*,*,30:149,i)
+;   IF TOTAL(where(temp gt 1000)) ge 0 THEN $
+;      temp[where(temp gt 1000)]=!Values.F_NaN
+;   trmm_smeans(i)=MEAN(temp,/NaN)
+;ENDFOR
 
 FOR k=0,n_sets-1 DO BEGIN   
    print,k
@@ -124,14 +140,14 @@ FOR k=0,n_sets-1 DO BEGIN
 ;         n96_mask_rev(i,nlat-j-1)=n96_mask(i,j)
       
    FOR i=0,all_nyears(k)-1 DO BEGIN
-      hadgem3_year=REFORM(OPEN_AND_EXTRACT(dmean_infiles(k),varname,$
+      hadgem3_year=REFORM(OPEN_AND_EXTRACT(dmean_infiles(k),varname(k),$
                                            offset=[box_tx(1),box_tx(0),offset_may1(k)-30,i],$
                                            count=[nlon,nlat,n_time+60,1]))*multiplier
       hadgem3_year_aavg=fltarr(n_time+30)
       FOR j=0,n_time+59 DO BEGIN
          temp_precip=REFORM(hadgem3_year(*,*,j))
-         IF TOTAL(where(n96_mask ne 0) ge 0) THEN $
-            temp_precip[where(n96_mask ne 0)]=!Values.F_NaN
+         IF TOTAL(where(n96_mask eq 0) ge 0) THEN $
+            temp_precip[where(n96_mask eq 0)]=!Values.F_NaN
          hadgem3_year(*,*,j)=temp_precip
          all_daily_clims(k,j)=MEAN(temp_precip,/NaN)*1./FLOAT(all_nyears(k))+all_daily_clims(k,j)
       ENDFOR
@@ -143,7 +159,7 @@ FOR k=0,n_sets-1 DO BEGIN
 ENDFOR
 
 ; Build plot
-psfile='/home/ss901165/idl/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_ts_many_gagc.jjas_air_ts.'+box_name+'.ps'
+psfile='/home/users/npklingaman/plots/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_ts_many_gagc.jjas_air_ts.'+box_name+'.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=140,MARGIN=2000,SPACE2=300,XOFFSET=800,YOFFSET=500,TFONT=6,TCHARSIZE=100,SPACE3=200
 ymin=1.0
 ymax=7.5
@@ -168,24 +184,26 @@ FOR i=0,n_sets-1 DO $
 
 AXES,XSTEP=4,XMINOR=1,$
      YSTEP=0.5,YMINOR=0.25,XTITLE='Year',YTITLE='Area-averaged precipitation over Indian land (mm day!U-1!N)',NDECS=1
-GLEGEND,labels=REVERSE([descs,'IMD']),col=REVERSE([FSC_COLOR(all_colors),FSC_COLOR('black')]),LEGPOS=11,SIZE=80,LENGTH=50,THICK=REPLICATE(200,n_sets+1)
-PSCLOSE,/NOVIEW
+print,all_colors
+;GLEGEND,labels=REVERSE([descs,'IMD']),col=REVERSE([FSC_COLOR(all_colors),FSC_COLOR('black')]),LEGPOS=11,SIZE=80,LENGTH=50,THICK=REPLICATE(200,n_sets+1)
+PSCLOSE
 
-psfile='/home/ss901165/idl/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_ts_many_gagc.jjas_air_sdev.'+box_name+'.ps'
+psfile='/home/users/npklingaman/plots/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_ts_many_gagc.jjas_air_sdev.'+box_name+'.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=130,MARGIN=1800,SPACE2=0,XOFFSET=800,YOFFSET=500,TFONT=6,TCHARSIZE=100,SPACE3=0
 ymin=0
 ymax=10
-GSET,XMIN=0,XMAX=n_sets+0.5,YMIN=ymin,YMAX=ymax,TITLE='Mean (dots) and [Min,25,Med,75,Max] of JJAS precip over Eq.Ind.Ocn. (10S-10N, 50-100E, ocean only)'
-;sorted=SORT(imd_smean_clim)
-;EBAR,X=0.5,BOX=[imd_smean_clim(sorted(0)),imd_smean_clim(sorted(54/4)),imd_smean_clim(sorted(54/2)),$
-;                imd_smean_clim(sorted(54*3/4)),imd_smean_clim(sorted(54-1))],$
-;     WIDTH=175,COL=FSC_COLOR('black'),THICK=250
-sorted=SORT(trmm_smeans)
-EBAR,X=0.5,BOX=[trmm_smeans(sorted(0)),trmm_smeans(sorted(13/4)),trmm_smeans(sorted(13/2)),$
-                trmm_smeans(sorted(13*3/4)),trmm_smeans(sorted(13-1))],$
+GSET,XMIN=0,XMAX=n_sets,YMIN=ymin,YMAX=ymax,TITLE='Mean (dots) and [Min,25,Med,75,Max] of JJAS precip over India (10-30N, 70-90E, land only)'
+sorted=SORT(imd_smean_clim)
+EBAR,X=0.5,BOX=[imd_smean_clim(sorted(0)),imd_smean_clim(sorted(54/4)),imd_smean_clim(sorted(54/2)),$
+                imd_smean_clim(sorted(54*3/4)),imd_smean_clim(sorted(54-1))],$
      WIDTH=175,COL=FSC_COLOR('black'),THICK=250
-GPLOT,X=0.5,Y=MEAN(trmm_smeans),SYM=3,SIZE=100
-xpos=[0.5,1.6,2.4,3.6,4.4,5.6,6.4,7.6,8.4,9.6,10.4,11.8,12.5,13.2,13.9]
+GPLOT,X=0.5,Y=MEAN(imd_smean_clim),SYM=3,SIZE=100
+;sorted=SORT(trmm_smeans)
+;EBAR,X=0.5,BOX=[trmm_smeans(sorted(0)),trmm_smeans(sorted(13/4)),trmm_smeans(sorted(13/2)),$
+;                trmm_smeans(sorted(13*3/4)),trmm_smeans(sorted(13-1))],$
+;     WIDTH=175,COL=FSC_COLOR('black'),THICK=250
+;GPLOT,X=0.5,Y=MEAN(trmm_smeans),SYM=3,SIZE=100
+xpos=[0.5,1.6,2.4,3.6,4.4,5.6,6.4,7.6,8.4,9.6,10.4,11.8,12.5,13.2,13.9,15.3,16.0,16.7,17.4]
 FOR i=0,n_sets-1 DO BEGIN
    temp=REFORM(hadgem3_jjas_ts(i,0:all_nyears(i)-1))
    sorted=SORT(temp)
@@ -199,6 +217,7 @@ GPLOT,X=[5,5],Y=[ymin,ymax],STYLE=1
 GPLOT,X=[7,7],Y=[ymin,ymax],STYLE=1
 GPLOT,X=[9,9],Y=[ymin,ymax],STYLE=1
 GPLOT,X=[11,11],Y=[ymin,ymax],STYLE=1
+GPLOT,X=[14.6,14.6],Y=[ymin,ymax],STYLE=1
 GPLOT,X=0.5,Y=ymax*0.95,TEXT='Obs'
 GPLOT,X=2,Y=ymax*0.95,TEXT='HadGEM1'
 GPLOT,X=4,Y=ymax*0.95,TEXT='HadGEM2'
@@ -206,11 +225,12 @@ GPLOT,X=6,Y=ymax*0.95,TEXT='MORPH3'
 GPLOT,X=8,Y=ymax*0.95,TEXT='GA3'
 GPLOT,X=10,Y=ymax*0.95,TEXT='GA4'
 GPLOT,X=12.8,Y=ymax*0.95,TEXT='GA6/GC2'
+GPLOT,X=16.3,Y=ymax*0.95,TEXT='GA7/GC3'
 AXES,XVALS=xpos,XLABELS=['TRMM',descs],ORIENTATION=30,YTITLE='Precipitation (mm day!U-1!N)',YSTEP=1,YMINOR=0.5,/NOUPPER
 PSCLOSE       
 
 ; Build plot
-psfile='/home/ss901165/idl/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_ts_many_gagc.jjas_air_clim.'+box_name+'.ps'
+psfile='/home/users/npklingaman/plots/hadgem3_monwg/jjas_precip/hadgem3_monwg_jjas_precip_ts_many_gagc.jjas_air_clim.'+box_name+'.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=140,MARGIN=2000,SPACE2=300,XOFFSET=800,YOFFSET=500,TFONT=6,TCHARSIZE=100,SPACE3=300
 ymin=0
 ymax=12
@@ -223,7 +243,7 @@ GPLOT,X=indgen(n_time)+0.5,Y=SMOOTH(imd_daily_clim,5),COL=FSC_COLOR('black'),THI
 AXES,YSTEP=1,YMINOR=0.5,XVALS=[0,15,30,45,60,75,90,105,120,135,149]+0.5,XTITLE='Day',$
      XLABELS=['1/5','15/5','1/6','15/6','1/7','15/7','1/8','15/8','1/9','15/9','30/9'],YTITLE='Area-averaged precipitation over Indian land (mm day!U-1!N)'
 GLEGEND,labels=REVERSE([descs,'IMD']),col=REVERSE([FSC_COLOR(all_colors),FSC_COLOR('black')]),LEGPOS=1,SIZE=80
-PSCLOSE,/NOVIEW
+PSCLOSE
    
 STOP
 

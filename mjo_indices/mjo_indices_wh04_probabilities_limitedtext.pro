@@ -179,9 +179,9 @@ u=fltarr(1,1)
 v=fltarr(1,1)
 
 IF KEYWORD_SET(prev_day) THEN BEGIN
-   psfile='/home/ss901165/idl/mjo_indices/mjo_indices_wh04_probabilities_limitedtext.freq_phase.'+runid+'.prev_day.ps'
+   psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_wh04_probabilities_limitedtext.freq_phase.'+runid+'.prev_day.ps'
 ENDIF ELSE $
-   psfile='/home/ss901165/idl/mjo_indices/mjo_indices_wh04_probabilities_limitedtext.freq_phase.'+runid+'.ps'
+   psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_wh04_probabilities_limitedtext.freq_phase.'+runid+'.ps'
 PSOPEN,file=psfile,FONT=2,CHARSIZE=150,MARGIN=1500,SPACE3=1500,XOFFSET=1500,YOFFSET=1000,TFONT=2,TCHARSIZE=100,CB_WIDTH=110,$
        XSIZE=17000,YSIZE=17000
 GSET,XMIN=-3,XMAX=3,YMIN=-3,YMAX=3;,TITLE='Fractional frequency of occurrence for Wheeler and Hendon phases - '+runid
@@ -264,9 +264,8 @@ GPLOT,X=0,Y=-3.75,TEXT='RMM1',ALIGN=0.5,CHARSIZE=120
 GPLOT,X=-3.65,Y=0,TEXT='RMM2',ALIGN=0.5,CHARSIZE=120,ORIENTATION=90
 
 PSCLOSE,/NOVIEW
-STOP
 
-psfile='/home/ss901165/idl/mjo_indices/mjo_indices_wh04_probabilities.lag_composite.'+runid+'.ps'
+psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_wh04_probabilities.lag_composite.'+runid+'.ps'
 PSOPEN,file=psfile,FONT=2,CHARSIZE=120,MARGIN=2000,SPACE3=1500,XOFFSET=1000,YOFFSET=500,TFONT=2,TCHARSIZE=100,CB_WIDTH=110,$
        XSIZE=16000,YSIZE=16000
 GSET,XMIN=-2,XMAX=2,YMIN=-2,YMAX=2,TITLE='Lag composite evolution of strong MJO activity in each phase - '+runid
@@ -413,9 +412,9 @@ IF KEYWORD_SET(obs_input_file) THEN BEGIN
    freq_obs_phase_gen=freq_obs_phase_gen/FLOAT(TOTAL(freq_obs_phase_gen))
 
    IF KEYWORD_SET(prev_day) THEN BEGIN
-      psfile='/home/ss901165/idl/mjo_indices/mjo_indices_wh04_probabilities.freq_phase.'+runid+'_lines_compare_obs.prev_day.ps'
+      psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_wh04_probabilities.freq_phase.'+runid+'_lines_compare_obs.prev_day.ps'
    ENDIF ELSE $
-      psfile='/home/ss901165/idl/mjo_indices/mjo_indices_wh04_probabilities.freq_phase.'+runid+'_lines_compare_obs.ps'
+      psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_wh04_probabilities.freq_phase.'+runid+'_lines_compare_obs.ps'
    PSOPEN,file=psfile,FONT=2,CHARSIZE=110,MARGIN=1500,SPACE2=100,XOFFSET=1200,YOFFSET=6000,TFONT=2,TCHARSIZE=100,CB_WIDTH=110,$
           XSIZE=23000,YSIZE=12000,SPACE3=100   
    GSET,XMIN=0.5,XMAX=8.5,YMIN=0,YMAX=0.18,TITLE='Comparison of MJO phase frequency statistics for model run '+runid+' against observations'

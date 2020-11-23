@@ -1,11 +1,12 @@
 PRO metum_daily_precip_twodpdf
 
 n_models=5
+set_name='ga7mem'
 hg3='/home/ss901165/um_output3/hadgem3_monwg'
 um6='/home/ss901165/um_output6'
-trmm='/home/ss901165/datasets/TRMM_3B42V6'
-cmorph='/home/ss901165/datasets/CMORPH'
-gc2='/home/ss901165/um_output6/gc2'
+trmm='/home/users/npklingaman/datasets/TRMM_3B42'
+cmorph='/home/users/npklingaman/datasets/CMORPH'
+gc2='/home/users/npklingaman/klingaman/metum/gc2'
 
 ; For 2D PDFs
 box=[-10,60,20,180]
@@ -42,9 +43,81 @@ all_psfile_titles=strarr(n_models)
 all_syms=intarr(n_models)
 FOR i=0,n_models-1 DO BEGIN
    CASE i OF 
+      2 : BEGIN
+         infile=gc2+'/mi-ah288/ah288.jun-sep_dmeans_ts.1989-2008.precip.nc'
+         tsteps=120*20-1
+         time_offset=1
+         tstep_length=86400.
+         multiplier=86400.
+         lon_name='longitude'
+         lat_name='latitude'
+         var_name='precipitation_flux'
+         row_map=[11,12,13,14]
+         column_map=[0]
+         psfile_title='mi-ah288_protoGA7_CTL'
+         all_dx(i)=200
+         all_dt(i)=24
+         all_colors(i)='red'
+         all_box_size(i)=1400
+         all_syms(i)=2
+      END
       0 : BEGIN
-         ;infile=gc2+'/antia/antia.jun-sep_dmeans.precip.nc'
-         ;tsteps=119
+         infile=gc2+'/mi-ah326/ah326.jun-sep_dmeans_ts.1989-2008.precip.nc'
+         tsteps=120*20-1
+         time_offset=1
+         tstep_length=86400.
+         multiplier=86400.
+         lon_name='longitude'
+         lat_name='latitude'
+         var_name='precipitation_flux'
+         row_map=[11,12,13,14]
+         column_map=[0]
+         psfile_title='mi-ah326_GA6+6A_CTL'
+         all_dx(i)=200
+         all_dt(i)=24
+         all_colors(i)='blue'
+         all_box_size(i)=1400
+         all_syms(i)=2
+         missing_value=2e20
+      END
+      1 : BEGIN
+         infile=gc2+'/mi-ai191/ai191.jun-sep_dmeans_ts.1989-2008.precip.nc'
+         tsteps=120*20-1
+         time_offset=1
+         tstep_length=86400.
+         multiplier=86400.
+         lon_name='longitude'
+         lat_name='latitude'
+         var_name='precipitation_flux'
+         row_map=[11,12,13,14]
+         column_map=[0]
+         psfile_title='mi-ai191_GA6+6A_MEM'
+         all_dx(i)=200
+         all_dt(i)=24
+         all_colors(i)='cyan'
+         all_box_size(i)=1400
+         all_syms(i)=2
+      END
+      3 : BEGIN
+         infile=gc2+'/mi-ai647/ai647.jun-sep_dmeans_ts.1989-2008.precip.nc'
+         tsteps=120*20-1
+         time_offset=1
+         tstep_length=86400.
+         multiplier=86400.
+         lon_name='longitude'
+         lat_name='latitude'
+         var_name='precipitation_flux'
+         row_map=[11,12,13,14]
+         column_map=[0]
+         psfile_title='mi-ai647_protoGA7_MEM'
+         all_dx(i)=200
+         all_dt(i)=24
+         all_colors(i)='orange'
+         all_box_size(i)=1400
+         all_syms(i)=2
+      END
+
+      6 : BEGIN
          infile=gc2+'/antia/hadgem3_ga6_n96.jan-dec_dmeans_ts.years1-27.precip.nc'
          tsteps=360*27-1
          time_offset=1
@@ -62,9 +135,7 @@ FOR i=0,n_models-1 DO BEGIN
 	 all_box_size(i)=1400
          all_syms(i)=1
       END
-      1 : BEGIN
-;         infile=gc2+'/antib/antib.jun-sep_dmeans.precip.nc'
-;         tsteps=119
+      7 : BEGIN
          infile=gc2+'/antib/hadgem3_ga6_n216.jan-dec_dmeans_ts.years1-27.precip.nc'
          tsteps=360*27-1
          time_offset=1
@@ -82,9 +153,7 @@ FOR i=0,n_models-1 DO BEGIN
 	 all_box_size(i)=1400
          all_syms(i)=2
       END
-      2 : BEGIN
-;         infile=gc2+'/anrid/anrid.jun-sep_dmeans.precip.nc'
-;         tsteps=82
+      6 : BEGIN
          infile=gc2+'/anrid/hadgem3_ga6_n512.jan-dec_dmeans_ts.years1-9.precip.nc'
          tsteps=3449
          tstep_length=86400
@@ -99,86 +168,26 @@ FOR i=0,n_models-1 DO BEGIN
 	 all_box_size(i)=1400
          all_syms(i)=3
       END
-      ;3 : BEGIN
-      ;   infile=gc2+'/anrid/anrid.jun-sep_dmeans.precip.nc'
-      ;   tsteps=119
-      ;   tstep_length=86400
-      ;   multiplier=86400.
-      ;   lon_name='longitude'
-      ;   lat_name='latitude'
-      ;   var_name='precip'
-      ;   psfile_title='GA6_N512p-NWP'
-      ;   all_dx(i)=40
-      ;   all_dt(i)=24
-      ;   all_colors(i)='violetred'
-      ;   box=[0,130,20,160]                  
-      ;   all_box_size(i)=600
-      ;END
-      ; 3 : BEGIN
-      ;    infile=um6+'/answa_N1024param/wp_dmeans.nc'
-      ;    tsteps=119
-      ;    tstep_length=86400
-      ;    multiplier=86400.
-      ;    lon_name='longitude'
-      ;    lat_name='latitude'
-      ;    var_name='tot_precip'
-      ;    psfile_title='GA6_N1024p'
-      ;    all_dx(i)=16
-      ;    all_dt(i)=24
-      ;    all_colors(i)='red'
-      ;    box=[0,130,20,160]
-      ;    all_box_size(i)=600
-      ;    all_syms(i)=4
-      ; END   
-      ; 4 : BEGIN
-      ;    infile=um6+'/answc_N1024explt/wp_dmeans.nc'
-      ;    tsteps=119
-      ;    tstep_length=86400
-      ;    multiplier=86400.
-      ;    lon_name='longitude'
-      ;    lat_name='latitude'
-      ;    var_name='tot_precip'
-      ;    psfile_title='GA6_N1024e'
-      ;    all_dx(i)=16
-      ;    all_dt(i)=24
-      ;    all_box_size(i)=600
-      ;    all_colors(i)='orange'
-      ;    all_syms(i)=5
-      ; END
-      3 : BEGIN
-         infile=trmm+'/native_resolution/TRMM_3B42v6A.jun-sep_dmeans.1999-2010.precip.nc'
-         tsteps=120*12
-         time_offset=0
+
+      4 : BEGIN
+;         infile=trmm+'/native_resolution/TRMM_3B42v6A.jun-sep_dmeans.1999-2010.precip.nc'
+         infile=trmm+'/n96/TRMM_3B42v6A.jan-dec_dmeans_ts.1999-2011.n96.nc'
+         tsteps=365*13-1
+         time_offset=1
          tstep_length=86400
-         multiplier=24.
+         multiplier=1
          lon_name='longitude'
          lat_name='latitude'
          var_name='precip'
-         psfile_title='TRMM'
-         all_dx(i)=25
+         psfile_title='TRMM_N96'
+         all_dx(i)=200
          all_dt(i)=24
          all_box_size(i)=1050
          all_colors(i)='black'
          box=[-10,60,20,160]
          all_syms(i)=6
-      END     
-      ;7 : BEGIN
-      ;   infile=trmm+'/native_resolution/TRMM_3B42v6A.jun-sep_dmeans.1999-2010.precip.nc'
-      ;   tsteps=120*12
-      ;   time_offset=0
-      ;   tstep_length=86400
-      ;   multiplier=24.
-      ;   lon_name='longitude'
-      ;   lat_name='latitude'
-      ;   var_name='precip'
-      ;   psfile_title='TRMM-NWP'
-      ;   all_dx(i)=25
-      ;   all_dt(i)=24
-      ;   all_box_size(i)=600
-      ;   all_colors(i)='darkgrey'
-      ;   box=[0,130,20,160]
-      ;END
-      4 : BEGIN
+      END      
+      5 : BEGIN
          infile=cmorph+'/CMORPH.jun-sep_dmeans_ts.2001-2012.precip.nc'
          tsteps=11700/8
          time_offset=0
@@ -195,103 +204,112 @@ FOR i=0,n_models-1 DO BEGIN
          box=[-10,60,20,160]
          all_syms(i)=7
       END  
-      ;9 : BEGIN
-      ;   infile=cmorph+'/CMORPH.jun-sep_dmeans_ts.2001-2012.precip.nc'   
-      ;   tsteps=11700/8
-      ;   time_offset=0
-      ;   tstep_length=86400
-      ;   multiplier=8.
-      ;   lon_name='lon'
-      ;   lat_name='lat'
-      ;   var_name='precip'
-      ;   psfile_title='CMORPH-NWP'
-      ;   all_dx(i)=25
-      ;   all_dt(i)=24
-      ;   all_box_size(i)=600
-      ;   all_colors(i)='pink'
-      ;   box=[0,130,20,160]
-      ;END
-   ENDCASE
-   ;tsteps=100
+   ENDCASE   
 
+  ; Read dimension information and find box to analyse
    lon=OPEN_AND_EXTRACT(infile,lon_name)
    lat=OPEN_AND_EXTRACT(infile,lat_name)
    DEFINE_BOUNDARIES,box,lat,lon,box_tx,/LIMIT
    nlon=N_ELEMENTS(lon)
    nlat=N_ELEMENTS(lat)
-   
+
+   IF nlat lt domain_size THEN BEGIN
+      print,'ERROR: Number of latitude points in region to analyse ([box]) is smaller than length of sub-domain ([domain_size]).'
+      print,'You requested sub-domains of length '+STRTRIM(STRING(domain_size),1),' but there are only '+STRTRIM(STRING(nlat),1),' latitude points.'
+      STOP
+   ENDIF ELSE IF nlon lt domain_size THEN BEGIN
+      print,'ERROR: Number of longitude points in region to analyse ([box]) is smaller than length of sub-domain ([domain_size]).'
+      print,'You requested sub-domains of length '+STRTRIM(STRING(domain_size),1),' but there are only '+STRTRIM(STRING(nlat),1),' longitude points.'
+      STOP
+   ENDIF
+  
+   ; Read precipitation data
    precip = OPEN_AND_EXTRACT(infile,var_name,$
                              offset=[box_tx(1),box_tx(0),time_offset],$
                              count=[nlon,nlat,tsteps])*multiplier
+   
+   n_missing=N_ELEMENTS(where(precip eq missing_value))
+   precip[where(precip eq missing_value)]=!Values.F_NaN
 
+                                ; Arrays for maps of on/off and off/on
+                                ; frequency.  Note these are not
+                                ; currently plotted.
    spatial_freq=fltarr(nlon,nlat)
    spatial_freq_onoff=fltarr(nlon,nlat)
    spatial_freq_offon=fltarr(nlon,nlat)
    spatial_freq_on=fltarr(nlon,nlat)
    spatial_freq_off=fltarr(nlon,nlat)
 
+                                ; Arrays for 2D PDF of daily
+                                ; rainfall (t vs. t+1), as well as 1D
+                                ; pdf of rainfall.
    twod_pdf_prct=fltarr(n_heavi+1,n_heavi+1)
    oned_pdf=fltarr(n_heavi+1)
    oned_pdf_prct=fltarr(n_heavi+1)
    heaviside_tstep=heaviside
 
+   ; Loop over gridpoints
    FOR j=0,nlon-1 DO BEGIN
       FOR k=0,nlat-1 DO BEGIN
          ts=REFORM(precip(j,k,*))
+         ; Compute 2D PDFs of daily rainfall and on/off, off/on frequency.
          FOR m=0,n_heavi-2 DO BEGIN
-            IF TOTAL(where(ts ge heaviside_tstep(m) and ts lt heaviside_tstep(m+1))) ge 0 THEN BEGIN
+            IF TOTAL(where(ts ge heaviside_tstep(m) and ts lt heaviside_tstep(m+1) and FINITE(ts) eq 1)) ge 0 THEN BEGIN
                valid=where(ts ge heaviside_tstep(m) and ts lt heaviside_tstep(m+1))
                oned_pdf_prct(m+1)=oned_pdf_prct(m+1)+N_ELEMENTS(valid)
                next=ts[valid+1]
                FOR n=0,n_heavi-2 DO BEGIN
-                  IF TOTAL(where(next ge heaviside_tstep(n) and next lt heaviside_tstep(n+1))) ge 0 THEN $
+                  IF TOTAL(where(next ge heaviside_tstep(n) and next lt heaviside_tstep(n+1) and FINITE(next) eq 1)) ge 0 THEN $
                      twod_pdf_prct(m+1,n+1)=N_ELEMENTS(where(next ge heaviside_tstep(n) and next lt heaviside_tstep(n+1)))+twod_pdf_prct(m+1,n+1)
                ENDFOR
-               IF TOTAL(where(next lt heaviside_tstep(0))) ge 0 THEN BEGIN
+               IF TOTAL(where(next lt heaviside_tstep(0) and FINITE(next) eq 1)) ge 0 THEN BEGIN
                   twod_pdf_prct(m+1,0)=N_ELEMENTS(where(next lt heaviside_tstep(0)))+twod_pdf_prct(m+1,0)
                   IF where(row_map eq m) ge 0 THEN BEGIN
                      spatial_freq_onoff(j,k)=spatial_freq_onoff(j,k)+N_ELEMENTS(where(next lt heaviside_tstep(0)))
                      spatial_freq_on(j,k)=spatial_freq_on(j,k)+N_ELEMENTS(valid)
                   ENDIF
                ENDIF
-               IF TOTAL(where(next ge heaviside_tstep(n_heavi-1))) ge 0 THEN $
+               IF TOTAL(where(next ge heaviside_tstep(n_heavi-1) and FINITE(next) eq 1)) ge 0 THEN $
                   twod_pdf_prct(m+1,n_heavi)=N_ELEMENTS(where(next ge heaviside_tstep(n_heavi-1)))+twod_pdf_prct(m+1,n_heavi)
             ENDIF 
          ENDFOR
-         IF TOTAL(where(ts lt heaviside_tstep(0))) ge 0 THEN BEGIN
+         IF TOTAL(where(ts lt heaviside_tstep(0) and FINITE(ts) eq 1)) ge 0 THEN BEGIN
             valid=where(ts lt heaviside_tstep(0))
             oned_pdf(0)=oned_pdf(0)+N_ELEMENTS(valid)
             oned_pdf_prct(0)=oned_pdf_prct(0)+N_ELEMENTS(valid)
             next=ts[valid+1]
             spatial_freq_off(j,k)=spatial_freq_off(j,k)+N_ELEMENTS(valid)
             FOR n=0,n_heavi-2 DO BEGIN
-               IF TOTAL(where(next ge heaviside_tstep(n) and next lt heaviside_tstep(n+1))) ge 0 THEN BEGIN
+               IF TOTAL(where(next ge heaviside_tstep(n) and next lt heaviside_tstep(n+1) and FINITE(next) eq 1)) ge 0 THEN BEGIN
                   twod_pdf_prct(0,n+1)=N_ELEMENTS(where(next ge heaviside_tstep(n) and next lt heaviside_tstep(n+1)))+twod_pdf_prct(0,n+1)                
                   IF where(row_map eq n) ge 0 THEN $
                      spatial_freq_offon(j,k)=spatial_freq_offon(j,k)+N_ELEMENTS(where(next ge heaviside_tstep(n) and next lt heaviside_tstep(n+1)))
                ENDIF
             ENDFOR
-            IF TOTAL(where(next lt heaviside_tstep(0))) ge 0 THEN $
+            IF TOTAL(where(next lt heaviside_tstep(0) and FINITE(next) eq 1)) ge 0 THEN $
                twod_pdf_prct(0,0)=N_ELEMENTS(where(next lt heaviside_tstep(0)))+twod_pdf_prct(0,0)
-            IF TOTAL(where(next ge heaviside_tstep(n_heavi-1))) ge 0 THEN $
+            IF TOTAL(where(next ge heaviside_tstep(n_heavi-1) and FINITE(next) eq 1)) ge 0 THEN $
                twod_pdf_prct(0,n_heavi)=N_ELEMENTS(where(next ge heaviside_tstep(n_heavi-1)))+twod_pdf_prct(0,n_heavi)
          ENDIF           
-         IF TOTAL(where(ts ge heaviside_tstep(n_heavi-1))) ge 0 THEN BEGIN
+         IF TOTAL(where(ts ge heaviside_tstep(n_heavi-1) and FINITE(ts) eq 1)) ge 0 THEN BEGIN
             valid=where(ts ge heaviside_tstep(n_heavi-1))
             oned_pdf_prct(n_heavi)=oned_pdf_prct(n_heavi)+N_ELEMENTS(valid)
             next=ts[valid+1]
             FOR n=0,n_heavi-2 DO BEGIN
-               IF TOTAL(where(next ge heaviside_tstep(n) and next lt heaviside_tstep(n+1))) ge 0 THEN $
+               IF TOTAL(where(next ge heaviside_tstep(n) and next lt heaviside_tstep(n+1) and FINITE(next) eq 1)) ge 0 THEN $
                   twod_pdf_prct(n_heavi,n+1)=N_ELEMENTS(where(next ge heaviside_tstep(n) and next lt heaviside_tstep(n+1)))+twod_pdf_prct(n_heavi,n+1)             
              ENDFOR
-            IF TOTAL(where(next lt heaviside_tstep(0))) ge 0 THEN $
+            IF TOTAL(where(next lt heaviside_tstep(0) and FINITE(next) eq 1)) ge 0 THEN $
                twod_pdf_prct(n_heavi,0)=N_ELEMENTS(where(next lt heaviside_tstep(0)))+twod_pdf_prct(n_heavi,0)
-            IF TOTAL(where(next ge heaviside_tstep(n_heavi-1))) ge 0 THEN $
+            IF TOTAL(where(next ge heaviside_tstep(n_heavi-1) and FINITE(next) eq 1)) ge 0 THEN $
                twod_pdf_prct(n_heavi,n_heavi)=N_ELEMENTS(where(next ge heaviside_tstep(n_heavi-1)))+twod_pdf_prct(n_heavi,n_heavi)
          ENDIF
       ENDFOR
    ENDFOR
    
+                                ; Normalize results by number of
+                                ; valid gridpoints and/or number of
+                                ; days, as appropriate.
    spatial_freq=spatial_freq/FLOAT(tsteps)
    spatial_freq_on=spatial_freq_on/FLOAT(tsteps)
    spatial_freq_off=spatial_freq_off/FLOAT(tsteps)
@@ -309,27 +327,13 @@ FOR i=0,n_models-1 DO BEGIN
    ENDFOR
    twod_pdf_prct=twod_pdf_prct/TOTAL(twod_pdf_prct)
 
-  ; mylevs_prct=['1e-5','2e-5','4e-5','7e-5','1e-4','2e-4','4e-4','7e-4','1e-3','2e-3','4e-3','7e-3','1e-2','2e-2','4e-2','7e-2','1e-1']
-  ; psfile='/home/ss901165/idl/mjo_diabatic/timestep/metum_daily_precip_twodpdf.'+psfile_title+'_prct.ps'
-  ; PSOPEN,file=psfile,TFONT=6,FONT=6,CHARSIZE=125,TCHARSIZE=100,XSIZE=16500,YSIZE=16500,SPACE2=2000,YOFFSET=1000
-  ; GSET,XMIN=0,XMAX=n_heavi+1,YMIN=0,YMAX=n_heavi+1
-  ; CS,SCALE=26,NCOLS=N_ELEMENTS(mylevs_prct)+1,white=[2]
-  ; LEVS,MANUAL=mylevs_prct
-  ; CON,X=indgen(n_heavi+1)+0.5,Y=indgen(n_heavi+1)+0.5,FIELD=twod_pdf_prct,/BLOCK,/NOLINES,CB_WIDTH=135,CB_TITLE='Probability',TITLE=psfile_title
-  ; GPLOT,X=[0,n_heavi+1],Y=[0,n_heavi+1],STYLE=1
-  ; AXES,XVALS=indgen(n_heavi+2),YVALS=indgen(n_heavi+2),$
-  ;      YLABELS=['<'+STRTRIM(STRING(heaviside(0)),1),STRTRIM(STRING(heaviside),1),'>'+STRTRIM(STRING(heaviside(n_heavi-1)),1)],$
-  ;      XLABELS=['<'+STRTRIM(STRING(heaviside(0)),1),STRTRIM(STRING(heaviside),1),'>'+STRTRIM(STRING(heaviside(n_heavi-1)),1)],$
-  ;      XTITLE='Precipitation on timestep t (mm day!U-1!N)',YTITLE='Precipitation on timestep t+1 (mm day!U-1!N)',/NORIGHT    
-  ; GSET,XMIN=0,XMAX=n_heavi+1,YMIN=0.001,YMAX=1,/YLOG
-  ; IF TOTAL(where(oned_pdf_prct lt 0.001)) ge 0 THEN $
-  ;    oned_pdf_prct[where(oned_pdf_prct lt 0.001)]=!Values.F_NaN
-  ; GPLOT,X=indgen(n_heavi+1)+0.5,Y=oned_pdf_prct,STYLE=2,SYM=3
-  ; AXES,YVALS=['0.001','0.0015','0.002','0.003','0.004','0.006','0.008','0.01','0.015','0.02','0.03','0.04','0.06','0.08','0.10','0.15','0.2','0.3','0.4','0.6','0.8','1.0'],YTITLE='Probability of precipitation in column',/ONLYRIGHT,NDECS=2
-  ; PSCLOSE,/NOVIEW
+                                ; Plot 2D PDFs of daily rainfall as
+                                ; filled contours, with 1D PDF of
+                                ; rainfall as a line with symbols.
+   
    
    mylevs_prct=['1e-5','2e-5','4e-5','7e-5','1e-4','2e-4','4e-4','7e-4','1e-3','2e-3','4e-3','7e-3','1e-2','2e-2','4e-2','7e-2','1e-1']
-   psfile='/home/ss901165/idl/mjo_diabatic/timestep/metum_daily_precip_twodpdf.'+psfile_title+'_prct_allyears.ps'
+   psfile='/home/users/npklingaman/plots/mjo_diabatic/timestep/metum_daily_precip_twodpdf.'+psfile_title+'_prct_allyears.ps'
    PSOPEN,file=psfile,TFONT=6,FONT=6,CHARSIZE=170,TCHARSIZE=100,XSIZE=16500,YSIZE=16500,SPACE2=2000,YOFFSET=1000,XOFFSET=1000,SPACE1=250
    GSET,XMIN=0,XMAX=n_heavi+1,YMIN=0,YMAX=n_heavi+1
    CS,SCALE=26,NCOLS=N_ELEMENTS(mylevs_prct)+1,white=[2]
@@ -351,8 +355,9 @@ FOR i=0,n_models-1 DO BEGIN
         YTITLE='Probability of precipitation in bin',/ONLYRIGHT,NDECS=2
    PSCLOSE,/NOVIEW
 
-   corr_plot=fltarr(domain_size/2+1,nlags)
+      corr_plot=fltarr(domain_size/2+1,nlags)
    corr_coeffs=fltarr(domain_size,domain_size,nlags)
+   valid_pts_sum=fltarr(domain_size,domain_size,nlags)
    frac_wet_values=fltarr(domain_size,domain_size,n_thresholds)
    frac_dry_values=fltarr(domain_size,domain_size,n_thresholds)
    central_count_wet=fltarr(n_thresholds)
@@ -361,23 +366,29 @@ FOR i=0,n_models-1 DO BEGIN
    FOR p=0,n_thresholds-1 DO $
       avg_frac_wet(p)=N_ELEMENTS(where(precip gt thresholds(p)))/FLOAT(nlon*nlat*tsteps)
    
-   
+   ; Compute distance vs. lag plots
    bad_pts=0
+                                ; Loop over sub-domains of size
+                                ; [domain_size x domain_size] within
+                                ; 'box' region.
    FOR j=0,nlon-domain_size,domain_size DO BEGIN
       xpt=j+domain_size/2      
       FOR k=0,nlat-domain_size,domain_size DO BEGIN
          ypt=k+domain_size/2
+                                ; Obtain timeseries at central point in sub-domain.
          central_ts=REFORM(precip(xpt,ypt,*))
-         FOR p=0,n_thresholds-1 DO BEGIN
+         FOR p=0,n_thresholds-1 DO BEGIN           
             central_ts_heaviside=fltarr((tsteps))
-            IF TOTAL(where(central_ts gt thresholds(p))) ge 0 THEN $
-               central_ts_heaviside[where(central_ts gt thresholds(p))]=1
-            IF TOTAL(where(central_ts le thresholds(p))) ge 0 THEN $
-               central_ts_heaviside[where(central_ts le thresholds(p))]=0
+            IF TOTAL(where(central_ts gt thresholds(p) and FINITE(central_ts) eq 1)) ge 0 THEN $
+               central_ts_heaviside[where(central_ts gt thresholds(p) and FINITE(central_ts) eq 1)]=1
+            IF TOTAL(where(central_ts le thresholds(p) and FINITE(central_ts) eq 1)) ge 0 THEN $
+               central_ts_heaviside[where(central_ts le thresholds(p) and FINITE(central_ts) eq 1)]=0
             central_count_wet(p)=central_count_wet(p)+TOTAL(central_ts_heaviside)
             central_count_dry(p)=central_count_dry(p)+(tsteps)-TOTAL(central_ts_heaviside)
+                                ; Compute correlations between central
+                                ; point and all other points.
             FOR m=xpt-domain_size/2,xpt+domain_size/2 DO BEGIN
-               FOR n=ypt-domain_size/2,ypt+domain_size/2 DO BEGIN               
+               FOR n=ypt-domain_size/2,ypt+domain_size/2 DO BEGIN
                   thispt_ts=REFORM(precip(m,n,*))
                   thispt_ts_heaviside=fltarr((tsteps))
                   IF TOTAL(thispt_ts) ne 0 THEN BEGIN
@@ -387,14 +398,26 @@ FOR i=0,n_models-1 DO BEGIN
                         thispt_ts_heaviside[where(thispt_ts le thresholds(p))]=0
                      IF p eq 0 THEN BEGIN
                         IF TOTAL(thispt_ts_heaviside) ne 0 and TOTAL(central_ts_heaviside) ne 0 THEN BEGIN
-                           FOR r=0,nlags-1 DO $
-                              corr_coeffs(m-xpt+domain_size/2,n-ypt+domain_size/2,r)=$
-                              corr_coeffs(m-xpt+domain_size/2,n-ypt+domain_size/2,r)+$
-                              CORRELATE(central_ts(0:(tsteps)-1-r),$
-                                        thispt_ts(r:(tsteps)-1))
+                           FOR r=0,nlags-1 DO BEGIN
+                                ; Construct timeseries of points valid
+                                ; at central point and at lagged point.
+                              temp_central=central_ts(0:tsteps-1-r)
+                              temp_distance=thispt_ts(r:tsteps-1)
+                              valid=where(FINITE(temp_central) eq 1 and FINITE(temp_distance) eq 1)
+                              IF N_ELEMENTS(valid) gt 2 THEN BEGIN
+                                 corr_coeffs(m-xpt+domain_size/2,n-ypt+domain_size/2,r)=$
+                                    corr_coeffs(m-xpt+domain_size/2,n-ypt+domain_size/2,r)+$
+                                    CORRELATE(temp_central[valid],temp_distance[valid])*N_ELEMENTS(valid)  
+                                 valid_pts_sum(m-xpt+domain_size/2,n-ypt+domain_size/2,r)=$
+                                    valid_pts_sum(m-xpt+domain_size/2,n-ypt+domain_size/2,r)+N_ELEMENTS(valid)
+                              ENDIF
+                           ENDFOR
                         ENDIF ELSE $
                            bad_pts=bad_pts+1
                      ENDIF
+                                ; Compute probabilities of wet|wet and
+                                ; dry|dry between central point and
+                                ; surrounding points.
                      frac_wet_values(m-xpt+domain_size/2,n-ypt+domain_size/2,p)=$
                         frac_wet_values(m-xpt+domain_size/2,n-ypt+domain_size/2,p)+$
                         (N_ELEMENTS(where(thispt_ts_heaviside eq 1 and central_ts_heaviside eq 1)))
@@ -408,14 +431,17 @@ FOR i=0,n_models-1 DO BEGIN
       ENDFOR
    ENDFOR
   
+   ; Normalize wet|wet and dry|dry values.
    FOR p=0,n_thresholds-1 DO BEGIN
       frac_wet_values(*,*,p)=frac_wet_values(*,*,p)/FLOAT(central_count_wet(p))
       frac_dry_values(*,*,p)=frac_dry_values(*,*,p)/FLOAT(central_count_dry(p))
    ENDFOR
-   corr_coeffs=corr_coeffs/FLOAT(corr_coeffs(domain_size/2,domain_size/2))
-      
-
-   psfile='/home/ss901165/idl/mjo_diabatic/timestep/metum_daily_spatialscale.'+psfile_title+'.'+$
+                                ; Normalize correlation coefficients
+                                ; by the number of points that went
+                                ; into the correlations
+   corr_coeffs=corr_coeffs/valid_pts_sum
+     
+   psfile='/home/users/npklingaman/plots/mjo_diabatic/timestep/metum_daily_spatialscale.'+psfile_title+'.'+$
           STRTRIM(STRING(domain_size),1)+'x'+STRTRIM(STRING(domain_size),1)+'.corr_coeffs_radvlag_allyears.ps'
    PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=160,MARGIN=2000,/PORTRAIT,XOFFSET=1000,YOFFSET=5000,SPACE2=1000,$
           TCHARSIZE=90,SPACE3=200
@@ -444,7 +470,16 @@ FOR i=0,n_models-1 DO BEGIN
    AXES,XSTEP=1,YSTEP=1,XTITLE='Distance from central point (gridpoints)',YTITLE='Lag (same units as input data)'
    PSCLOSE,/NOVIEW
 
+   
+   ; Compute correlations with physical distance (in km) and time (in
+; minutes), using information provided above about the native spatial
+; (all_dx) and temporal (all_dt) resolutions of the dataset.
+
+                                ; Compute the number of points in each sub-region.
    box_npts_side=all_box_size(i)/all_dx(i)
+                                ; Test to make sure the number of
+                                ; points in each sub-domain does not
+                                ; exceed max_box_npts_side
    IF ODD(box_npts_side) ne 1 THEN $
       box_npts_side=box_npts_side-1
    IF box_npts_side/2 gt max_box_npts_side THEN BEGIN
@@ -453,58 +488,110 @@ FOR i=0,n_models-1 DO BEGIN
    ENDIF   
 
    nregions=0
+   valid_pts_sum=fltarr(max_box_npts_side)
+   valid_pts_sum(*)=0.
+                                ; Divide analysis region in as many
+                                ; sub-regions as possible.
    FOR x=0,nlon-box_npts_side,box_npts_side DO BEGIN
       central_x=x+box_npts_side/2
       FOR y=0,nlat-box_npts_side,box_npts_side DO BEGIN
          central_y=y+box_npts_side/2
+                                ; Obtain timeseries at central point
+                                ; in this sub-region.
          central_point_ts=REFORM(precip(central_x,central_y,*)) 
-         IF TOTAL(where(central_point_ts ge 1e10 or central_point_ts lt 0)) ge 0 THEN $
-            central_point_ts[where(central_point_ts ge 1e10 or central_point_ts lt 0)]=0.
+                                ; Obtain precipitation data for the sub-region.
          region_precip=precip(central_x-box_npts_side/2:$
                               central_x+box_npts_side/2,$
                               central_y-box_npts_side/2:$
                               central_y+box_npts_side/2,*)
          distance=fltarr(box_npts_side,box_npts_side)
+                                ; Loop over all points in region
          FOR s=0,box_npts_side-1 DO $
             FOR t=0,box_npts_side-1 DO $
+                                ; Compute distance between this point
+                                ; and the central point (note: points
+                                ; that are one diagonal point away are
+                                ; considered to be one point away, not
+                                ; SQRT(2) points away.  Testing shows
+                                ; this makes little difference to results.)
                distance(s,t)=MAX([ABS(box_npts_side/2-s),ABS(box_npts_side/2-t)])
+                                ; Average precipitation over all
+                                ; points that are the same distance
+                                ; away from the central point, then
+                                ; correlate resulting timeseries with
+                                ; timeseries at the central point.
          FOR s=0,box_npts_side/2 DO BEGIN
             mean_precip=fltarr(tsteps)
             FOR t=0,tsteps-1 DO BEGIN
                temp_precip=REFORM(region_precip(*,*,t))
-               IF TOTAL(where(temp_precip ge 1e10)) gt 0 THEN $
-                  temp_precip[where(temp_precip ge 1e10)]=!Values.F_NaN
-               IF TOTAL(where(temp_precip lt 0)) gt 0 THEN $
-                  temp_precip[where(temp_precip lt 0)]=!Values.F_NaN
-               mean_precip(t)=MEAN(temp_precip[where(distance eq s)],/NaN)
-               IF FINITE(mean_precip(t)) eq 0 THEN $
-                  mean_precip(t)=0.
+               mean_precip(t)=MEAN(temp_precip[where(distance eq s)])  ; ,/NaN) 
+                                ; Add the /NaN flag to the MEAN()
+                                ; function if you want to include in
+                                ; the distance correlations  
+                                ; areas where there are not a full set
+                                ; of valid points.  Without /NaN, if
+                                ; any one point in the region is
+                                ; missing, the correlation will not be
+                                ; computed. 
             ENDFOR
-            IF TOTAL(mean_precip) ne 0 and TOTAL(central_point_ts) ne 0 and $
-               TOTAL(where(FINITE(mean_precip) eq 0)) eq -1 THEN $
-               region_corr(i,s)=region_corr(i,s)+CORRELATE(central_point_ts,mean_precip)
-         ENDFOR            
+            valid=where(FINITE(central_point_ts) eq 1 and FINITE(mean_precip) eq 1)
+            ;print,N_ELEMENTS(where(FINITE(central_point_ts) eq 1)),N_ELEMENTS(where(FINITE(mean_precip) eq 1))
+            valid_pts=N_ELEMENTS(valid)
+            IF valid_pts gt 2 THEN BEGIN
+               region_corr(i,s)=region_corr(i,s)+CORRELATE(central_point_ts[valid],mean_precip[valid])*FLOAT(valid_pts)
+               valid_pts_sum(s)=valid_pts_sum(s)+valid_pts
+            ENDIF
+         ENDFOR
          nregions=nregions+1
       ENDFOR
    ENDFOR
-   region_corr(i,*)=region_corr(i,*)/FLOAT(nregions)   
+                                ; Normalize resulting correlations by
+                                ; the number of valid points that went
+                                ; into the correlations.
+   FOR s=0,max_box_npts_side-1 DO BEGIN
+      IF valid_pts_sum(s) gt 0 THEN BEGIN
+         region_corr(i,s)=region_corr(i,s)/FLOAT(valid_pts_sum(s))
+      ENDIF ELSE $
+         region_corr(i,s)=!Values.F_NaN
+   ENDFOR
    all_npts_side(i)=box_npts_side
    all_psfile_titles(i)=psfile_title
 
    all_nsteps(i)=FLOOR(time_size/all_dt(i))
+   valid_pts=0
    FOR x=0,nlon-1 DO BEGIN
-      FOR y=0,nlat-1 DO BEGIN
-         IF TOTAL(precip(x,y,*)) gt 0 THEN $
-            temporal_corr(i,0:all_nsteps(i))=temporal_corr(i,0:all_nsteps(i))+$
-                                             A_CORRELATE(REFORM(precip(x,y,*)),indgen(all_nsteps(i)+1))
-      ENDFOR
-   ENDFOR
-   temporal_corr(i,0:all_nsteps(i,*))=temporal_corr(i,0:all_nsteps(i))/FLOAT(nlon*nlat)
-   print,psfile_title,nlon,nlat,box_npts_side,nregions,all_nsteps(i)
+       FOR y=0,nlat-1 DO BEGIN
+          thispt_precip=REFORM(precip(x,y,*))
+          IF TOTAL(precip(x,y,*),/NaN) gt 0 and TOTAL(where(FINITE(precip(x,y,*)) eq 1)) gt 0 THEN BEGIN
+             FOR t=0,all_nsteps(i) DO BEGIN
+                temp_central=thispt_precip(0:tsteps-t-1)
+                temp_lagged=thispt_precip(t:tsteps-1)
+                valid=where(FINITE(temp_central) eq 1 and FINITE(temp_lagged) eq 1)
+                temporal_corr(i,t)=CORRELATE(temp_central[valid],temp_lagged[valid])+$
+                                   temporal_corr(i,t)
+             ENDFOR
+             valid_pts=valid_pts+1
+          ENDIF
+       ENDFOR
+    ENDFOR
+   IF valid_pts eq 0 THEN BEGIN
+      print,'There are no points with valid rainfall data in your region.  Valid points must have a total rainfall > 0.'
+      STOP
+   ENDIF
+   temporal_corr(i,0:all_nsteps(i))=temporal_corr(i,0:all_nsteps(i))/FLOAT(valid_pts)
+   print,'------------------------------------'
+   print,'Model: '+psfile_title
+   print,'Number of longitude x latitude points in region: '+STRTRIM(STRING(nlon),1)+' x '+STRTRIM(STRING(nlat),1)
+   print,'Length of sub-domain for correlations with distance: '+STRTRIM(STRING(box_npts_side),1)
+   print,'Correlations have been computed up to '+STRTRIM(STRING(box_npts_side/2),1)+' points away from the central point.'
+   print,'Number of sub-domains in your chosen region: '+STRTRIM(STRING(nregions),1)
+   print,'Number of days for correlations with time: '+STRTRIM(STRING(all_nsteps(i)),1)
+   print,'Number of missing values in dataset: '+STRTRIM(STRING(n_missing),1)  
+   print,'For distance correlations, percent of sample discarded because of missing data: '+STRTRIM(STRING((1-TOTAL(FLOAT(valid_pts_sum(0:box_npts_side/2)))/(FLOAT(box_npts_side/2+1)*FLOAT(tsteps)*FLOAT(nregions)))*100.),1)+'%'
 ENDFOR
 
 
-psfile='/home/ss901165/idl/mjo_diabatic/timestep/metum_daily_precip_twodpdf.many_distance_tstep_egu_allyears.ps'
+psfile='/home/users/npklingaman/plots/mjo_diabatic/timestep/metum_daily_precip_twodpdf.many_distance_tstep_allyears.'+set_name+'.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=150,TFONT=150,MARGIN=2000,XOFFSET=1000,/PORTRAIT,YOFFSET=1000
 GSET,XMIN=0,XMAX=MAX(all_box_size)/2.,YMIN=0.0,YMAX=1.01
 FOR i=0,n_models-1 DO BEGIN
@@ -520,7 +607,7 @@ AXES,XSTEP=100,XMINOR=50,XTITLE='Distance (km)',$
      YSTEP=0.1,YMINOR=0.05,NDECS=1
 PSCLOSE
 
-psfile='/home/ss901165/idl/mjo_diabatic/timestep/metum_daily_precip_twodpdf.many_time_tstep_egu_allyears.ps'
+psfile='/home/users/npklingaman/plots/mjo_diabatic/timestep/metum_daily_precip_twodpdf.many_time_tstep_allyears.'+set_name+'.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=150,TFONT=150,MARGIN=2000,XOFFSET=1000,/PORTRAIT,YOFFSET=1000
 GSET,XMIN=0,XMAX=time_size/24,YMIN=-0.2,YMAX=1.01
 FOR i=0,n_models-1 DO BEGIN

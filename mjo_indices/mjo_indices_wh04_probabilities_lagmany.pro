@@ -1,156 +1,129 @@
 PRO mjo_indices_wh04_probabilities_lagmany
 
-n_plots=2
-um6='/home/ss901165/um_output6'
-um3='/home/ss901165/um_output3'
+n_plots=3
+futureweather='/group_workspaces/jasmin/futureweather'
+klingaman='/group_workspaces/jasmin2/klingaman'
+gc2='/group_workspaces/jasmin2/klingaman/metum/gc2'
+gc3='/group_workspaces/jasmin2/klingaman/metum/gc3'
+gc4='/group_workspaces/jasmin2/klingaman/metum/gc4'
 FOR i=0,n_plots-1 DO BEGIN
    CASE i OF
-      2 : BEGIN
-         infiles=['/home/ss901165/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$
-                ;  um6+'/xihvd/rmm_indices.nc',$
-                ;  um6+'/xgspj/rmm_indices.nc',$
-                  um3+'/hadgem3_monwg/akkvi/rmm_indices.nc',$
-                  um3+'/hadgem3_monwg/aliur/rmm_indices.nc',$
-                  um3+'/hadgem3_monwg/aljyr/rmm_indices.nc',$
-                  um6+'/gc2/antia/rmm_indices.nc',$
-                  um6+'/gc2/anqjm/rmm_indices.nc']
-         labels=['Obs','GA3_N96','GA4_N96','GA4_N96O1','GA6_N96','GC2_N96']
-         a=[1,1,1,1,1,1,1]
-         colors=['black','brown','red','violetred','blue','dodgerblue']
-         syms=[1,2,3,4,5,6]
-         styles=[0,1,2,3,4,5]
-         set_name='ga_gc'         
-      END
-      3 : BEGIN
-         infiles=['/home/ss901165/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$
-                ;  um6+'/xihvd/rmm_indices.nc',$
-                ;  um6+'/xgspj/rmm_indices.nc',$
-                ;  um3+'/hadgem3_monwg/akkvi/rmm_indices.nc',$
-                ;  um3+'/hadgem3_monwg/aliur/rmm_indices.nc',$
-                ;  um3+'/hadgem3_monwg/aljyr/rmm_indices.nc',$
-                  um6+'/gc2/antia/rmm_indices.nc']
-                ;  um6+'/gc2/anqjm/rmm_indices.nc']
-         labels=['Obs','MetUM_GA6']
-         a=[1,1]
-         colors=['black','red']
-         syms=[1,1]
-         styles=[0,0]
-         set_name='ga6'  
-      END
       0 : BEGIN
-         infiles=['/home/ss901165/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$
-                  um6+'/xgspp/rmm_indices.nc',$
-                  um6+'/xgspm/rmm_indices.nc',$
-                  um6+'/spcam/cam_iceedge_free/rmm_indices.nc',$
-                  um6+'/spcam/spcam_iceedge_free/rmm_indices.nc'] ;,$
-;                  um6+'/mjodiab_20year/spcam/rmm_indices.nc',$
-;                  um6+'/mjodiab_20year/spccsm/rmm_indices.nc']
-         labels=['Obs','MetUM-GOML1','MetUM-GOML1 1.5F','CAM3-KPP','SPCAM3-KPP'] ;,'SPCAM3-AMIP','SPCCSM3']
-         a=[1,1,1.1,1,1,1,1]
-         colors=['black','purple','violetred','red','blue'] ;,'orange','violetred']
-         syms=[1,2,3,4,5]
-         styles=[0,1,2,3,4]
-         set_name='goml1_cam_spcam'
-      END     
+         infiles=['/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2014.index_values.nc',$
+                  gc4+'/u-as650/rmm_indices.nc',$
+                  gc4+'/u-av802/rmm_indices.nc',$
+                  gc4+'/u-au509/rmm_indices.nc',$
+		  gc4+'/u-au939/rmm_indices.nc']
+         labels=['Obs','GA8-N96','GA8-N216','GC4-N96','GC4-N216']
+         a=[1,1,1,1,1]
+         colors=['black','blue','cyan','red','orange']
+         syms=[1,1,1,1,1]
+         styles=[0,0,0,0,0]
+         set_name='gc4'
+      END
       1 : BEGIN
-         infiles=['/home/ss901165/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$                  
-                  um6+'/mjodiab_20year/spcam/rmm_indices.nc',$
-                  um6+'/spcam/spcam_iceedge_free/rmm_indices.nc',$
-                  um6+'/mjodiab_20year/spccsm/rmm_indices.nc']
-         labels=['Obs','SPCAM3-AMIP','SPCAM3-KPP','SPCCSM3']
-         a=[1,1,1,1]
-         colors=['black','red','blue','purple']
-         syms=[1,2,3,4]
-         styles=[0,1,2,3]
-         set_name='spcam_spccsm'
-      END     
+         infiles=['/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2014.index_values.nc',$
+                  gc4+'/u-au509/rmm_indices.nc',$
+                  gc3+'/u-ai183/rmm_indices.nc',$
+		  gc4+'/u-au939/rmm_indices.nc',$
+	 	  gc3+'/u-ai599/rmm_indices.nc']
+         labels=['Obs','GC4-N96','GC3-N96','GC4-N216','GC3-N216']
+         a=[1,1,1,1,1]
+         colors=['black','red','red','orange','orange']
+         syms=[1,1,2,1,2]
+         styles=[0,0,1,0,1]
+         set_name='gc4-vs-gc3'
+      END
+      2 : BEGIN
+	 infiles=['/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2014.index_values.nc',$
+		 gc4+'/u-as650/rmm_indices.nc',$
+		 gc3+'/u-ab642/mjo/rmm_indices.nc',$
+		 gc4+'/u-av802/rmm_indices.nc',$
+		 gc3+'/u-ab680/mjo/rmm_indices.nc']
+	 labels=['Obs','GA8-N96','GA7-N96','GA8-N216','GA7-N216']
+	 a=[1,1,1,1,1]
+	 colors=['black','blue','blue','cyan','cyan']
+	 syms=[1,1,2,1,2]
+	 styles=[0,0,1,0,1]
+	 set_name='ga8-vs-ga7'
+      END
+         
 ;      0 : BEGIN
-;         infiles=['/home/ss901165/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$
-;                  um6+'/gc2/antia/rmm_indices.nc',$
-;                  um6+'/gc2/antib/rmm_indices.nc',$
-;                  um6+'/gc2/anqjm/rmm_indices.nc',$
-;                  um6+'/gc2/anqjn/rmm_indices.nc']
-;         labels=['Obs','GA6_N96','GA6_N216','GC2_N96','GC2_N216']
-;         a=[1,1,1,1,1,1,1]
-;         colors=['black','blue','red','dodgerblue','orange']
-;         syms=[1,5,2,6,3]
-;         styles=[0,4,2,5,3]
-;         set_name='ga6_gc2'
+;         infiles=['/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.dec-feb_dmeans.1975-2009.index_values.nc',$
+;                  '/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.mar-may_dmeans.1975-2009.index_values.nc',$
+;                  '/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.jun-aug_dmeans.1975-2009.index_values.nc',$
+;                  '/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.sep-nov_dmeans.1975-2009.index_values.nc']
+;         labels=['DJF','MAM','JJA','SON']
+;         a=[1.1,1,0.9,1]
+;         colors=['blue','purple','red','brown']
+;         syms=[1,1,1,1]
+;         styles=[0,0,0,0]
+;         set_name='rmm_byseason'
 ;      END
-      ; 3 : BEGIN
-      ;    infiles=['/home/ss901165/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$
-      ;             um6+'/xgspm/rmm_indices.nc',$
-      ;             um6+'/xihvm/rmm_indices.nc',$
-      ;             um6+'/xihvd/rmm_indices.nc',$
-      ;             um6+'/xihvp/rmm_indices.nc']
-      ;    labels=['Obs','K!DWP!N-ENT-OBS','K!D30!N-ENT-OBS','K!D50!N-ENT-OBS','K!DFW!N-ENT-OBS']
-      ;    a=[1,1.05,1,1.1,1.1]
-      ;    colors=['black','purple','orange','red','blue']
-      ;    syms=[1,5,2,3,4]
-      ;    styles=[0,1,2,3,4]
-      ;    set_name='kpplat'
-      ; END
-      ; 2 : BEGIN
-      ;    infiles=['/home/ss901165/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$
-      ;            um6+'/xihvd/rmm_indices.nc',$
-      ;            um6+'/xihvg/rmm_indices.nc',$
-      ;            um6+'/xihvx/rmm_indices.nc',$
-      ;            um6+'/xihvy/rmm_indices.nc']
-      ;    labels=['Obs','K!D50!N-ENT-OBS','A-ENT-K!D50,cl!N','A-ENT-K!D50,31!N','A-ENT-K!D50,15!N']
-      ;    a=[1,1.1,0.85,0.95,1.05]
-      ;    colors=['black','red','purple','blue','cyan']
-      ;    syms=[1,4,2,3,5]
-      ;    styles=[0,3,1,2,4]
-      ;    set_name='kpp50sst'
-      ; END
 ;      0 : BEGIN
-;         infiles=['/home/ss901165/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$
-;                  um6+'/xgspo/rmm_indices.nc',$
-;                  um6+'/xgspj/rmm_indices.nc',$
-;                  um6+'/xgspp/rmm_indices.nc',$
-;                  um6+'/xgspm/rmm_indices.nc']
-;         labels=['Observations','A-CTL-OBS','A-ENT-OBS','K!DWP!N-CTL-OBS','K!DWP!N-ENT-OBS']
-;         a=[1,0.85,1.05,1.1,1.05]
-;         colors=['black','red','blue','orange','purple']
+;         infiles=['/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2014.index_values.nc',$
+;                  gc2+'/antia/rmm_indices.nc',$
+;                  gc2+'/anqjm/rmm_indices.nc',$
+;                  gc3+'/u-ab642/mjo/rmm_indices.nc',$
+;                  gc3+'/u-ab673/mjo/rmm_indices.nc']
+;         labels=['Obs','GA6 N96','GC2 N96','GA7 N96','GC3 N96']
+;         a=[1,1,1,1,1]
+;         colors=['black','red','orange','blue','cyan']
 ;         syms=[1,2,3,4,5]
-;         set_name='main'
-;      END
+;         styles=[0,0,0,0,0]
+;         set_name='gc2_gc3_n96'
+;      END         
 ;      1 : BEGIN
-;         infiles=['/home/ss901165/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$
-;                  um6+'/xgspj/rmm_indices.nc',$
-;                  um6+'/xgspm/rmm_indices.nc',$
-;                  um6+'/xhwoa/rmm_indices.nc',$
-;                  um6+'/xgspq/rmm_indices.nc']
-;         labels=['Observations','A-ENT-OBS','K!D!WP!N-ENT-OBS','A-ENT-K!DWP!N','K!DIO!N-ENT-OBS']
-;         a=[1,1.05,1.05,0.9,0.9]
-;         colors=['black','blue','purple','red','orange']
-;         syms=[1,3,5,2,4]
-;         set_name='sens'
+;         infiles=['/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2014.index_values.nc',$
+;                  gc2+'/antib/rmm_indices.nc',$
+;                  gc2+'/anqjn/rmm_indices.nc',$
+;                  gc3+'/u-ab680/mjo/rmm_indices.nc',$
+;                  gc3+'/u-ab674/mjo/rmm_indices.nc']
+;         labels=['Obs','GA6 N216','GC2 N216','GA7 N216','GC3 N216']
+;         a=[1,1,1,1,1]
+;         colors=['black','red','orange','blue','cyan']
+;         syms=[1,2,3,4,5]
+;         styles=[0,0,0,0,0]
+;         set_name='gc2_gc3_n216'
+;      END
+      ;0 : BEGIN
+      ;   infiles=['/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$
+      ;            futureweather+'/xjhwb/rmm_indices.nc',$
+      ;            futureweather+'/xjhwe/rmm_indices.nc',$
+      ;            futureweather+'/xjhwh/rmm_indices.nc']
+      ;   labels=['Obs','GOML1-N216','GA3_31d-N216','GA3_clim-N216']
+      ;   a=[1,1.1,1,1]
+      ;   colors=['black','purple','red','blue']
+      ;   syms=[1,2,3,4,5]
+      ;   styles=[0,0,0,0]
+      ;   set_name='goml1_n216'
+      ;END     
+      ;1 : BEGIN
+      ;   infiles=['/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$
+      ;            futureweather+'/xjhwb/rmm_indices.nc',$
+      ;            klingaman+'/metum/xlhvc/rmm_indices.nc',$
+      ;            klingaman+'/metum/xlhvf/rmm_indices.nc',$
+      ;	  klingaman+'/metum/xihvu/rmm_indices.nc']
+      ;   labels=['Obs','GOML1-N216','TOML1-N216','ETOML-N216','GOML1-N216-1p5F']
+      ;	 a=[1,1.1,1.1,1,1.1]
+      ;  colors=['black','purple','cyan','blue','violetred']
+      ; syms=[1,2,3,4,5]
+      ;styles=[0,0,0,0,0]
+;	 set_name='getoml_n216'
 ;      END
 ;      2 : BEGIN
-;         infiles=['/home/ss901165/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$
-;                  '/home/ss901165/um_output3/hadgem3_monwg/aljyr/rmm_indices.nc',$
-;                  um6+'/xgspr/rmm_indices.nc',$
-;                  um6+'/xgsps/rmm_indices.nc',$
-;                  um6+'/xgspp/rmm_indices.nc']
-;         labels=['Observations','GA3-NEMO','A-CTL-NEMO','K!DWP!N-CTL-NEMO','K!DWP!N-CTL-OBS']
-;         a=[1,0.85,0.9,1,1.1]
-;         colors=['black','red','blue','purple','orange']
-;         syms=[1,2,3,5,4]
-;         set_name='cplsst'
-;      END
-;      3 : BEGIN
-;         infiles=['/home/ss901165/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$
-;                  um6+'/xgspm/rmm_indices.nc',$
-;                  um6+'/xhwoa/rmm_indices.nc',$
-;                  um6+'/xhwob/rmm_indices.nc',$
-;                  um6+'/xihvd/rmm_indices.nc',$
-;                  um6+'/xihvg/rmm_indices.nc']
-;         labels=['Obs','K-ENT-200','A-ENT-K200','K-ENT-30NS','K-ENT-50NS','A-ENT-K50']
-;         colors=['black','purple','violetred','orange','blue','dodgerblue']
-;         a=[1,1.05,1,1,1.05,1]
-;         set_name='kpplat'
-;      END
+;         infiles=['/home/users/npklingaman/datasets/MJO_INDICES/MJO_rmm1_rmm2.jan-dec_dmeans.1975-2012.index_values.nc',$                       ;             ;
+;		  klingaman+'/cam/spcam_iceedge_free/rmm_indices.nc',$
+;                  klingaman+'/cam/spcam_atm_iceedge_31day/rmm_indices.nc',$
+;		  klingaman+'/cam/spcam_iceedge_free_spccsm/rmm_indices.nc',$
+ ;                 klingaman+'/mjodiab_20year/spccsm/rmm_indices.nc']
+  ;       labels=['Obs','SP3-K_OBS','SP3-A_KOBS','SP3-K_SPCCSM','SPCCSM3']
+   ;      a=[1,1,1,1,1]
+    ;     colors=['black','red','orange','blue','brown']
+     ;    syms=[1,2,3,4,5]
+      ;   styles=[0,1,2,3,4]
+       ;  set_name='spcam_spccsm'
+     ; END     
    ENDCASE
 
    n_files=N_ELEMENTS(infiles)
@@ -165,7 +138,11 @@ FOR i=0,n_plots-1 DO BEGIN
       rmm2_ts=fltarr(s(1)*s(2))
       amp_ts=fltarr(s(1)*s(2))
       phase_ts=fltarr(s(1)*s(2))
-      FOR k=0,s(1)-1 DO BEGIN
+      IF j eq 0 THEN BEGIN
+         start_year=4
+      ENDIF ELSE $
+         start_year=0
+      FOR k=start_year,s(1)-1 DO BEGIN
          rmm1_ts(k*s(2):(k+1)*s(2)-1)=rmm1(k,*)
          rmm2_ts(k*s(2):(k+1)*s(2)-1)=rmm2(k,*)
          amp_ts(k*s(2):(k+1)*s(2)-1)=amp(k,*)
@@ -179,7 +156,7 @@ FOR i=0,n_plots-1 DO BEGIN
          days=where(amp_ts ge 1 and phase_ts eq k+1)
          FOR m=0,29 DO BEGIN
             IF a(j) gt 1 THEN BEGIN
-               b=a(j)+m*0.01
+               b=a(j)+m*0.02
             ENDIF ELSE $
                b=a(j)            
             all_lag_composites(j,k,0,m)=MEAN(rmm1_ts[days+m],/NaN)*b
@@ -201,7 +178,7 @@ FOR i=0,n_plots-1 DO BEGIN
          END
       ENDCASE
            
-      psfile='/home/ss901165/idl/mjo_indices/mjo_indices_wh04_probabilities_lagmany.'+set_name+plot_name+'_color.ps'
+      psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_wh04_probabilities_lagmany.'+set_name+'_'+plot_name+'_color.ps'
       PSOPEN,file=psfile,FONT=2,TFONT=2,CHARSIZE=160,MARGIN=1000,XSIZE=16000,YSIZE=16000,YOFFSET=1500,XOFFSET=2500
       GSET,XMIN=-2.4,XMAX=2.41,YMIN=-2.4,YMAX=2.41;,TITLE='Lag composite evolution of strong MJO activity in each phase'
       GPLOT,X=REPLICATE(0,2),Y=[-2.4,-1],STYLE=0,THICK=50
@@ -243,7 +220,7 @@ FOR i=0,n_plots-1 DO BEGIN
       GLEGEND,labels=REVERSE(labels),STYLE=REVERSE(styles),SYM=REVERSE(syms),$
               LEGXOFFSET=10000,LEGYOFFSET=17000,COL=REVERSE(FSC_COLOR(colors))
       
-      PSCLOSE
+      PSCLOSE,/NOVIEW
    ENDFOR
       
 ENDFOR

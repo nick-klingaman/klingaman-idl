@@ -1,0 +1,13 @@
+PRO ex55
+;d=NCREAD('wrf_test.nc', VARS='T')
+d=NCREAD('wrf_test.nc')
+PSOPEN
+MAP, LONMIN=-60, LONMAX=20, LATMIN=30, LATMAX=70, /DRAW
+FOR iy=0, 368, 5 DO BEGIN
+ FOR ix=0, 454, 5 DO BEGIN
+  GPLOT, X=d.xlong(ix,iy), Y=d.xlat(ix,iy), SYM=3, SIZE=10
+ ENDFOR 
+ENDFOR
+AXES
+PSCLOSE
+END

@@ -1,0 +1,12 @@
+PRO ex30
+d=NCREAD('ukmo_test.nc', VAR='p')
+PSOPEN, XSIZE=20000
+MAP, /SET
+CS, SCALE=2, NCOLS=12
+f=FEATURES(FIELD=d.p(*,*, 0, 0)/100.0, MAX=1010, X=d.longitude, Y=d.latitude, $
+           THRESHOLD=10,/DRAW, /V) 
+MAP, /DRAW
+AXES
+GLEGEND, COL=INDGEN(MAX(f.max)+1)+2, LABELS=SCROP(f.maxpts), LEGPOS=15, TYPE=1
+PSCLOSE
+END

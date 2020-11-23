@@ -67,6 +67,7 @@ IF varstruct.ndims eq 4 THEN BEGIN
          clim_fft_freq=FFT(variable_clim_this_gridpt,-1,DIMENSION=1,/DOUBLE)
          clim_fft_freq(4:N_ELEMENTS(clim_fft_freq)-4)=0.
          variable_first_three_harm(i,j,*)=FFT(clim_fft_freq,1,DIMENSION=1,/DOUBLE)
+         ;help,variable_this_gridpt
          FOR k=0,n_year-1 DO BEGIN
             FOR m=0,ndays_per_year-1 DO $
                variable_anomalies(i,j,k,m*our_ntpd:(m+1)*our_ntpd-1)=variable_this_gridpt(k,m*our_ntpd:(m+1)*our_ntpd-1)-$
@@ -89,7 +90,7 @@ ENDIF ELSE IF varstruct.ndims eq 3 THEN BEGIN
    IF n_year eq 1 THEN BEGIN
       variable_this_gridpt=fltarr(n_time)
    ENDIF ELSE $
-      variable_this_gridpt=fltarr(n_year,n_time)
+      variable_this_gridpt=fltarr(n_year,ndays_per_year)
    FOR i=0,n_lon-1 DO BEGIN
       FOR j=0,n_lat-1 DO BEGIN
          IF n_year eq 1 THEN BEGIN

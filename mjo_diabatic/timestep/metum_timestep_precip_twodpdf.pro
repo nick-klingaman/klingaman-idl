@@ -1,9 +1,10 @@
 PRO metum_timestep_precip_twodpdf
 
-n_models=5
+n_models=4
+set_name='ga7mem'
 hg3='/home/ss901165/um_output3/hadgem3_monwg'
 um6='/home/ss901165/um_output6'
-gc2='/home/ss901165/um_output6/gc2'
+gc2='/home/users/npklingaman/klingaman/metum/gc2'
 
 ; For 2D PDFs
 box=[-10,60,10,180]
@@ -40,7 +41,75 @@ all_psfile_titles=strarr(n_models)
 all_syms=intarr(n_models)
 FOR i=0,n_models-1 DO BEGIN
    CASE i OF 
+      2 : BEGIN
+         infile=gc2+'/mi-ah288/ah288.jun-sep_tsmeans.1990.precip.nc'
+         tsteps=8640
+         tstep_length=1200
+         multiplier=86400.
+         lon_name='longitude'
+         lat_name='latitude'
+         var_name='precipitation_flux'
+         row_map=[11,12,13,14]
+         column_map=[0]
+         psfile_title='mi-ah288_protoGA7_CTL'
+         all_dx(i)=200
+         all_dt(i)=1/3.
+         all_colors(i)='red'
+         all_box_size(i)=1400
+         all_syms(i)=2
+      END
       0 : BEGIN
+         infile=gc2+'/mi-ah326/ah326.jun-sep_tsmeans_ts.1990.precip.nc'
+         tsteps=8640
+         tstep_length=1200
+         multiplier=86400.
+         lon_name='longitude'
+         lat_name='latitude'
+         var_name='precipitation_flux'
+         row_map=[11,12,13,14]
+         column_map=[0]
+         psfile_title='mi-ah326_GA6+6A_CTL'
+         all_dx(i)=200
+         all_dt(i)=1/3.
+         all_colors(i)='blue'
+         all_box_size(i)=1400
+         all_syms(i)=2
+      END
+      1 : BEGIN
+         infile=gc2+'/mi-ai191/ai191.jun-sep_tsmeans_ts.1990.precip.nc'
+         tsteps=8640
+         tstep_length=1200
+         multiplier=86400.
+         lon_name='longitude'
+         lat_name='latitude'
+         var_name='precipitation_flux'
+         row_map=[11,12,13,14]
+         column_map=[0]
+         psfile_title='mi-ai191_GA6+6A_MEM'
+         all_dx(i)=200
+         all_dt(i)=1/3.
+         all_colors(i)='cyan'
+         all_box_size(i)=1400
+         all_syms(i)=2
+      END
+      3 : BEGIN
+         infile=gc2+'/mi-ai647/ai647.jun-sep_tsmeans_ts.1990.precip.nc'
+         tsteps=8640
+         tstep_length=1200
+         multiplier=86400.
+         lon_name='longitude'
+         lat_name='latitude'
+         var_name='precipitation_flux'
+         row_map=[11,12,13,14]
+         column_map=[0]
+         psfile_title='mi-ai647_protoGA7_MEM'
+         all_dx(i)=200
+         all_dt(i)=1/3.
+         all_colors(i)='orange'
+         all_box_size(i)=1400
+         all_syms(i)=2
+      END
+      4 : BEGIN
          infile=gc2+'/antia/antia.jun-sep_tsmeans.precip.nc'
          tsteps=8639
          tstep_length=1200
@@ -56,22 +125,8 @@ FOR i=0,n_models-1 DO BEGIN
          all_colors(i)='darkslateblue'
          all_box_size(i)=1400
          all_syms(i)=1
-      END
-      ;999 : BEGIN
-      ;   infile=gc2+'/anvtu/anvtu.jun-sep_tsmeans.precip.nc'
-      ;   tsteps=8639
-      ;   tstep_length=900
-      ;   multiplier=86400.
-      ;   lon_name='longitude'
-      ;   lat_name='latitude'
-      ;   var_name='precip'
-      ;   psfile_title='GA6_N96p-EQ_anvtu'
-      ;   all_dx(i)=200
-      ;   all_dt(i)=1/3.
-      ;   all_colors(i)='teal'
-      ;   all_box_size(i)=1400
-      ;END
-      1 : BEGIN
+      END      
+      5 : BEGIN
          infile=gc2+'/antib/antib.jun-sep_tsmeans.precip.nc'
          tsteps=11500
          tstep_length=600
@@ -86,7 +141,7 @@ FOR i=0,n_models-1 DO BEGIN
 	 all_box_size(i)=1400
          all_syms(i)=2
       END
-      2 : BEGIN
+      6 : BEGIN
          infile=gc2+'/anrid/anrid.jun-sep_tsmeans.precip.nc'
          tsteps=11999
          tstep_length=600
@@ -101,23 +156,7 @@ FOR i=0,n_models-1 DO BEGIN
 	 all_box_size(i)=1400
          all_syms(i)=3
       END
-      ;3 : BEGIN
-      ;   infile=gc2+'/anrid/anrid.jun-sep_tsmeans.precip.nc'
-      ;   tsteps=17000
-      ;   tstep_length=600
-      ;   multiplier=86400.
-      ;   lon_name='longitude'
-      ;   lat_name='latitude'
-      ;   var_name='precip'
-      ;   psfile_title='GA6_N512p-NWP'
-      ;   all_dx(i)=40
-      ;   all_dt(i)=1/6.
-      ;   all_colors(i)='violetred'
-      ;   box=[0,130,20,160]
-      ;   all_box_size(i)=600
-      ;   all_syms(i)=4
-      ;END
-      3 : BEGIN
+      7 : BEGIN
          infile=um6+'/answa_N1024param/wp.nc'
          tsteps=32000
          tstep_length=300
@@ -133,7 +172,7 @@ FOR i=0,n_models-1 DO BEGIN
          all_box_size(i)=600
          all_syms(i)=4
       END      
-      4 : BEGIN
+      9 : BEGIN
          infile=um6+'/answc_N1024explt/wp.nc'
          tsteps=32000
          tstep_length=300
@@ -265,7 +304,7 @@ FOR i=0,n_models-1 DO BEGIN
    ;PSCLOSE,/NOVIEW
    
    mylevs_prct=['1e-5','2e-5','4e-5','7e-5','1e-4','2e-4','4e-4','7e-4','1e-3','2e-3','4e-3','7e-3','1e-2','2e-2','4e-2','7e-2','1e-1']
-   psfile='/home/ss901165/idl/mjo_diabatic/timestep/metum_timestep_precip_twodpdf.'+psfile_title+'_prct.ps'
+   psfile='/home/users/npklingaman/plots/mjo_diabatic/timestep/metum_timestep_precip_twodpdf.'+psfile_title+'_prct.ps'
    PSOPEN,file=psfile,TFONT=6,FONT=6,CHARSIZE=170,TCHARSIZE=100,XSIZE=16500,YSIZE=16500,SPACE2=2000,YOFFSET=1000,XOFFSET=1000,SPACE1=250
    GSET,XMIN=0,XMAX=n_heavi+1,YMIN=0,YMAX=n_heavi+1
    CS,SCALE=26,NCOLS=N_ELEMENTS(mylevs_prct)+1,white=[2]
@@ -351,7 +390,7 @@ FOR i=0,n_models-1 DO BEGIN
    corr_coeffs=corr_coeffs/FLOAT(corr_coeffs(domain_size/2,domain_size/2))
       
 
-  ; psfile='/home/ss901165/idl/mjo_diabatic/timestep/metum_timestep_spatialscale.'+psfile_title+'.'+$
+  ; psfile='/home/users/npklingaman/plots/mjo_diabatic/timestep/metum_timestep_spatialscale.'+psfile_title+'.'+$
   ;        STRTRIM(STRING(domain_size),1)+'x'+STRTRIM(STRING(domain_size),1)+'.corr_coeffs_radvlag.ps'
   ; PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=160,MARGIN=2000,/PORTRAIT,XOFFSET=1000,YOFFSET=5000,SPACE2=1000,$
   ;        TCHARSIZE=90,SPACE3=200
@@ -380,7 +419,7 @@ FOR i=0,n_models-1 DO BEGIN
   ; AXES,XSTEP=1,YSTEP=1,XTITLE='Distance from central point (gridpoints)',YTITLE='Lag (same units as input data)'
   ; PSCLOSE,/NOVIEW
 
-   psfile='/home/ss901165/idl/mjo_diabatic/timestep/metum_timestep_spatialscale.'+psfile_title+'.'+$
+   psfile='/home/users/npklingaman/plots/mjo_diabatic/timestep/metum_timestep_spatialscale.'+psfile_title+'.'+$
           STRTRIM(STRING(domain_size),1)+'x'+STRTRIM(STRING(domain_size),1)+'.corr_coeffs_radvlag.ps'
    PSOPEN,file=psfile,FONT=6,TFONT=6,CHARSIZE=230,MARGIN=2000,/PORTRAIT,XOFFSET=1000,YOFFSET=5000,SPACE2=1000,$
           TCHARSIZE=90,SPACE3=200
@@ -468,7 +507,7 @@ FOR i=0,n_models-1 DO BEGIN
 ENDFOR
 
 
-psfile='/home/ss901165/idl/mjo_diabatic/timestep/metum_timestep_precip_twodpdf.many_distance_tstep_egu.ps'
+psfile='/home/users/npklingaman/plots/mjo_diabatic/timestep/metum_timestep_precip_twodpdf.many_distance_tstep.'+set_name+'.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=150,TFONT=150,MARGIN=2000,XOFFSET=1000,/PORTRAIT,YOFFSET=1000
 GSET,XMIN=0,XMAX=MAX(all_box_size)/2.,YMIN=0.0,YMAX=1.01
 FOR i=0,n_models-1 DO BEGIN
@@ -478,13 +517,13 @@ FOR i=0,n_models-1 DO BEGIN
    ;      TEXT=STRTRIM(STRING(indgen(all_npts_side(i)/2)+1),1),CHARSIZE=80,COL=FSC_COLOR(all_colors(i))
 ENDFOR
 GPLOT,X=[0,MAX(all_box_size)/2],Y=[0,0],STYLE=1
-GLEGEND,labels=all_psfile_titles,COL=FSC_COLOR(all_colors),length=0,SYM=all_syms,LEGPOS=9
+GLEGEND,labels=REVERSE(all_psfile_titles),COL=REVERSE(FSC_COLOR(all_colors)),length=0,SYM=REVERSE(all_syms),LEGPOS=9
 AXES,XSTEP=100,XMINOR=50,XTITLE='Distance (km)',$
      YTITLE='Correlation of timestep precipitation with central point (x=0)',$
      YSTEP=0.1,YMINOR=0.05,NDECS=1
 PSCLOSE
 
-psfile='/home/ss901165/idl/mjo_diabatic/timestep/metum_timestep_precip_twodpdf.many_time_tstep_egu.ps'
+psfile='/home/users/npklingaman/plots/mjo_diabatic/timestep/metum_timestep_precip_twodpdf.many_time_tstep.'+set_name+'.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=150,TFONT=150,MARGIN=2000,XOFFSET=1000,/PORTRAIT,YOFFSET=1000
 GSET,XMIN=0,XMAX=time_size*60.,YMIN=0.0,YMAX=1.01
 FOR i=0,n_models-1 DO BEGIN
@@ -494,7 +533,7 @@ FOR i=0,n_models-1 DO BEGIN
                                 ;      TEXT=STRTRIM(STRING(indgen(all_nsteps(i))+1),1),CHARSIZE=80,COL=FSC_COLOR(all_colors(i))
 ENDFOR
 GPLOT,X=[0,time_size*60],Y=[0,0],STYLE=1
-GLEGEND,labels=all_psfile_titles,COL=FSC_COLOR(all_colors),length=0,SYM=all_syms,LEGPOS=9
+GLEGEND,labels=REVERSE(all_psfile_titles),COL=REVERSE(FSC_COLOR(all_colors)),length=0,SYM=REVERSE(all_syms),LEGPOS=9
 AXES,XSTEP=30,XMINOR=15,XTITLE='Time (minutes)',$
      YTITLE='Lag correlation of gridpoint timestep precipitation',$
      YSTEP=0.1,YMINOR=0.05,NDECS=1

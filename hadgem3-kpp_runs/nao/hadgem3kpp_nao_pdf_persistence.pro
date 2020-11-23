@@ -32,12 +32,15 @@ nao_bins=[-1.7,-1.5,-1.3,-1.1,-0.9,-0.7,-0.5,-0.3,-0.1,0.1,0.3,0.5,0.7,0.9,1.1,1
 nnao_bins=N_ELEMENTS(nao_bins)
 nao_pdf=fltarr(nmodels,nnao_bins+1)
 
-length_bins=[4,6,8,10,12,14,16,18]
+;length_bins=[4,6,8,10,12,14,16,18]
+length_bins=[3,4,5,6,7,8,9,10]
 nlength_bins=N_ELEMENTS(length_bins)
 low_pdf=fltarr(nmodels,nlength_bins+1)
 high_pdf=fltarr(nmodels,nlength_bins+1)
 
 futweat='/group_workspaces/jasmin/futureweather'
+
+threshold=1.0
 
 FOR m=0,nmodels-1 DO BEGIN
    CASE m OF            
@@ -51,18 +54,8 @@ FOR m=0,nmodels-1 DO BEGIN
          all_styles(m)=0
          days=[334,424]
          ndays_per_year=365
+         a=1
       END
-      ;1 : BEGIN         
-      ;   nao_file='/home/users/npklingaman/datasets/20THC_REANALYSIS/every_member/mslp/20thc_reanalysis_member1.jan-dec_dmeans_ts.1871-2008.nao_index_20CR.nc'       
-      ;   ntime=LONG(50404)
-      ;   offset=0
-      ;   all_names(m)='20CR'
-      ;   all_colors(m)='darkgrey'
-      ;   all_symbols(m)=5
-      ;   all_styles(m)=0
-      ;   days=[334,424]
-      ;   ndays_per_year=365
-      ;END
       1 : BEGIN
          nao_file=futweat+'/xjhwb/metum-goml1_fwn216.jan-dec_dmeans_ts.years1-100.nao_index_goml.nc'
          ntime=LONG(100)*LONG(360)
@@ -73,7 +66,7 @@ FOR m=0,nmodels-1 DO BEGIN
          all_styles(m)=0
          days=[330,420]
          ndays_per_year=360   
-         a=REPLICATE(1,nlags)
+         a=1.1
       END
       2 : BEGIN
          nao_file=futweat+'/xjhwe/metum-ga3_fwn216-31day.jan-dec_dmeans_ts.years1-100.nao_index_ga3-31d.nc'
@@ -84,6 +77,7 @@ FOR m=0,nmodels-1 DO BEGIN
          all_symbols(m)=3
          all_styles(m)=0
          days=[330,420]  
+         a=1.3
       END
       3 : BEGIN
          nao_file=futweat+'/xjhwh/metum-ga3_fwn216-clim.jan-dec_dmeans_ts.years1-100.nao_index_ga3-clim.nc'
@@ -94,6 +88,7 @@ FOR m=0,nmodels-1 DO BEGIN
          all_symbols(m)=6
          all_styles(m)=0
          days=[330,420]
+         a=0.9
       END
    ENDCASE
 
@@ -111,9 +106,9 @@ FOR m=0,nmodels-1 DO BEGIN
    nao_index_allyears=fltarr(ndpy*my_nyears)
    FOR i=0,my_nyears-1 DO BEGIN
       nao_index_subset(*)=nao_index(LONG(i)*LONG(ndays_per_year)+LONG(days(0)):LONG(i)*LONG(ndays_per_year)+LONG(days(1))-LONG(1))
-      nao_index_allyears(LONG(i)*LONG(ndpy):LONG((i+1))*LONG(ndpy)-LONG(1))=nao_index_subset
-      allyears_autocorr(m,i,*)=A_CORRELATE(nao_index_subset,lags)
-      allyears_meannao(m,i)=MEAN(nao_index_subset)     
+      nao_index_allyears(LONG(i)*LONG(ndpy):LONG((i+1))*LONG(ndpy)-LONG(1))=nao_index_subset-MEAN(nao_index_subset)
+;      allyears_autocorr(m,i,*)=A_CORRELATE(nao_index_subset,lags)
+;      allyears_meannao(m,i)=MEAN(nao_index_subset)     
    ENDFOR
    nao_index_allyears=nao_index_allyears-MEAN(nao_index_allyears)
    nao_index_allyears=nao_index_allyears/STDDEV(nao_index_allyears)
@@ -129,9 +124,9 @@ FOR m=0,nmodels-1 DO BEGIN
    low=0
    high=0
    FOR i=0,ndpy*my_nyears-1 DO BEGIN
-      IF nao_index_allyears(i) le -0.5 THEN BEGIN
+      IF nao_index_allyears(i) le (-1.0)*threshold THEN BEGIN
          low=low+1
-      ENDIF ELSE IF nao_index_allyears(i) ge 0.5 THEN BEGIN
+      ENDIF ELSE IF nao_index_allyears(i) ge threshold THEN BEGIN
          high=high+1
       ENDIF ELSE BEGIN
          IF low gt 0 THEN $
@@ -158,12 +153,12 @@ FOR m=0,nmodels-1 DO BEGIN
    IF TOTAL(where(high_spell_length ge length_bins(nlength_bins-1))) ge 0 THEN $
       high_pdf(m,nlength_bins)=N_ELEMENTS(where(high_spell_length ge length_bins(nlength_bins-1)))     
    
-   high_pdf(m,*)=high_pdf(m,*)/FLOAT(my_nyears)
-   low_pdf(m,*)=low_pdf(m,*)/FLOAT(my_nyears)
+   high_pdf(m,*)=high_pdf(m,*)*a/FLOAT(my_nyears)
+   low_pdf(m,*)=low_pdf(m,*)*a/FLOAT(my_nyears)
 
 ENDFOR
 
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence.nao_pdf_djf.ps'
+psfile='/home/users/npklingaman/plots/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence.nao_pdf_djf.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1500,SPACE2=100,SPACE3=200,TFONT=6,TCHARSIZE=110
 GSET,XMIN=0,XMAX=nnao_bins+1,YMIN=0.,YMAX=0.10,TITLE='PDF of DJF daily NAO index'
 labels=strarr(nnao_bins+2)
@@ -183,9 +178,9 @@ AXES,XVALS=indgen(nnao_bins+2),XLABELS=labels,$
      YSTEP=0.01,YMINOR=0.005,XTITLE='NAO index (standardized)',YTITLE='Probability',NDECS=2
 PSCLOSE,/NOVIEW
 
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence.nao_persistence_0p5_low_npy.ps'
+psfile='/home/users/npklingaman/plots/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence.nao_persistence_1p0_low_npy.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1700,SPACE2=100,SPACE3=200,TFONT=6,TCHARSIZE=110
-GSET,XMIN=0,XMAX=nlength_bins+1,YMIN=0.,YMAX=2.61,TITLE='Length of spells of NAO < -0.5*stddev'
+GSET,XMIN=0,XMAX=nlength_bins+1,YMIN=0.,YMAX=2.01,TITLE='Length of spells of NAO < -1*stddev'
 labels=strarr(nlength_bins+2)
 FOR i=0,nlength_bins-1 DO BEGIN
    IF length_bins(i) lt 0 THEN BEGIN
@@ -202,9 +197,9 @@ AXES,XVALS=indgen(nlength_bins+2),XLABELS=labels,$
      YSTEP=0.2,YMINOR=0.1,XTITLE='Length of spell',YTITLE='Number of events per DJF',NDECS=1
 PSCLOSE,/NOVIEW
 
-psfile='/home/users/npklingaman/idl/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence.nao_persistence_0p5_high_npy.ps'
+psfile='/home/users/npklingaman/plots/hadgem3-kpp_runs/nao/hadgem3kpp_nao_pdf_persistence.nao_persistence_1p0_high_npy.ps'
 PSOPEN,file=psfile,FONT=6,CHARSIZE=150,MARGIN=2000,XOFFSET=1700,SPACE2=100,SPACE3=200,TFONT=6,TCHARSIZE=110
-GSET,XMIN=0,XMAX=nlength_bins+1,YMIN=0.,YMAX=2.61,TITLE='Length of spells of NAO > 0.5*stddev'
+GSET,XMIN=0,XMAX=nlength_bins+1,YMIN=0.,YMAX=2.01,TITLE='Length of spells of NAO > 1*stddev'
 labels=strarr(nlength_bins+2)
 FOR i=0,nlength_bins-1 DO BEGIN
    IF length_bins(i) lt 0 THEN BEGIN

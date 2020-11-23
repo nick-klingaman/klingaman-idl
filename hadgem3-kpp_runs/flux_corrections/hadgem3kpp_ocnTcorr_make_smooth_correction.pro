@@ -7,20 +7,19 @@ n_lon=N_ELEMENTS(longitude)
 n_lat=N_ELEMENTS(latitude)
 n_z=N_ELEMENTS(z)
 
-;sfcorr_in=OPEN_AND_EXTRACT(infile,in_varname)
-;n_days=N_ELEMENTS(REFORM(sfcorr_in(0,0,0,*)))
-n_days=360
+sfcorr_in=OPEN_AND_EXTRACT(infile,in_varname)
+n_days=N_ELEMENTS(REFORM(sfcorr_in(0,0,0,*)))
+;n_days=360
 n_years=n_days/n_days_per_year
 sfcorr_out=fltarr(n_lon,n_lat,n_z,n_days_per_year)
-
-;IF TOTAL(where(ABS(sfcorr_in) ge 1e10)) ge 0 THEN $
-;   sfcorr_in[where(ABS(sfcorr_in ge 1e10))]=!Values.F_NaN
 
 FOR y=0,n_years-1 DO BEGIN
    print,'Running for year ',y+1,' of ',n_years
    FOR i=0,n_lon-1 DO BEGIN
       print,'Running for longitude band ',i+1,' of ',n_lon
       sfcorr_in=OPEN_AND_EXTRACT(infile,in_varname,offset=[i,0,0,0],count=[1,n_lat,n_z,n_days])
+      IF TOTAL(where(ABS(sfcorr_in) ge 100)) ge 0 THEN $
+         sfcorr_in[where(ABS(sfcorr_in ge 100))]=!Values.F_NaN
       FOR j=0,n_lat-1 DO BEGIN
 ;         lsm_test=REFORM(OPEN_AND_EXTRACT(infile,in_varname,offset=[i,j,0,0],count=[1,1,1,1]))
 ;         IF lsm_test lt 1e19 THEN BEGIN
@@ -28,14 +27,20 @@ FOR y=0,n_years-1 DO BEGIN
          IF sfcorr_in(0,j,0,0) lt 1e19 THEN BEGIN
             FOR k=0,n_z-1 DO BEGIN
                temp=REFORM([REFORM(sfcorr_in(0,j,k,*)),REFORM(sfcorr_in(0,j,k,*))])
-               IF TOTAL(where(ABS(temp) ge 1000)) ge 0 THEN $
-                  temp(where(ABS(temp) ge 1000))=!Values.F_NaN
+               IF TOTAL(where(ABS(temp) ge 10000)) ge 0 THEN BEGIN
+                  print,'Large positive values detected at ',i,j,k
+                  bad=where(ABS(temp) ge 10000)
+                  FOR p=0,N_ELEMENTS(bad)-1 DO $
+                     temp(bad(p))=(temp(bad(p)-1)+temp(bad(p)+1))/2.0                  
+               ENDIF
+;                  temp(where(ABS(temp) ge 100))=!Values.F_NaN
                temp=SMOOTH(temp,mean_length,/NaN)
                sfcorr_out(i,j,k,*)=[temp(n_days_per_year:n_days_per_year+mean_length/2-1),$
                                     temp(mean_length/2:n_days_per_year-1)];/FLOAT(n_years)+$
                                 ;sfcorr_out(i,j,k,*)
-               IF TOTAL(where(sfcorr_out(i,j,k,*) le -10000)) ge 0 THEN $
-                  STOP
+               IF TOTAL(where(sfcorr_out(i,j,k,*) le -10000)) ge 0 THEN BEGIN
+                  print,'Large negative values detected at ',i,j,k
+               ENDIF
             ENDFOR
          ENDIF ELSE $
             sfcorr_out(i,j,*,*)=1e20
@@ -70,6 +75,5 @@ ENDIF ELSE $
    NCDF_VARPUT,id,varids(4),sfcorr_out
 NCDF_CLOSE,id
 
-STOP
 END
 

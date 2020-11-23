@@ -1,0 +1,2 @@
+.compile hadgem3kpp_ocnTcorr_make_smooth_correction.pro
+hadgem3kpp_ocnTcorr_make_smooth_correction,'/group_workspaces/jasmin2/klingaman/metum/goml2_amo/xnuvc/kpp_ocean/KPPocean.jan-dec_dmeans_clim.years1-16.fcorr_withz.nc','/group_workspaces/jasmin2/klingaman/metum/goml2_amo/xnuvc/kpp_ocean/KPPocean.jan-dec_dmeans_clim_smooth31.years1-16.fcorr_withz.nc','fcorr_z','z_2','fcorr',360,31

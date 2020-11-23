@@ -28,6 +28,7 @@ ENDIF
 output=fltarr(nx,ny,n_pressure_levs,nt)
 
 FOR j=0,nx-1 DO BEGIN
+   ;print,'Processing longitude '+STRTRIM(STRING(j+1),1)+' of '+STRTRIM(STRING(nx-1),1)
    FOR k=0,ny-1 DO BEGIN
       FOR m=0,nt-1 DO BEGIN
          FOR i=0,n_pressure_levs-1 DO BEGIN
@@ -46,7 +47,7 @@ FOR j=0,nx-1 DO BEGIN
             ENDFOR
             
             IF pressure(j,k,0,m) lt pressure_levs(i) THEN BEGIN
-               output(j,k,i,m)=our_missing_value
+               output(j,k,i,m)=data(j,k,0,m)
             ENDIF ELSE IF pressure(j,k,nz-1,m) gt pressure_levs(i) THEN BEGIN
                output(j,k,i,m)=our_missing_value
             ENDIF ELSE BEGIN

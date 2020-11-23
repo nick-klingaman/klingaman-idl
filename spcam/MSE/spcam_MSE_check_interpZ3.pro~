@@ -1,0 +1,16 @@
+PRO spcam_MSE_check_interpZ3
+
+pt=[0,90]
+ntime=4400
+
+basedir='/group_workspaces/jasmin2/klingaman/cam/spcam_iceedge_free_spccsm_elnino/h1'
+MSE_interp_file=basedir+'/MSE_interpZ3.nc'
+MSEadv_interp_file=basedir+'/MSEadv_interpZ3.nc'
+
+latitude=OPEN_AND_EXTRACT(MSE_interp_file,'lat')
+longitude=OPEN_AND_EXTRACT(MSE_interp_file,'lon')
+latpt=NEAREST(latitude,pt(0))
+lonpt=NEAREST(longitude,pt(1))
+
+; Read MSE
+MSE_interp=OPEN_AND_EXTRACT(MSE_interp_file,'MSEint',offset=[lonpt,latpt,0],count=[1,1,ntime])

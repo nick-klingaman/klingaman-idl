@@ -148,7 +148,7 @@ FOR i=0,n_vars-1 DO BEGIN
         ENDCASE
      ENDIF
 
-     psfile='/home/users/npklingaman/idl/spcam/mean_state/spcam_mean_state_comparison.'+varnames(i)+'.'+$
+     psfile='/home/users/npklingaman/plots/spcam/mean_state/spcam_mean_state_comparison.'+varnames(i)+'.'+$
             expt_case+'-minus-'+ctrl_case+'.'+season_names(j)+'.ps'
      PSOPEN,file=psfile,FONT=6,CHARSIZE=150,TFONT=2,YPLOTS=2,XPLOTS=2,MARGIN=1500,XOFFSET=500,SPACE3=200,$
             YSPACING=1800

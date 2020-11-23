@@ -1,0 +1,11 @@
+PRO ex58
+d=NCREAD('wrf_test.nc')
+PSOPEN, SPACE2=800
+CS, SCALE=1, NCOLS=20
+LEVS, MIN=-72, MAX=72, STEP=8
+GSET, XMIN=35, XMAX=70, YMIN=1, YMAX=50
+CON, F=REFORM(d.u(0, *, *)), X=REFORM(d.xlat_u(0,*,0)), Y=d.bottom_top
+AXES, XTITLE='Latitude', YTITLE='Height'
+PSCLOSE
+END
+

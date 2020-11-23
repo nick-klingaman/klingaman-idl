@@ -112,7 +112,7 @@ IF varstruct.ndims eq 4 THEN BEGIN
    ENDFOR         
 ENDIF
 
-psfile='/home/ss901165/idl/mjo_indices/mjo_indices_filtered_variance.'+runid+'_'+varname+'_filter'+$
+psfile='/home/users/npklingaman/plots/mjo_indices/mjo_indices_filtered_variance.'+runid+'_'+varname+'_filter'+$
        STRTRIM(STRING(upper_limit),1)+STRTRIM(STRING(lower_limit),1)+'.ps'
 IF KEYWORD_SET(box) THEN BEGIN
    PSOPEN,file=psfile,FONT=2,CHARSIZE=130,MARGIN=1200,SPACE2=1500,XOFFSET=500,YOFFSET=2000,TFONT=2,TCHARSIZE=100,SPACE3=600,XSIZE=26000,YSIZE=(ABS(box(2))+ABS(box(0)))/180.*21000
